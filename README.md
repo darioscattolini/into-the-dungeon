@@ -8,11 +8,6 @@ In every round the players either remove pieces of the hero's equipment or add m
 
 This process will be repeated many times, with different hero characters. You will be out of the game if you're killed in the dungeon twice. Otherwise you will win if you survive the dungeon twice or if every other player is out of the game. 
 
-## Latest update
-**2020-Jun-01:**
-
-* Start nx boilerplate project.
-
 ## Built with
 This project was generated using [Nx](https://nx.dev).
 
@@ -25,9 +20,14 @@ Nx makes use of:
 * NestJS also makes use of [Express](https://expressjs.com/).
 
 ## Status
-_in 
+_in progress_
 
 This is just a boilerplate. The project will evolve progressively. You can track all updates in [this document](/updates.md).
+
+## Latest update
+**2020-Jun-01:**
+
+* Start nx boilerplate project.
 
 ## Play
 There is still no deployed version of this game.
