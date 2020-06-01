@@ -1,84 +1,41 @@
-# Dungeon
+# Into the Dungeon
+> Dungeon multiplayer game that can be played single- or multi-device. 
 
+## General info
+You and other adventurers want to kill all the monsters lurking in a dungeon. But you're not a team: only one player can enter the dungeon, impersonating a previously chosen hero character. 
+
+In every round the players either remove pieces of the hero's equipment or add monsters in the dungeon, making the quest more difficult every time. At some point the players will start stepping back in turns, giving up the task to the last brave or reckless player standing. You succeed in the dungeon if you can kill all monsters before they take all your character's hit points.
+
+This process will be repeated many times, with different hero characters. You will be out of the game if you're killed in the dungeon twice. Otherwise you will win if you survive the dungeon twice or if every other player is out of the game. 
+
+## Latest update
+**2020-Jun-01:**
+
+* Start nx boilerplate project.
+
+## Built with
 This project was generated using [Nx](https://nx.dev).
-
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/nx-logo.png" width="450"></p>
 
 🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
 
-## Quick Start & Documentation
+Nx makes use of:
+* [Angular](https://angular.io/) for the front-end.
+* [Node.js](https://nodejs.org/) and [NestJS](https://nestjs.com/) for the back-end.
+* Both Angular and NestJs make use of [TypeScript](https://www.typescriptlang.org/).
+* NestJS also makes use of [Express](https://expressjs.com/).
 
-[Nx Documentation](https://nx.dev/angular)
+## Status
+_in 
 
-[10-minute video showing all Nx features](https://nx.dev/angular/getting-started/what-is-nx)
+This is just a boilerplate. The project will evolve progressively. You can track all updates in [this document](/updates.md).
 
-[Interactive Tutorial](https://nx.dev/angular/tutorial/01-create-application)
+## Play
+There is still no deployed version of this game.
 
-## Adding capabilities to your workspace
+## Inspiration
+The game is closely inspired by a board game I play with my housemates. The project serves only a learning purpose, so I claim no originality with regard to the rules and content of the game. However, in order to avoid copyright issues I'll try to include as many changes as possible.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+While I have already worked on other Angular and Node.js projects, they still require months of development. I needed something more compact and manageable to showcase my skills in these technologies in my portfolio. I hope it can also be an opportunity to dive into monorepos, Test Driven Development and documentation best practices.
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
-
-Below are some plugins which you can add to your workspace:
-
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
-
-## Generate an application
-
-Run `ng g @nrwl/angular:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are sharable across libraries and applications. They can be imported from `@dungeon/mylib`.
-
-## Development server
-
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+## Contact
+Created by [Darío Scattolini](https://darioscattolini.github.io). Feel free to contact me!
