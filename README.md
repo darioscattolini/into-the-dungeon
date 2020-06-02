@@ -19,6 +19,9 @@ Nx makes use of:
 * Both Angular and NestJs make use of [TypeScript](https://www.typescriptlang.org/).
 * NestJS also makes use of [Express](https://expressjs.com/).
 
+Other libraries and dependencies I use:
+* [Angular Material](https://material.angular.io/) for theming.
+
 ## Status
 _in progress_
 
