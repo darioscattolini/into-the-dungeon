@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes }  from '@angular/router';
-// routed components/modules will be imported: home, one-device, online
+import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
   {
     path: 'one-device', 
-    loadChildren: () => import('./one-device/one-device/one-device.module').then(m => m.OneDeviceModule) 
+    loadChildren: () => import('./one-device/one-device.module').then(m => m.OneDeviceModule) 
   }, { 
     path: 'online', 
-    loadChildren: () => import('./online/online/online.module').then(m => m.OnlineModule) 
+    loadChildren: () => import('./online/online.module').then(m => m.OnlineModule) 
+  }, {
+    path: '', component: HomeComponent
   }
 ];
 
