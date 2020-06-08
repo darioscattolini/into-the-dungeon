@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes }  from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { paths } from './routes.paths'
 
 const appRoutes: Routes = [
   {
-    path: 'one-device', 
+    path: paths.oneDevice, 
     loadChildren: () => import('./one-device/one-device.module').then(m => m.OneDeviceModule) 
   }, { 
-    path: 'online', 
+    path: paths.online, 
     loadChildren: () => import('./online/online.module').then(m => m.OnlineModule) 
   }, {
-    path: '', component: HomeComponent
+    path: paths.home, component: HomeComponent
   }
 ];
 
