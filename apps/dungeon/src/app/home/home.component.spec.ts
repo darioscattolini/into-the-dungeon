@@ -78,7 +78,7 @@ describe('HomeComponent', () => {
     expect(location.path()).toBe('/' + paths.oneDevice);
   }));
 
-  it ('should navigate to /online when one-device button clicked', fakeAsync(() => {
+  it ('should navigate to /online when online button clicked', fakeAsync(() => {
     page.onlineBtn.click();
     flush();
     expect(location.path()).toBe('/' + paths.online);
