@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
+// tslint:disable-next-line: component-selector
 @Component({selector: 'router-outlet', template: ''})
 class RouterOutletStubComponent { }
 
