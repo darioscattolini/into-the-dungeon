@@ -75,14 +75,12 @@ describe('HomeComponent', () => {
   it ('should navigate to /one-device when one-device button clicked', fakeAsync(() => {
     page.oneDeviceBtn.click();
     flush();
-    fixture.detectChanges();
     expect(location.path()).toBe('/' + paths.oneDevice);
   }));
 
   it ('should navigate to /online when one-device button clicked', fakeAsync(() => {
     page.onlineBtn.click();
     flush();
-    fixture.detectChanges();
     expect(location.path()).toBe('/' + paths.online);
   }));
 });
