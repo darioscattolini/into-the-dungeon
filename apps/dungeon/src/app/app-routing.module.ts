@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes }  from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { paths } from './routes.paths';
+import { paths } from './app-routing.paths';
 
 const appRoutes: Routes = [
   {
@@ -27,3 +27,6 @@ const appRoutes: Routes = [
   ]
 })
 export class AppRoutingModule { }
+
+const appRoutesClone = JSON.parse(JSON.stringify(appRoutes));
+export { appRoutesClone as appRoutes };

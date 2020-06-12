@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { paths } from '../routes.paths';
+import { paths } from '../app-routing.paths';
 
 @Component({
   selector: 'dungeon-home',
