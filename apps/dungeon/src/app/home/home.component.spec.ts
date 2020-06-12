@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { paths } from '../routes.paths';
+import { paths } from '../app-routing.paths';
 import { HomeComponent } from './home.component';
 
 const expectationId = 'expectation';
