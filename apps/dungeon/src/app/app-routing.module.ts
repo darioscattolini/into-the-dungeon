@@ -28,5 +28,6 @@ const appRoutes: Routes = [
 })
 export class AppRoutingModule { }
 
+/* IN CASE ROUTES NEED TO BE EXPORTED FOR TESTNG
 const appRoutesClone = JSON.parse(JSON.stringify(appRoutes));
-export { appRoutesClone as appRoutes };
+export { appRoutesClone as appRoutes }; */
