@@ -71,7 +71,6 @@ describe('HomeComponent', () => {
   });
 
   it('should contain a #description element', () => {
-    console.log(page.description);
     expect(page.description).toBeTruthy();
   });
 
