@@ -18,8 +18,13 @@ class Page {
   get buttons()      { return Array.from(this.queryAll<HTMLButtonElement>('button')); }
   get oneDeviceBtn() { return this.buttons.find(button => button.textContent === 'One Device'); }
   get onlineBtn()    { return this.buttons.find(button => button.textContent === 'Online'); }
+  get heading()      { return this.query<HTMLElement>('h1'); }
   
   constructor(private fixture: ComponentFixture<HomeComponent>) { }
+
+  private query<T>(selector: string): T {
+    return this.fixture.nativeElement.querySelector(selector);
+  }
 
   private queryAll<T>(selector: string): T[] {
     return this.fixture.nativeElement.querySelectorAll(selector);
@@ -58,6 +63,10 @@ describe('HomeComponent', () => {
 
   it('should create HomeComponent', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display "Into the Dungeon" heading', () => {
+    expect(page.heading).toContain('Into the Dungeon');
   });
 
   it('should contain two buttons', () => {
