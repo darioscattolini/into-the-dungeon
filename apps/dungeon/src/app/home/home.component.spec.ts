@@ -66,7 +66,7 @@ describe('HomeComponent', () => {
   });
 
   it('should display "Into the Dungeon" heading', () => {
-    expect(page.heading).toContain('Into the Dungeon');
+    expect(page.heading.textContent).toContain('Into the Dungeon');
   });
 
   it('should contain two buttons', () => {
