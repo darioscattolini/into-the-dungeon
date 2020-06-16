@@ -75,15 +75,14 @@ describe('HomeComponent', () => {
   });
 
   it('should contain a #description element with certain keywords', () => {
-    expect(page.description.textContent).toContain('hero');
-    expect(page.description.textContent).toContain('dungeon');
-    expect(page.description.textContent).toContain('monster');
-    expect(page.description.textContent).toContain('equipment');
-    expect(page.description.textContent).toContain('player');
-    expect(page.description.textContent).toContain('survive');
-    expect(page.description.textContent).toContain('online');
-    expect(page.description.textContent).toContain('single device');
-    expect(page.description.textContent).toContain('multi-player');
+    expect(page.description.textContent.toLowerCase()).toContain('hero');
+    expect(page.description.textContent.toLowerCase()).toContain('dungeon');
+    expect(page.description.textContent.toLowerCase()).toContain('monster');
+    expect(page.description.textContent.toLowerCase()).toContain('equipment');
+    expect(page.description.textContent.toLowerCase()).toContain('survive');
+    expect(page.description.textContent.toLowerCase()).toContain('online');
+    expect(page.description.textContent.toLowerCase()).toContain('single device');
+    expect(page.description.textContent.toLowerCase()).toContain('multi-player');
   });
 
   it('should contain two buttons', () => {
