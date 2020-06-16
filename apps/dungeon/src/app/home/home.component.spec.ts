@@ -19,6 +19,7 @@ class Page {
   get oneDeviceBtn() { return this.buttons.find(button => button.textContent === 'One Device'); }
   get onlineBtn()    { return this.buttons.find(button => button.textContent === 'Online'); }
   get heading()      { return this.query<HTMLElement>('h1'); }
+  get description()  { return this.query<HTMLElement>('#description'); }
   
   constructor(private fixture: ComponentFixture<HomeComponent>) { }
 
@@ -69,16 +70,21 @@ describe('HomeComponent', () => {
     expect(page.heading.textContent).toContain('Into the Dungeon');
   });
 
+  it('should contain a #description element', () => {
+    console.log(page.description);
+    expect(page.description).toBeTruthy();
+  });
+
   it('should contain two buttons', () => {
     expect(page.buttons.length).toStrictEqual(2);
   });
 
   it('should display one-device button', () => {
-    expect(page.oneDeviceBtn).toBeDefined();
+    expect(page.oneDeviceBtn).toBeTruthy();
   });
 
   it('should display online button', () => {
-    expect(page.onlineBtn).toBeDefined();
+    expect(page.onlineBtn).toBeTruthy();
   });
 
   it ('should navigate to /one-device when one-device button clicked', fakeAsync(() => {
