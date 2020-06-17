@@ -6,18 +6,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { paths } from '../app-routing.paths';
 import { HomeComponent } from './home.component';
 
-const expectationId = 'expectation';
-
 @Component({
   selector: 'dungeon-target-stub',
-  template: `<p id="${expectationId}">one-device</p>`
+  template: ''
 })
 class TargetStubComponent {}
 
 class Page {
   get buttons()      { return Array.from(this.queryAll<HTMLButtonElement>('button')); }
-  get oneDeviceBtn() { return this.buttons.find(button => button.textContent === 'One Device'); }
-  get onlineBtn()    { return this.buttons.find(button => button.textContent === 'Online'); }
+  get oneDeviceBtn() { return this.buttons.find(button => button.textContent.includes('One Device')); }
+  get onlineBtn()    { return this.buttons.find(button => button.textContent.includes('Online')); }
   get heading()      { return this.query<HTMLElement>('h1'); }
   get description()  { return this.query<HTMLElement>('#description'); }
   
