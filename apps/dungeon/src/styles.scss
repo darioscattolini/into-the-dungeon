@@ -13,7 +13,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $dungeon-primary: mat-palette($mat-indigo);
-$dungeon-accent: mat-palette($mat-pink, A200, A100, A400);
+$dungeon-accent: mat-palette($mat-deep-orange, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $dungeon-warn: mat-palette($mat-red);
@@ -28,5 +28,16 @@ $dungeon-theme: mat-light-theme($dungeon-primary, $dungeon-accent, $dungeon-warn
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+* {
+  box-sizing: border-box;
+}
+
+html, body { 
+  height: 100%; 
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #cfd8dc;
+}
