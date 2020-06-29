@@ -23,7 +23,7 @@ describe('GameManagerService', () => {
   describe('addPlayer', () => {
     it('should add player named "John"', () => {
       service.addPlayer('John');
-      const lastPlayer = service.getAmountOfPlayers.length - 1;
+      const lastPlayer = service.getAmountOfPlayers() - 1;
       expect(service.getPlayer(lastPlayer).name).toBe('John');
     });
   })
