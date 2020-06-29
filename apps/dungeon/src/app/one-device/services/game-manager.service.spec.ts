@@ -38,8 +38,13 @@ describe('GameManagerService', () => {
         .toThrow(new Error('There can only be four players in this game'));
     });
 
+    it('should not allow players with the same name', () => {
+      service.addPlayer('John');
+      expect(() => { service.addPlayer('John'); })
+        .toThrow(new Error('There can only be one player named John'));
+    });
+
   });
 });
 
-// addPlayer should not add repeated or empty names
 // there should be at least 2 players before game starts
