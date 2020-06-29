@@ -14,5 +14,4 @@ describe('Player', () => {
     expect(() => { const player = new Player(''); })
       .toThrow(new Error('Player\'s names should have at least one character'));
   });
-
 });
