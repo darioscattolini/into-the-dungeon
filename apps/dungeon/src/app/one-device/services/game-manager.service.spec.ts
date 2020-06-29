@@ -6,7 +6,7 @@ describe('GameManagerService', () => {
   let service: GameManagerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ providers: [GameManagerService] });
     service = TestBed.inject(GameManagerService);
   });
 
