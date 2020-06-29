@@ -26,9 +26,20 @@ describe('GameManagerService', () => {
       const lastPlayer = service.getAmountOfPlayers() - 1;
       expect(service.getPlayer(lastPlayer).name).toBe('John');
     });
-  })
+
+    it('should add no more than 4 players', () => {
+      for (let i = 0; i < 4; i++) {
+        service.addPlayer(String(i));
+      }
+
+      expect(service.getAmountOfPlayers()).toStrictEqual(4);
+
+      expect(() => { service.addPlayer('fifth'); })
+        .toThrow(new Error('There can only be four players in this game'));
+    });
+
+  });
 });
 
-// addPlayer should add no more than 4 players
 // addPlayer should not add repeated or empty names
 // there should be at least 2 players before game starts
