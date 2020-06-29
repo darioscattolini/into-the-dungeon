@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
-// import { Player } from '../../models/player';
+import { Player } from '../../models/player';
 
 @Injectable({
   providedIn: OneDeviceModule
 })
 export class GameManagerService {
 
-  private players = [];
+  private players: Player[] = [];
 
   constructor() { }
   
@@ -15,13 +15,13 @@ export class GameManagerService {
     return this.players.length;
   }
 
-  public addPlayer(name: string) {
-    const player = { name };
+  public addPlayer(name: string): Player {
+    const player = new Player(name);
     this.players.push(player);
     return player;
   }
 
-  public getPlayer(index: number) {
+  public getPlayer(index: number): Player {
     return this.players[index];
   }
 
