@@ -16,6 +16,9 @@ export class GameManagerService {
   }
 
   public addPlayer(name: string): Player {
+    if(this.getAmountOfPlayers() === 4) {
+      throw new Error('There can only be four players in this game');
+    }
     const player = new Player(name);
     this.players.push(player);
     return player;
