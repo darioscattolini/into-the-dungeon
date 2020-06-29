@@ -16,7 +16,7 @@ describe('GameManagerService', () => {
 
   describe('getAmountOfPlayers', () => {
     it('should return 0 when service is created', () => {
-      expect(service.getAmountOfPlayers).toStrictEqual(0);
+      expect(service.getAmountOfPlayers()).toStrictEqual(0);
     });
   })
 });
