@@ -13,4 +13,10 @@ describe('GameManagerService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  describe('getAmountOfPlayers', () => {
+    it('should return 0 when service is created', () => {
+      expect(service.getAmountOfPlayers).toStrictEqual(0);
+    });
+  })
 });
