@@ -18,5 +18,17 @@ describe('GameManagerService', () => {
     it('should return 0 when service is created', () => {
       expect(service.getAmountOfPlayers()).toStrictEqual(0);
     });
+  });
+
+  describe('addPlayer', () => {
+    it('should add player named "John"', () => {
+      service.addPlayer('John');
+      const lastPlayer = service.getAmountOfPlayers.length - 1;
+      expect(service.getPlayer(lastPlayer).name).toBe('John');
+    });
   })
 });
+
+// addPlayer should add no more than 4 players
+// addPlayer should not add repeated or empty names
+// there should be at least 2 players before game starts
