@@ -34,6 +34,6 @@ export class PlayersManagerService {
   }
 
   public getPlayersList(): Player[] {
-    return this.players;
+    return this.players.slice(0);
   }
 }
