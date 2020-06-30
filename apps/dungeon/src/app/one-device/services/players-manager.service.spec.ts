@@ -56,8 +56,16 @@ describe('PlayersManagerService', () => {
       expect(service.getPlayersList().map(player => player.name))
         .toContain('Anna');
     });
+
+    it('should return a copy of its private list of players', () => {
+      service.addPlayer('John');
+      const returnedList = service.getPlayersList();
+      service.addPlayer('Anna');
+      
+      expect(returnedList.length).toStrictEqual(1);
+      expect(service.getPlayersList().length).toStrictEqual(2);
+    });
   });
 });
 
 // it should add player type
-// it should return a copy of added players
