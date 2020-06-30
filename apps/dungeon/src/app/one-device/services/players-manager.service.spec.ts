@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PlayersManagerService } from './players-manager.service';
+import { Player } from '../../models/player';
 
 describe('PlayersManagerService', () => {
   let service: PlayersManagerService;
@@ -18,13 +19,21 @@ describe('PlayersManagerService', () => {
     it('should return 0 when service is created', () => {
       expect(service.getAmountOfPlayers()).toStrictEqual(0);
     });
+
+    it('should return 2 after 2 players are added', () => {
+      service.addPlayer('John');
+      service.addPlayer('Anna');
+      expect(service.getAmountOfPlayers()).toStrictEqual(2);
+    });
   });
 
   describe('addPlayer', () => {
     it('should add player named "John"', () => {
       service.addPlayer('John');
-      const lastPlayer = service.getAmountOfPlayers() - 1;
-      expect(service.getPlayer(lastPlayer).name).toBe('John');
+      const lastPlayerIndex = service.getAmountOfPlayers() - 1;
+      const lastPlayer = service.getPlayer(lastPlayerIndex);
+      expect(lastPlayer.name).toBe('John');
+      expect(lastPlayer).toBeInstanceOf(Player);
     });
 
     it('should add no more than 4 players', () => {
@@ -42,6 +51,12 @@ describe('PlayersManagerService', () => {
       service.addPlayer('John');
       expect(() => { service.addPlayer('John'); })
         .toThrow(new Error('There can only be one player named John'));
+    });
+
+    it('should return a Player named John', () => {
+      const returned = service.addPlayer('John');
+      expect(returned.name).toStrictEqual('John');
+      expect(returned).toBeInstanceOf(Player);
     });
   });
 
@@ -67,5 +82,3 @@ describe('PlayersManagerService', () => {
     });
   });
 });
-
-// it should add player type
