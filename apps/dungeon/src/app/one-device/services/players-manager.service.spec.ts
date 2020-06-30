@@ -44,4 +44,20 @@ describe('PlayersManagerService', () => {
         .toThrow(new Error('There can only be one player named John'));
     });
   });
+
+  describe('getPlayersList', () => {
+    it('should return a list of added players', () => {
+      service.addPlayer('John');
+      service.addPlayer('Anna');
+
+      expect(service.getPlayersList().length).toStrictEqual(2);
+      expect(service.getPlayersList().map(player => player.name))
+        .toContain('John');
+      expect(service.getPlayersList().map(player => player.name))
+        .toContain('Anna');
+    });
+  });
 });
+
+// it should add player type
+// it should return a copy of added players
