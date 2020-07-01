@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { OneDeviceModule } from '../one-device.module';
 import { Player } from '../../models/player';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: OneDeviceModule
 })
-export class PlayersManagerService {
+export class PlayersService {
 
   private players: Player[] = [];
 
