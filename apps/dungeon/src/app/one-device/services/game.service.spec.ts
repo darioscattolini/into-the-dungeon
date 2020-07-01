@@ -7,14 +7,20 @@ import { Player } from '../../models/player';
 jest.mock('./players.service');
 const mockedPlayersService = mocked(PlayersService, true);
 
+const players = [
+  new Player('John'),
+  new Player('Anna'),
+  new Player('Julia')
+];
+
+function onePlayerSetup(playersService: PlayersService): void {
+  (playersService.getPlayersList as jest.Mock).mockClear();
+  (playersService.getPlayersList as jest.Mock).mockReturnValue([new Player('John')]);
+}
+
 describe('GameService', () => {
   let gameService: GameService;
   let playersService: PlayersService;
-  const players = [
-    new Player('John'),
-    new Player('Anna'),
-    new Player('Julia')
-  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [GameService, PlayersService]});
@@ -54,10 +60,20 @@ describe('GameService', () => {
     });
 
     it('should throw error if there are less than 2 players', () => {
-      (playersService.getPlayersList as jest.Mock).mockClear();
-      (playersService.getPlayersList as jest.Mock).mockReturnValue([new Player('John')]);
+      onePlayerSetup(playersService);
       expect(() => { gameService.start() })
         .toThrow(new Error('There must be at least two players to start the game'));
+    });
+
+    it('should not call manage method if there are less than 2 players', () => {
+      onePlayerSetup(playersService);
+      gameService.start();
+      expect(gameService.manage).toHaveBeenCalledTimes(0);
+    });
+
+    it('should call manage method if everything is ok', () => {
+      gameService.start();
+      expect(gameService.manage).toHaveBeenCalledTimes(1);
     });
   });
 });
