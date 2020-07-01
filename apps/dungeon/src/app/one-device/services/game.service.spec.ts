@@ -67,13 +67,16 @@ describe('GameService', () => {
 
     it('should not call manage method if there are less than 2 players', () => {
       onePlayerSetup(playersService);
-      gameService.start();
-      expect(gameService.manage).toHaveBeenCalledTimes(0);
+      const manageSpy = jest.spyOn(gameService, 'manage');
+      try { gameService.start(); }
+      catch { }
+      finally { expect(manageSpy).toHaveBeenCalledTimes(0); }
     });
 
     it('should call manage method if everything is ok', () => {
+      const manageSpy = jest.spyOn(gameService, 'manage');
       gameService.start();
-      expect(gameService.manage).toHaveBeenCalledTimes(1);
+      expect(manageSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
