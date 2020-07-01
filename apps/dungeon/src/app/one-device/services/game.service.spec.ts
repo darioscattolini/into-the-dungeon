@@ -5,11 +5,11 @@ import { PlayersService } from './players.service';
 import { Player } from '../../models/player';
 
 jest.mock('./players.service');
-const mockedPlayersManager = mocked(PlayersService, true);
+const mockedPlayersService = mocked(PlayersService, true);
 
-describe('GameManagerService', () => {
-  let gameManager: GameService;
-  let playersManager: PlayersService;
+describe('GameService', () => {
+  let gameService: GameService;
+  let playersService: PlayersService;
   const players = [
     new Player('John'),
     new Player('Anna'),
@@ -17,16 +17,16 @@ describe('GameManagerService', () => {
   ];
 
   beforeEach(() => {
-    mockedPlayersManager.mockClear();
+    mockedPlayersService.mockClear();
     TestBed.configureTestingModule({ providers: [GameService, PlayersService]});
-    gameManager = TestBed.inject(GameService);
-    playersManager = mockedPlayersManager.mock.instances[0];
-    (playersManager.getPlayersList as jest.Mock).mockReturnValue(players);
+    gameService = TestBed.inject(GameService);
+    playersService = mockedPlayersService.mock.instances[0];
+    (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
   });
   
   describe('constructor', () => {
     it('should create service', () => {
-      expect(gameManager).toBeTruthy();
+      expect(gameService).toBeTruthy();
     });
   
     it('should call PlayersManager constructor', () => {
@@ -34,19 +34,25 @@ describe('GameManagerService', () => {
     });
 
     it('should instantiate PlayersManager', () => {
-      expect(playersManager).toBeTruthy();
+      expect(playersService).toBeTruthy();
     });
   });
 
   describe('start', () => {
     it('should call playersManager.getPlayersList', () => {
-      gameManager.start();
-      expect(playersManager.getPlayersList).toHaveBeenCalledTimes(1);
+      gameService.start();
+      expect(playersService.getPlayersList).toHaveBeenCalledTimes(1);
     });
 
     it('should store returned players array in players field', () => {
-      gameManager.start();
-      expect(gameManager.players).toStrictEqual(players);
+      gameService.start();
+      expect(gameService.players).toStrictEqual(players);
+    });
+
+    it('should throw error if there are less than 2 players', () => {
+      (playersService.getPlayersList as jest.Mock).mockClear();
+      (playersService.getPlayersList as jest.Mock).mockReturnValue([new Player('John')]);
+      expect(gameService.start()).toThrow(new Error('There must be at least two players to start the game'));
     });
   });
 });
