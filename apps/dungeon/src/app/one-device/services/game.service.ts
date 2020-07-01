@@ -7,7 +7,7 @@ import { Player } from '../../models/player';
   providedIn: OneDeviceModule
 })
 export class GameService {
-
+    // this is public just for tests
   public players: Player[];
 
   constructor(private playersManager: PlayersService) { }
@@ -18,5 +18,10 @@ export class GameService {
       throw new Error('There must be at least two players to start the game');
     }
     this.players = players;
+    this.manage();
+  }
+    // this is public just for tests
+  public manage() {
+
   }
 }
