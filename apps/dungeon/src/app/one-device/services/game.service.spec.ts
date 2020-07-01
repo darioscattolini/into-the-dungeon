@@ -17,11 +17,15 @@ describe('GameService', () => {
   ];
 
   beforeEach(() => {
-    mockedPlayersService.mockClear();
     TestBed.configureTestingModule({ providers: [GameService, PlayersService]});
     gameService = TestBed.inject(GameService);
     playersService = mockedPlayersService.mock.instances[0];
     (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
+  });
+
+  afterEach(() => {
+    mockedPlayersService.mockClear();
+    (playersService.getPlayersList as jest.Mock).mockClear();
   });
   
   describe('constructor', () => {
@@ -52,9 +56,8 @@ describe('GameService', () => {
     it('should throw error if there are less than 2 players', () => {
       (playersService.getPlayersList as jest.Mock).mockClear();
       (playersService.getPlayersList as jest.Mock).mockReturnValue([new Player('John')]);
-      expect(gameService.start()).toThrow(new Error('There must be at least two players to start the game'));
+      expect(() => { gameService.start() })
+        .toThrow(new Error('There must be at least two players to start the game'));
     });
   });
 });
-
-// there should be at least 2 players before game starts

@@ -13,6 +13,10 @@ export class GameService {
   constructor(private playersManager: PlayersService) { }
 
   public start() {
-    this.players = this.playersManager.getPlayersList();
+    const players = this.playersManager.getPlayersList();
+    if (players.length < 2) {
+      throw new Error('There must be at least two players to start the game');
+    }
+    this.players = players;
   }
 }
