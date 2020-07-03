@@ -10,26 +10,26 @@ export class Player {
     this._defeats = 0;
   }
 
-  public get name() {
+  public get name(): string {
     return this._name;
   }
 
-  public get victories() {
+  public get victories(): number {
     return this._victories;
   }
 
-  public get defeats() {
+  public get defeats(): number {
     return this._defeats;
   }
 
-  public surviveDungeon() {
+  public surviveDungeon(): void {
     if(this._victories === 2) {
       throw new Error('The game must end after a player reaches 2 victories');
     }
     this._victories++;
   }
 
-  public beKilledInDungeon() {
+  public beKilledInDungeon(): void {
     if(this._defeats === 2) {
       throw new Error('The game must end after a player reaches 2 defeats');
     }
