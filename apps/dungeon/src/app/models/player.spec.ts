@@ -32,13 +32,23 @@ describe('Player', () => {
 
   describe('surviveDungeon', () => {
     it('should increase victories by one', () => {
-      const startingVictories = player.victories;
       player.surviveDungeon();
       const afterOneVictory = player.victories;
       player.surviveDungeon();
       const afterTwoVictories = player.victories;
       expect(afterOneVictory).toStrictEqual(1);
       expect(afterTwoVictories).toStrictEqual(2);
+    });
+  });
+
+  describe('beKilledInDungeon', () => {
+    it('should increase defeats by one', () => {
+      player.beKilledInDungeon();
+      const afterOneDefeat = player.victories;
+      player.beKilledInDungeon();
+      const afterTwoDefeats = player.victories;
+      expect(afterOneDefeat).toStrictEqual(1);
+      expect(afterTwoDefeats).toStrictEqual(2);
     });
   });
 });
