@@ -29,4 +29,16 @@ describe('Player', () => {
       expect(player.defeats).toStrictEqual(0);
     });
   });
+
+  describe('surviveDungeon', () => {
+    it('should increase victories by one', () => {
+      const startingVictories = player.victories;
+      player.surviveDungeon();
+      const afterOneVictory = player.victories;
+      player.surviveDungeon();
+      const afterTwoVictories = player.victories;
+      expect(afterOneVictory).toStrictEqual(1);
+      expect(afterTwoVictories).toStrictEqual(2);
+    });
+  });
 });
