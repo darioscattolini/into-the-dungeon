@@ -30,6 +30,9 @@ export class Player {
   }
 
   public beKilledInDungeon() {
+    if(this._defeats === 2) {
+      throw new Error('The game must end after a player reaches 2 defeats');
+    }
     this._defeats++;
   }
 }
