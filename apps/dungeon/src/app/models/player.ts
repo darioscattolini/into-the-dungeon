@@ -21,4 +21,8 @@ export class Player {
   public get defeats() {
     return this._defeats;
   }
+
+  public surviveDungeon() {
+    this._victories++;
+  }
 }
