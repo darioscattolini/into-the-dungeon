@@ -43,7 +43,7 @@ expect.extend({
       };
     }
   }
-})
+});
 
 describe('Player', () => {
   let player: Player;
@@ -122,10 +122,10 @@ describe('Player', () => {
       const players = [
         new Player('John'),
         new Player('Anna'),
-        new Player('Julia'),
-        new Player('Mark')
+        new Player('Mark'),
+        new Player('Julia')
       ];
-      const [ john, anna, julia, mark ] = players;
+      const [ john, anna, mark, julia ] = players;
 
       expect(Player.buildRanking(players)).toDeepEqual(
         [
