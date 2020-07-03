@@ -44,9 +44,9 @@ describe('Player', () => {
   describe('beKilledInDungeon', () => {
     it('should increase defeats by one', () => {
       player.beKilledInDungeon();
-      const afterOneDefeat = player.victories;
+      const afterOneDefeat = player.defeats;
       player.beKilledInDungeon();
-      const afterTwoDefeats = player.victories;
+      const afterTwoDefeats = player.defeats;
       expect(afterOneDefeat).toStrictEqual(1);
       expect(afterTwoDefeats).toStrictEqual(2);
     });

@@ -25,4 +25,8 @@ export class Player {
   public surviveDungeon() {
     this._victories++;
   }
+
+  public beKilledInDungeon() {
+    this._defeats++;
+  }
 }
