@@ -57,6 +57,13 @@ describe('Player', () => {
       expect(afterOneDefeat).toStrictEqual(1);
       expect(afterTwoDefeats).toStrictEqual(2);
     });
+
+    it('should not allow a third defeat', () => {
+      player.beKilledInDungeon();
+      player.beKilledInDungeon();
+      expect(() => { player.beKilledInDungeon(); })
+        .toThrow(new Error('The game must end after a player reaches 2 defeats'));
+    });
   });
 
   //describe('buildRanking', () => {
