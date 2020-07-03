@@ -22,5 +22,9 @@ describe('Player', () => {
   
   it('should be created with 0 victories', () => {
     expect(player.victories).toStrictEqual(0);
-  })
+  });
+
+  it('should be created with 0 defeats', () => {
+    expect(player.defeats).toStrictEqual(0);
+  });
 });
