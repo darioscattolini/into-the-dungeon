@@ -39,6 +39,13 @@ describe('Player', () => {
       expect(afterOneVictory).toStrictEqual(1);
       expect(afterTwoVictories).toStrictEqual(2);
     });
+
+    it('should not allow a third victory', () => {
+      player.surviveDungeon();
+      player.surviveDungeon();
+      expect(() => { player.surviveDungeon(); })
+        .toThrow(new Error('The game must end after a player reaches 2 victories'));
+    });
   });
 
   describe('beKilledInDungeon', () => {
@@ -51,4 +58,12 @@ describe('Player', () => {
       expect(afterTwoDefeats).toStrictEqual(2);
     });
   });
+
+  //describe('buildRanking', () => {
+    /*
+      1 victory = 1 point
+      1 defeat = -1 point
+      Possible scores: 2 (only one player), 1, 0, -1, -2 (only one player)
+    */
+  //});
 });
