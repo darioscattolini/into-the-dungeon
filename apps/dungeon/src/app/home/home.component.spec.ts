@@ -96,13 +96,13 @@ describe('HomeComponent', () => {
   });
 
   it ('should navigate to /one-device when one-device button clicked', fakeAsync(() => {
-    page.oneDeviceBtn.click();
+    fixture.ngZone.run(() => { page.oneDeviceBtn.click() });
     flush();
     expect(location.path()).toBe('/' + paths.oneDevice);
   }));
 
   it ('should navigate to /online when online button clicked', fakeAsync(() => {
-    page.onlineBtn.click();
+    fixture.ngZone.run(() => { page.onlineBtn.click() });
     flush();
     expect(location.path()).toBe('/' + paths.online);
   }));
