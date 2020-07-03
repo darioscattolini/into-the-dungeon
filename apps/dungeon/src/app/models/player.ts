@@ -23,6 +23,9 @@ export class Player {
   }
 
   public surviveDungeon() {
+    if(this._victories === 2) {
+      throw new Error('The game must end after a player reaches 2 victories');
+    }
     this._victories++;
   }
 
