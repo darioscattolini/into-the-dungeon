@@ -10,10 +10,10 @@ export class GameService {
     // this is public just for tests
   public players: Player[];
 
-  constructor(private playersManager: PlayersService) { }
+  constructor(private playersService: PlayersService) { }
 
-  public start() {
-    const players = this.playersManager.getPlayersList();
+  public start(): void {
+    const players = this.playersService.getPlayersList();
     if (players.length < 2) {
       throw new Error('There must be at least two players to start the game');
     }
@@ -21,7 +21,13 @@ export class GameService {
     this.manage();
   }
     // this is public just for tests
-  public manage() {
+  public manage(): void {
+    while(this.goesOn()) {
 
+    }
+  }
+
+  public goesOn(): boolean {
+    return true;
   }
 }
