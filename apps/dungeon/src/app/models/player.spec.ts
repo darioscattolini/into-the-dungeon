@@ -1,5 +1,50 @@
 import { Player } from './player';
 
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toDeepEqual(matchingArray: Player[][]): R
+    }
+  }
+}
+
+expect.extend({
+  toDeepEqual(receivedArray: Player[][], matchingArray: Player[][]) {
+    let pass = true;
+    if (receivedArray.length !== matchingArray.length) {
+      pass = false;
+    } else {
+      for (let i = 0; i < receivedArray.length; i++) {
+        if (receivedArray[i].length !== matchingArray[i].length) {
+          pass = false;
+          break;
+        } else {
+          for (let j = 0; j < receivedArray[i].length; j++) {
+            if (receivedArray[i][j] !== matchingArray[i][j]) {
+              pass = false;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    if (pass) {
+      return {
+        message: () =>
+          `expected ${receivedArray} not to be deep equal to ${matchingArray}`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () =>
+          `expected ${receivedArray} to be deep equal to ${matchingArray}`,
+        pass: false,
+      };
+    }
+  }
+})
+
 describe('Player', () => {
   let player: Player;
 
@@ -66,11 +111,78 @@ describe('Player', () => {
     });
   });
 
-  //describe('buildRanking', () => {
+  describe('buildRanking', () => {
     /*
       1 victory = 1 point
       1 defeat = -1 point
       Possible scores: 2 (only one player), 1, 0, -1, -2 (only one player)
+      Ranking is an array where 0 is top score
     */
-  //});
+    it('should build rankings following the above rules', () => {
+      const players = [
+        new Player('John'),
+        new Player('Anna'),
+        new Player('Julia'),
+        new Player('Mark')
+      ];
+      const [ john, anna, julia, mark ] = players;
+
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [anna, john, julia, mark]
+        ]
+      );
+
+      john.surviveDungeon();
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [john],
+          [anna, julia, mark]
+        ]
+      );
+
+      john.beKilledInDungeon();
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [anna, john, julia, mark]
+        ]
+      );
+
+      anna.surviveDungeon();
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [anna],
+          [john, julia, mark]
+        ]
+      );
+
+      julia.beKilledInDungeon();
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [anna],
+          [john, mark],
+          [julia]
+        ]
+      );
+
+      mark.surviveDungeon();
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [anna, mark],
+          [john],
+          [julia]
+        ]
+      );
+
+      mark.surviveDungeon();
+      expect(Player.buildRanking(players)).toDeepEqual(
+        [
+          [mark],
+          [anna],
+          [john],
+          [julia]
+        ]
+      );
+    });
+  });
 });
