@@ -16,8 +16,11 @@ describe('Player', () => {
   });
 
   it('should not create a player with empty name', () => {
-
     expect(() => { const unnamedPlayer = new Player(''); })
       .toThrow(new Error('Player\'s names should have at least one character'));
   });
+  
+  it('should be created with 0 victories', () => {
+    expect(player.victories).toStrictEqual(0);
+  })
 });
