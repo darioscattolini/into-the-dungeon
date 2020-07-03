@@ -7,17 +7,17 @@ import { Player } from '../../models/player';
 jest.mock('./players.service');
 const mockedPlayersService = mocked(PlayersService, true);
 
-const players = [
-  new Player('John'),
-  new Player('Anna'),
-  new Player('Julia')
-];
-
 describe('GameService', () => {
+  let players: Player[];
   let gameService: GameService;
   let playersService: PlayersService;
 
   beforeEach(() => {
+    players = [
+      new Player('John'),
+      new Player('Anna'),
+      new Player('Julia')
+    ];
     TestBed.configureTestingModule({ providers: [GameService, PlayersService]});
     gameService = TestBed.inject(GameService);
     playersService = mockedPlayersService.mock.instances[0];
@@ -68,7 +68,7 @@ describe('GameService', () => {
 
     it('should throw error if there are less than 2 players', () => {
       onePlayerSetup(playersService);
-      expect(() => { gameService.start() })
+      expect(() => { gameService.start(); })
         .toThrow(new Error('There must be at least two players to start the game'));
     });
 
@@ -122,4 +122,49 @@ describe('GameService', () => {
       expect(goesOnSpy).toHaveBeenCalledTimes(5);
     });
   });
+
+  describe('goesOn', () => {
+    it ('should return true with 0 victories and defeats', () => {
+      expect(gameService.goesOn()).toStrictEqual(true);
+    });
+
+    it ('should return true with some players with 1 victory', () => {
+      players[0].surviveDungeon();
+      players[2].surviveDungeon();
+      expect(gameService.goesOn()).toStrictEqual(true);
+    });
+
+    it ('should return true with some players with 1 defeat', () => {
+      players[0].beKilledInDungeon();
+      players[2].beKilledInDungeon();
+      expect(gameService.goesOn()).toStrictEqual(true);
+    });
+
+    it ('should return true with mixes of 1 defeat/1 victory', () => {
+      players[0].beKilledInDungeon();
+      players[1].surviveDungeon();
+      players[2].beKilledInDungeon();
+      players[2].surviveDungeon();
+      expect(gameService.goesOn()).toStrictEqual(true);
+    });
+
+    it('should return false when 1 player gets 2 victories', () => {
+      players[0].beKilledInDungeon();
+      players[1].surviveDungeon();
+      players[2].beKilledInDungeon();
+      players[2].surviveDungeon();
+      players[2].surviveDungeon();
+      expect(gameService.goesOn()).toStrictEqual(false);
+    });
+
+    it('should return false when 1 player gets 2 defeats', () => {
+      players[0].beKilledInDungeon();
+      players[1].surviveDungeon();
+      players[2].beKilledInDungeon();
+      players[2].surviveDungeon();
+      players[2].beKilledInDungeon();
+      expect(gameService.goesOn()).toStrictEqual(false);
+    });
+  });
+
 });
