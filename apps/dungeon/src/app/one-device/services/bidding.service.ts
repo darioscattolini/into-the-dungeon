@@ -4,7 +4,7 @@ import { OneDeviceModule } from '../one-device.module';
 @Injectable({
   providedIn: OneDeviceModule
 })
-export class BiddingServiceService {
+export class BiddingService {
 
   constructor() { }
 }

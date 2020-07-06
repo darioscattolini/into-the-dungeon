@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BiddingServiceService } from './bidding-service.service';
+import { BiddingService } from './bidding.service';
 
 describe('BiddingServiceService', () => {
-  let service: BiddingServiceService;
+  let service: BiddingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BiddingServiceService);
+    service = TestBed.inject(BiddingService);
   });
 
   describe('constructor', () => {
