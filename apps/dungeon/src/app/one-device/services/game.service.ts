@@ -26,7 +26,7 @@ export class GameService {
 
     }
   }
-
+    // this is public just for tests
   public goesOn(): boolean {
     let output = true;
     for (const player of this.players) {
