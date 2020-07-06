@@ -138,9 +138,12 @@ describe('GameService', () => {
 
     it ('should call biddingService.startNewRound once per round', () => {
       quickWinOrLoseSetup(goesOnSpy);
+      gameService.manage();
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(2);
       goesOnSpy.mockClear();
+      (biddingService.startNewRound as jest.Mock).mockClear();
       longerGameSetup(goesOnSpy);
+      gameService.manage();
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(4);
     });
   });

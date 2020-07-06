@@ -27,7 +27,7 @@ export class GameService {
     // this is public just for tests
   public manage(): void {
     while(this.goesOn()) {
-
+      this.biddingService.startNewRound();
     }
   }
     // this is public just for tests
