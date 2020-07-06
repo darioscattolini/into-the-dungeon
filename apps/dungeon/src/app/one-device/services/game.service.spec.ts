@@ -104,15 +104,16 @@ describe('GameService', () => {
      
       // one player wins or loses two dungeons in a row
     // tslint:disable-next-line: no-shadowed-variable
-    function quickWinOrLoseSetup(goesOnSpy: jest.SpyInstance<boolean, []>) {
-      goesOnSpy.mockReturnValueOnce(true);
+    function mockOneRound(goesOnSpy: jest.SpyInstance<boolean, []>) {
+      goesOnSpy.mockClear();
       goesOnSpy.mockReturnValueOnce(true);
       goesOnSpy.mockReturnValueOnce(false);
     }
 
       // there are more than two rounds before a player wins or loses two dungeons
     // tslint:disable-next-line: no-shadowed-variable
-    function longerGameSetup(goesOnSpy: jest.SpyInstance<boolean, []>) {
+    function mockFourRounds(goesOnSpy: jest.SpyInstance<boolean, []>) {
+      goesOnSpy.mockClear();
       goesOnSpy.mockReturnValueOnce(true);
       goesOnSpy.mockReturnValueOnce(true);
       goesOnSpy.mockReturnValueOnce(true);
@@ -124,25 +125,21 @@ describe('GameService', () => {
       goesOnSpy = jest.spyOn(gameService, 'goesOn');
     });
 
-    it('should check if game goes on at least three times', () => {
-      quickWinOrLoseSetup(goesOnSpy);
-      gameService.manage();
-      expect(goesOnSpy).toHaveBeenCalledTimes(3);
-    });
-
     it('should check if game goes on once per round + 1', () => {
-      longerGameSetup(goesOnSpy);
+      mockOneRound(goesOnSpy);
+      gameService.manage();
+      expect(goesOnSpy).toHaveBeenCalledTimes(2);
+      mockFourRounds(goesOnSpy);
       gameService.manage();
       expect(goesOnSpy).toHaveBeenCalledTimes(5);
     });
 
     it ('should call biddingService.startNewRound once per round', () => {
-      quickWinOrLoseSetup(goesOnSpy);
+      mockOneRound(goesOnSpy);
       gameService.manage();
-      expect(biddingService.startNewRound).toHaveBeenCalledTimes(2);
-      goesOnSpy.mockClear();
+      expect(biddingService.startNewRound).toHaveBeenCalledTimes(1);
       (biddingService.startNewRound as jest.Mock).mockClear();
-      longerGameSetup(goesOnSpy);
+      mockFourRounds(goesOnSpy);
       gameService.manage();
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(4);
     });
