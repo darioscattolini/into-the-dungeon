@@ -143,6 +143,13 @@ describe('GameService', () => {
       gameService.manage();
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(4);
     });
+    
+    it ('should call biddingService.startNewRound with a random Player', () => {
+      mockOneRound(goesOnSpy);
+      gameService.manage();
+      expect(biddingService.startNewRound)
+        .toHaveBeenCalledWith(players[0] || players[1] || players[2]);
+    });
   });
 
   describe('goesOn', () => {
