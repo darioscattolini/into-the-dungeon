@@ -135,6 +135,14 @@ describe('GameService', () => {
       gameService.manage();
       expect(goesOnSpy).toHaveBeenCalledTimes(5);
     });
+
+    it ('should call biddingService.startNewRound once per round', () => {
+      quickWinOrLoseSetup(goesOnSpy);
+      expect(biddingService.startNewRound).toHaveBeenCalledTimes(2);
+      goesOnSpy.mockClear();
+      longerGameSetup(goesOnSpy);
+      expect(biddingService.startNewRound).toHaveBeenCalledTimes(4);
+    });
   });
 
   describe('goesOn', () => {
