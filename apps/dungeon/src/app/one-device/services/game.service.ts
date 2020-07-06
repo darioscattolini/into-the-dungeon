@@ -28,6 +28,13 @@ export class GameService {
   }
 
   public goesOn(): boolean {
-    return true;
+    let output = true;
+    for (const player of this.players) {
+      if (player.defeats === 2 || player.victories === 2) {
+        output = false;
+        break;
+      }
+    }
+    return output;
   }
 }

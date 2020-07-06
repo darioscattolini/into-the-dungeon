@@ -124,6 +124,10 @@ describe('GameService', () => {
   });
 
   describe('goesOn', () => {
+    beforeEach(() => {
+      gameService.players = players;
+    });
+
     it ('should return true with 0 victories and defeats', () => {
       expect(gameService.goesOn()).toStrictEqual(true);
     });
@@ -166,5 +170,4 @@ describe('GameService', () => {
       expect(gameService.goesOn()).toStrictEqual(false);
     });
   });
-
 });
