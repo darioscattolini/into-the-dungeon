@@ -34,4 +34,11 @@ describe('BiddingServiceService', () => {
       expect(chooseHeroSpy).toHaveBeenCalledWith(startingPlayer);
     });
   });
+
+  /*describe('chooseHero', () => {
+    it('should retrieve heroes from HeroService', () => {
+
+    })
+  });*/
+
 });
