@@ -123,6 +123,7 @@ describe('GameService', () => {
     
     beforeEach(() => {
       goesOnSpy = jest.spyOn(gameService, 'goesOn');
+      gameService.players = players;
     });
 
     it('should check if game goes on once per round + 1', () => {

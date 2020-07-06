@@ -26,8 +26,9 @@ export class GameService {
   }
     // this is public just for tests
   public manage(): void {
+    let firstPlayer: Player = this.players[Math.floor(Math.random() * this.players.length)];
     while(this.goesOn()) {
-      this.biddingService.startNewRound();
+      this.biddingService.startNewRound(firstPlayer);
     }
   }
     // this is public just for tests
