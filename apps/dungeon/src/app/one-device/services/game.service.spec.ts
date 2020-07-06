@@ -2,15 +2,20 @@ import { TestBed } from '@angular/core/testing';
 import { mocked } from 'ts-jest/utils';
 import { GameService } from './game.service';
 import { PlayersService } from './players.service';
+import { BiddingService} from './bidding.service';
 import { Player } from '../../models/player';
 
 jest.mock('./players.service');
 const mockedPlayersService = mocked(PlayersService, true);
 
+jest.mock('./bidding.service.ts');
+const mockedBiddingService = mocked(BiddingService, true);
+
 describe('GameService', () => {
   let players: Player[];
   let gameService: GameService;
   let playersService: PlayersService;
+  let biddingService: BiddingService;
 
   beforeEach(() => {
     players = [
@@ -22,6 +27,7 @@ describe('GameService', () => {
     gameService = TestBed.inject(GameService);
     playersService = mockedPlayersService.mock.instances[0];
     (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
+    biddingService = mockedBiddingService.mock.instances[0];
   });
 
   afterEach(() => {
@@ -34,12 +40,20 @@ describe('GameService', () => {
       expect(gameService).toBeTruthy();
     });
   
-    it('should call PlayersManager constructor', () => {
+    it('should call PlayersService constructor', () => {
       expect(PlayersService).toHaveBeenCalledTimes(1);
     });
 
-    it('should instantiate PlayersManager', () => {
+    it('should call BiddingService constructor', () => {
+      expect(BiddingService).toHaveBeenCalledTimes(1);
+    });
+
+    it('should instantiate PlayersService', () => {
       expect(playersService).toBeTruthy();
+    });
+
+    it('should instantiate PlayersService', () => {
+      expect(biddingService).toBeTruthy();
     });
   });
 
