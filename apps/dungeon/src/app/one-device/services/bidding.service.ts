@@ -7,4 +7,8 @@ import { OneDeviceModule } from '../one-device.module';
 export class BiddingService {
 
   constructor() { }
+
+  public startNewRound(): void {
+    
+  }
 }

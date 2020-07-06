@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { mocked } from 'ts-jest/utils';
 import { GameService } from './game.service';
 import { PlayersService } from './players.service';
-import { BiddingService} from './bidding.service';
+import { BiddingService } from './bidding.service';
 import { Player } from '../../models/player';
 
 jest.mock('./players.service');
@@ -32,7 +32,7 @@ describe('GameService', () => {
 
   afterEach(() => {
     mockedPlayersService.mockClear();
-    (playersService.getPlayersList as jest.Mock).mockClear();
+    mockedBiddingService.mockClear();
   });
   
   describe('constructor', () => {
@@ -48,13 +48,13 @@ describe('GameService', () => {
       expect(playersService).toBeTruthy();
     });
 
-    /*it('should call BiddingService constructor', () => {
+    it('should call BiddingService constructor', () => {
       expect(BiddingService).toHaveBeenCalledTimes(1);
     });
 
     it('should instantiate BiddingService', () => {
       expect(biddingService).toBeTruthy();
-    });*/
+    });
   });
 
   describe('start', () => {    
@@ -136,13 +136,13 @@ describe('GameService', () => {
       expect(goesOnSpy).toHaveBeenCalledTimes(5);
     });
 
-    it ('should call biddingService.startNewRound once per round', () => {
+    /*it ('should call biddingService.startNewRound once per round', () => {
       quickWinOrLoseSetup(goesOnSpy);
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(2);
       goesOnSpy.mockClear();
       longerGameSetup(goesOnSpy);
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(4);
-    });
+    });*/
   });
 
   describe('goesOn', () => {
