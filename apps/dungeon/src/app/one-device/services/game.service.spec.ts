@@ -23,7 +23,7 @@ describe('GameService', () => {
       new Player('Anna'),
       new Player('Julia')
     ];
-    TestBed.configureTestingModule({ providers: [GameService, PlayersService]});
+    TestBed.configureTestingModule({ providers: [GameService, PlayersService, BiddingService]});
     gameService = TestBed.inject(GameService);
     playersService = mockedPlayersService.mock.instances[0];
     (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
@@ -44,17 +44,17 @@ describe('GameService', () => {
       expect(PlayersService).toHaveBeenCalledTimes(1);
     });
 
-    it('should call BiddingService constructor', () => {
-      expect(BiddingService).toHaveBeenCalledTimes(1);
-    });
-
     it('should instantiate PlayersService', () => {
       expect(playersService).toBeTruthy();
     });
 
-    it('should instantiate PlayersService', () => {
-      expect(biddingService).toBeTruthy();
+    /*it('should call BiddingService constructor', () => {
+      expect(BiddingService).toHaveBeenCalledTimes(1);
     });
+
+    it('should instantiate BiddingService', () => {
+      expect(biddingService).toBeTruthy();
+    });*/
   });
 
   describe('start', () => {    

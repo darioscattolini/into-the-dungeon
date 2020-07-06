@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
 import { PlayersService } from './players.service';
 import { Player } from '../../models/player';
+import { BiddingService } from './bidding.service';
 
 @Injectable({
   providedIn: OneDeviceModule
@@ -10,7 +11,10 @@ export class GameService {
     // this is public just for tests
   public players: Player[];
 
-  constructor(private playersService: PlayersService) { }
+  constructor(
+    private playersService: PlayersService,
+    private biddingService: BiddingService
+  ) { }
 
   public start(): void {
     const players = this.playersService.getPlayersList();
