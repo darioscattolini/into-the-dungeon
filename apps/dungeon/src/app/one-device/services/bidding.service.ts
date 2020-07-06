@@ -9,11 +9,11 @@ export class BiddingService {
 
   constructor() { }
 
-  public startNewRound(): void {
-
+  public startNewRound(startingPlayer: Player): void {
+    this.chooseHero(startingPlayer);
   }
 
-  public chooseHero(): void {
+  public chooseHero(startingPlayer: Player): void {
 
   }
 }
