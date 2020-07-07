@@ -4,6 +4,7 @@ export abstract class Monster {
   public static uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
 
   public nthOfItsType: number;  // this field should be protected
+  public positionInDungeon: number; // this field should be protected
 
   constructor(
     public name: string,
@@ -14,6 +15,7 @@ export abstract class Monster {
     this.nthOfItsType = Monster.uncoveredInstances.filter(
       monster => monster.constructor.name === this.constructor.name
     ).length;
+    this.positionInDungeon = Monster.uncoveredInstances.length;
   }
 
   public static clearUncoveredInstances() {
