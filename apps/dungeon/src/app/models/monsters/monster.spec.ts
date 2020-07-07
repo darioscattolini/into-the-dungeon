@@ -1,4 +1,5 @@
 import { Monster } from './monster';
+import { Hero } from '../heroes/hero';
 
 class ConcreteMonster extends Monster {
   constructor() {
@@ -8,9 +9,11 @@ class ConcreteMonster extends Monster {
 
 describe('Monster', () => {
   let monster: ConcreteMonster;
+  let opponent: Hero;
 
   beforeEach(() => {
     monster = new ConcreteMonster();
+    opponent = new class extends Hero {};
   });
 
   describe('constructor', () => {
@@ -37,6 +40,10 @@ describe('Monster', () => {
         }
       }
       expect(nullDamageMonster.baseDamage).toStrictEqual(null);
+    });
+
+    it('should register hero as monster opponent', () => {
+      expect(monster.opponent).toStrictEqual(opponent);
     });
   });
 });
