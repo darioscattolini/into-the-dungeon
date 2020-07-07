@@ -25,5 +25,9 @@ describe('Monster', () => {
     it('should create an instance named "Scary"', () => {
       expect(monster.name).toStrictEqual('Scary');
     });
+
+    it('should create an instance with baseDamage of 2', () => {
+      expect(monster.baseDamage).toStrictEqual(2);
+    });
   });
 });
