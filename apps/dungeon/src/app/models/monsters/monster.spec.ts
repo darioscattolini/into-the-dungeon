@@ -67,6 +67,21 @@ describe('Monster', () => {
       it('should equal baseDamage by default', () => {
         expect(monster.actualDamage).toEqual(monster.baseDamage);
       });
+
+      it('should be different to baseDamage if opponent has equipment with damage modifier', () => {
+        const coolOpponent = new class extends Hero {
+          public equipment = [{
+            name: 'coolPiece',
+            damageModifier: true,
+            // tslint:disable-next-line: no-shadowed-variable
+            modifyDamage(monster: Monster) {
+              return monster.baseDamage - 2 < 0 ? 0 : monster.baseDamage - 2;
+            }
+          }];
+        };
+        monster.opponent = coolOpponent;
+        expect(monster.actualDamage).toEqual(0);
+      });
     });
 
     it('should allow monsters with null baseDamage', () => {
