@@ -29,5 +29,14 @@ describe('Monster', () => {
     it('should create an instance with baseDamage of 2', () => {
       expect(monster.baseDamage).toStrictEqual(2);
     });
+
+    it('should allow monsters with null baseDamage', () => {
+      const nullDamageMonster = new class extends Monster {
+        constructor() {
+          super('NullDamage', null);
+        }
+      }
+      expect(nullDamageMonster.baseDamage).toStrictEqual(null);
+    });
   });
 });
