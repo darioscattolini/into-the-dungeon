@@ -59,6 +59,16 @@ describe('Monster', () => {
       expect(monster.baseDamage).toStrictEqual(2);
     });
 
+    describe('actualDamage property', () => {
+      it('should be defined', () => {
+        expect(monster.actualDamage).toBeDefined();
+      });
+
+      it('should equal baseDamage by default', () => {
+        expect(monster.actualDamage).toEqual(monster.baseDamage);
+      });
+    });
+
     it('should allow monsters with null baseDamage', () => {
       const nullDamageMonster = new class extends Monster {
         constructor() {
