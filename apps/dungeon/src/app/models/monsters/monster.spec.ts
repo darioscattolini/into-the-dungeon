@@ -2,8 +2,8 @@ import { Monster } from './monster';
 import { Hero } from '../heroes/hero';
 
 class ConcreteMonster extends Monster {
-  constructor() {
-    super('Scary', 2);
+  constructor(opponent: Hero) {
+    super('Scary', 2, opponent);
   }
 }
 
@@ -12,8 +12,8 @@ describe('Monster', () => {
   let opponent: Hero;
 
   beforeEach(() => {
-    monster = new ConcreteMonster();
     opponent = new class extends Hero {};
+    monster = new ConcreteMonster(opponent);
   });
 
   describe('constructor', () => {
@@ -36,7 +36,7 @@ describe('Monster', () => {
     it('should allow monsters with null baseDamage', () => {
       const nullDamageMonster = new class extends Monster {
         constructor() {
-          super('NullDamage', null);
+          super('NullDamage', null, opponent);
         }
       }
       expect(nullDamageMonster.baseDamage).toStrictEqual(null);
