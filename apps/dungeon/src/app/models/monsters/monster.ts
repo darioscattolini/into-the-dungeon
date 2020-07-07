@@ -1,5 +1,6 @@
 export abstract class Monster {
   constructor(
-    public name: string
+    public name: string,
+    public baseDamage: number
   ) { }
 }

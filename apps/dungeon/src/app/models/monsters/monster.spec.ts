@@ -2,7 +2,7 @@ import { Monster } from './monster';
 
 class ConcreteMonster extends Monster {
   constructor() {
-    super('Scary');
+    super('Scary', 2);
   }
 }
 
