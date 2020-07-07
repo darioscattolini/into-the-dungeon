@@ -90,4 +90,16 @@ describe('Monster', () => {
       expect(monsterType1_3.nthOfItsType).toBe(3);
     });
   });
+
+  describe('clearUncoveredInstances', () => {
+    it('should empty Monster.uncoveredInstances array', () => {
+      expect(Monster.uncoveredInstances.length).toBe(1);
+      Monster.clearUncoveredInstances();
+      expect(Monster.uncoveredInstances.length).toBe(0);
+      const monsterPackAmount = buildMonsterPack(opponent).length;
+      expect(Monster.uncoveredInstances.length).toBe(monsterPackAmount);
+      Monster.clearUncoveredInstances();
+      expect(Monster.uncoveredInstances.length).toBe(0);
+    });
+  });
 });
