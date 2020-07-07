@@ -1,7 +1,9 @@
 import { Monster } from './monster';
 
 class ConcreteMonster extends Monster {
-
+  constructor() {
+    super('Scary');
+  }
 }
 
 describe('Monster', () => {
