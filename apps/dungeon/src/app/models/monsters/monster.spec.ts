@@ -1,19 +1,37 @@
 import { Monster } from './monster';
 import { Hero } from '../heroes/hero';
 
-class ConcreteMonster extends Monster {
+class ConcreteMonsterType1 extends Monster {
   constructor(opponent: Hero) {
     super('Scary', 2, opponent);
   }
 }
 
+class ConcreteMonsterType2 extends Monster {
+  constructor(opponent: Hero) {
+    super('Not So Scary', 0, opponent);
+  }
+}
+
+function buildMonsterPack(opponent: Hero): Monster[] {
+  const monsterPack: Monster[] = [];
+  for (let i = 0; i < 5; i++) {
+    monsterPack.push(
+      i % 2 === 0 
+      ? new ConcreteMonsterType1(opponent) 
+      : new ConcreteMonsterType2(opponent)
+    );
+  }
+  return monsterPack;
+}
+
 describe('Monster', () => {
-  let monster: ConcreteMonster;
+  let monster: ConcreteMonsterType1;
   let opponent: Hero;
 
   beforeEach(() => {
     opponent = new class extends Hero {};
-    monster = new ConcreteMonster(opponent);
+    monster = new ConcreteMonsterType1(opponent);
   });
 
   afterEach(() => {
@@ -52,10 +70,24 @@ describe('Monster', () => {
 
     it('should register each created monster in static property uncoveredInstances', () => {
       Monster.clearUncoveredInstances();
-      const monster0 = new ConcreteMonster(opponent);
-      const monster1 = new ConcreteMonster(opponent);
-      const monster2 = new ConcreteMonster(opponent);
-      expect(Monster.uncoveredInstances).toEqual([monster0, monster1, monster2]);
+      const monsterPack = buildMonsterPack(opponent);
+      expect(Monster.uncoveredInstances).toEqual(monsterPack);
+    });
+
+    it('should register the number of instances of its type in nthOfItsType property', () => {
+      Monster.clearUncoveredInstances();
+      const [
+        monsterType1_1,
+        monsterType2_1,
+        monsterType1_2,
+        monsterType2_2,
+        monsterType1_3
+      ] = buildMonsterPack(opponent);
+      expect(monsterType1_1.nthOfItsType).toBe(1);
+      expect(monsterType2_1.nthOfItsType).toBe(1);
+      expect(monsterType1_2.nthOfItsType).toBe(2);
+      expect(monsterType2_2.nthOfItsType).toBe(2);
+      expect(monsterType1_3.nthOfItsType).toBe(3);
     });
   });
 });
