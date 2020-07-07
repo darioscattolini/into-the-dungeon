@@ -104,6 +104,14 @@ describe('Monster', () => {
       });
     });
 
+    it('should register position in dungeon of instance in positionInDungeon property', () => {
+      expect(monsterType1_1.positionInDungeon).toBe(1);
+      expect(monsterType2_1.positionInDungeon).toBe(2);
+      expect(monsterType1_2.positionInDungeon).toBe(3);
+      expect(monsterType2_2.positionInDungeon).toBe(4);
+      expect(monsterType1_3.positionInDungeon).toBe(5);
+    });
+
     it('should register the number of instances of its type in nthOfItsType property', () => {
       expect(monsterType1_1.nthOfItsType).toBe(1);
       expect(monsterType2_1.nthOfItsType).toBe(1);
