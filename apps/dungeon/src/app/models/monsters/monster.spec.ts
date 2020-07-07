@@ -51,6 +51,7 @@ describe('Monster', () => {
     });
 
     it('should register each created monster in static property uncoveredInstances', () => {
+      Monster.clearUncoveredInstances();
       const monster0 = new ConcreteMonster(opponent);
       const monster1 = new ConcreteMonster(opponent);
       const monster2 = new ConcreteMonster(opponent);
