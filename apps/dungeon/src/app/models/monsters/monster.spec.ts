@@ -16,6 +16,10 @@ describe('Monster', () => {
     monster = new ConcreteMonster(opponent);
   });
 
+  afterEach(() => {
+    Monster.clearUncoveredInstances();
+  })
+
   describe('constructor', () => {
     it('should help create an instance of an extension', () => {
       expect(monster).toBeTruthy();
@@ -44,6 +48,13 @@ describe('Monster', () => {
 
     it('should register hero as monster opponent', () => {
       expect(monster.opponent).toStrictEqual(opponent);
+    });
+
+    it('should register each created monster in static property uncoveredInstances', () => {
+      const monster0 = new ConcreteMonster(opponent);
+      const monster1 = new ConcreteMonster(opponent);
+      const monster2 = new ConcreteMonster(opponent);
+      expect(Monster.uncoveredInstances).toEqual([monster0, monster1, monster2]);
     });
   });
 });
