@@ -166,5 +166,9 @@ describe('Monster', () => {
     it('should be a class that creates an instance', () => {
       expect(commonMonster).toBeTruthy();
     });
+
+    it('should be an instance of CommonMonster class', () => {
+      expect(commonMonster.constructor.name).toEqual('CommonMonster');
+    });
   });
 });
