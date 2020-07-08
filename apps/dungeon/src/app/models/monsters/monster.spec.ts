@@ -157,7 +157,7 @@ describe('Monster', () => {
   });
 
   describe('CommonMonster static property', () => {
-    let commonMonster: object;
+    let commonMonster: Monster;
 
     beforeEach(() => {
       commonMonster = new Monster.CommonMonster();
@@ -169,6 +169,10 @@ describe('Monster', () => {
 
     it('should be an instance of CommonMonster class', () => {
       expect(commonMonster.constructor.name).toEqual('CommonMonster');
+    });
+
+    it('should be an instance of Monster class', () => {
+      expect(commonMonster instanceof Monster).toEqual(true);
     });
   });
 });
