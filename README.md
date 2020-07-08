@@ -21,13 +21,24 @@ Nx makes use of:
 
 Other libraries and dependencies I use:
 * [Angular Material](https://material.angular.io/) for theming.
+* [Jest](https://jestjs.io/) framework for writing and running tests.
+* [testdouble.js](https://github.com/testdouble/testdouble.js) as test mocking library, along with [testdouble-jest](https://github.com/testdouble/testdouble-jest) extension.
 
 ## Status
 _in progress_
 
-This is just a boilerplate. The project will evolve progressively. You can track all updates in [this document](/updates.md).
+The project is currently a front-end boilerplate with a homepage and two empty lazy-loaded Angular modules. I'm currently working on the service layer of the one-device module.
 
-## Latest update
+## Latest updates
+**2020-Jun-17:**
+
+* Front-end: Add tests for AppComponent, HomeComponent and main navigation.
+* Front-end: Add basic content to HomeComponent.
+
+**2020-Jun-03:**
+
+* Front-end: Split app into one-device and online lazy-loaded modules.
+
 **2020-Jun-01:**
 
 * Start nx boilerplate project.
