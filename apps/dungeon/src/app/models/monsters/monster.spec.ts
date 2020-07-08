@@ -1,5 +1,5 @@
 import { Monster } from './monster';
-import { Hero } from '../heroes/hero';
+import { Hero, Equipment } from '../heroes/hero';
 
 class ConcreteMonsterType1 extends Monster {
   constructor(opponent: Hero) {
@@ -29,7 +29,9 @@ describe('Monster', () => {
   let opponent: Hero;
 
   beforeEach(() => {
-    opponent = new class extends Hero {};
+    opponent = new class extends Hero {
+      constructor() { super([]); }
+    };
   });
 
   afterEach(() => {
@@ -69,18 +71,26 @@ describe('Monster', () => {
       });
 
       it('should be different to baseDamage if opponent has equipment with damage modifier', () => {
-        const coolOpponent = new class extends Hero {
-          public equipment = [{
-            name: 'coolPiece',
-            damageModifier: true,
-            // tslint:disable-next-line: no-shadowed-variable
-            modifyDamage(monster: Monster) {
+        const coolEquipment: Equipment = {
+          name: 'coolPiece',
+          damageModifier: true,
+          // tslint:disable-next-line: no-shadowed-variable
+          modifyDamage(monster: Monster) {
+            if (monster.baseDamage !== null) {
               return monster.baseDamage - 2 < 0 ? 0 : monster.baseDamage - 2;
+            } else {
+              return monster.baseDamage;
             }
-          }];
+          }
+        }
+        const coolOpponent = new class extends Hero {
+          constructor() {
+            super([coolEquipment]);
+          }
         };
-        monster.opponent = coolOpponent;
-        expect(monster.actualDamage).toEqual(0);
+        
+        const fuckedUpMonster = new ConcreteMonsterType1(coolOpponent);
+        expect(fuckedUpMonster.actualDamage).toEqual(0);
       });
     });
 

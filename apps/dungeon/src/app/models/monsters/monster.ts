@@ -13,6 +13,7 @@ export abstract class Monster {
     public opponent: Hero   // this field should be protected
   ) {
     this.actualDamage = baseDamage;
+    this.determineAttackModifiers();
     Monster.uncoveredInstances.push(this);
     this.nthOfItsType = Monster.uncoveredInstances.filter(
       monster => monster.constructor.name === this.constructor.name
@@ -22,5 +23,11 @@ export abstract class Monster {
 
   public static clearUncoveredInstances() {
     this.uncoveredInstances.splice(0);
+  }
+
+  private determineAttackModifiers(): void {
+    for (const piece of this.opponent.equipment) {
+      if (piece.damageModifier) this.actualDamage = piece!.modifyDamage(this);
+    }
   }
 }
