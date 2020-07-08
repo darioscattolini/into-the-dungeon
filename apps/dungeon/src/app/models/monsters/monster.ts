@@ -1,7 +1,7 @@
 import { Hero } from '../heroes/hero';
 
 export abstract class Monster {
-  public static CommonMonster = class {};
+  public static CommonMonster = class CommonMonster {};
   public static uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
 
   public actualDamage: number | null;
