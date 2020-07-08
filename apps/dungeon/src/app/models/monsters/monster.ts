@@ -1,21 +1,11 @@
 import { Hero } from '../heroes/hero';
 
 export abstract class Monster {
-  public static CommonMonster = class CommonMonster extends Monster {
-    constructor(
-      name: string,
-      baseDamage: number,
-      opponent: Hero
-    ) {
-      super(name, baseDamage, opponent);
-    }
-  };
-  
   public static uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
 
   public actualDamage: number | null;
   public nthOfItsType: number;  // this field should be protected
-  public positionInDungeon: number; // this field should be protected
+  public positionInDungeon: number; // this field should be protected, just for metamorph
 
   constructor(
     public name: string,
@@ -28,7 +18,7 @@ export abstract class Monster {
     this.nthOfItsType = Monster.uncoveredInstances.filter(
       monster => monster.constructor.name === this.constructor.name
     ).length;
-    this.positionInDungeon = Monster.uncoveredInstances.length;
+    this.positionInDungeon = Monster.uncoveredInstances.length; //for metamorph
   }
 
   public static clearUncoveredInstances() {
