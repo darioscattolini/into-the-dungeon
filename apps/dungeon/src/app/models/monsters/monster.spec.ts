@@ -155,4 +155,16 @@ describe('Monster', () => {
       expect(monsterType1_3.nthOfItsType).toBe(3);
     });
   });
+
+  describe('CommonMonster static property', () => {
+    let commonMonster: CommonMonster;
+
+    beforeEach(() => {
+      commonMonster = new Monster.CommonMonster(opponent);
+    });
+
+    it('should be a class that creates an instance', () => {
+      expect(commonMonster).toBeTruthy();
+    });
+  });
 });
