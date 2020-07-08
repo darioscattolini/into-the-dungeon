@@ -1,7 +1,16 @@
 import { Hero } from '../heroes/hero';
 
 export abstract class Monster {
-  public static CommonMonster = class CommonMonster {};
+  public static CommonMonster = class CommonMonster extends Monster {
+    constructor(
+      name: string,
+      baseDamage: number,
+      opponent: Hero
+    ) {
+      super(name, baseDamage, opponent);
+    }
+  };
+  
   public static uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
 
   public actualDamage: number | null;

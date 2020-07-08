@@ -160,7 +160,7 @@ describe('Monster', () => {
     let commonMonster: Monster;
 
     beforeEach(() => {
-      commonMonster = new Monster.CommonMonster();
+      commonMonster = new Monster.CommonMonster('common', 3, opponent);
     });
 
     it('should be a class that creates an instance', () => {
