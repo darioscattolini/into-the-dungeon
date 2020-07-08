@@ -157,10 +157,10 @@ describe('Monster', () => {
   });
 
   describe('CommonMonster static property', () => {
-    let commonMonster: CommonMonster;
+    let commonMonster: object;
 
     beforeEach(() => {
-      commonMonster = new Monster.CommonMonster(opponent);
+      commonMonster = new Monster.CommonMonster();
     });
 
     it('should be a class that creates an instance', () => {
