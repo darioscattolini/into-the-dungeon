@@ -1,9 +1,13 @@
 import { Hero } from './hero';
 
-class ConcreteHero extends Hero { }
+class ConcreteHero extends Hero { 
+  constructor() {
+    super([]);
+  }
+}
 
 describe('Hero', () => {
-  let hero: ConcreteHero;
+  let hero: Hero;
 
   beforeEach(() => {
     hero = new ConcreteHero();

@@ -27,6 +27,7 @@ export abstract class Monster {
 
   private determineAttackModifiers(): void {
     for (const piece of this.opponent.equipment) {
+      // tslint:disable-next-line: no-non-null-assertion
       if (piece.damageModifier) this.actualDamage = piece!.modifyDamage(this);
     }
   }

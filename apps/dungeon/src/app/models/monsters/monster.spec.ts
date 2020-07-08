@@ -39,7 +39,7 @@ describe('Monster', () => {
   })
 
   describe('single monster tests', () => {
-    let monster: ConcreteMonsterType1;
+    let monster: Monster;
 
     beforeEach(() => {
       monster = new ConcreteMonsterType1(opponent);
