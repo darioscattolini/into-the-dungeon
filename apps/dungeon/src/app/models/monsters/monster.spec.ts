@@ -5,18 +5,18 @@ import { CommonMonster } from './common-monster';
 import { RareMonster } from './rare-monster';
 
 const MockOrc: ConcreteMonsterStatic = class extends Monster {
-  public static type: CommonMonster = 'Orc';
-  public static maxAmount: 1 | 2 = 2;
-  public static baseDamage = 3;
+  public static readonly type: CommonMonster = 'Orc';
+  public static readonly maxAmount: 1 | 2 = 2;
+  public static readonly baseDamage = 3;
   constructor(opponent: Hero) {
     super(opponent);
   }
 };
 
 const MockDemon: ConcreteMonsterStatic = class extends Monster {
-  public static type: CommonMonster = 'Demon';
-  public static maxAmount: 1 | 2 = 1;
-  public static baseDamage = 7;
+  public static readonly type: CommonMonster = 'Demon';
+  public static readonly maxAmount: 1 | 2 = 1;
+  public static readonly baseDamage = 7;
   constructor(opponent: Hero) {
     super(opponent);
   }
@@ -24,8 +24,8 @@ const MockDemon: ConcreteMonsterStatic = class extends Monster {
 
 const NullDamageMonster: ConcreteMonsterStatic = class extends Monster {
   public static type: RareMonster = 'Ally';
-  public static maxAmount: 1 | 2 = 1;
-  public static baseDamage = null;
+  public static readonly maxAmount: 1 | 2 = 1;
+  public static readonly baseDamage = null;
   constructor(opponent: Hero) {
     super(opponent);
   }

@@ -2,7 +2,7 @@ import { Hero } from '../heroes/hero';
 import { ConcreteMonsterStatic } from './concrete-monster-static';
 
 export abstract class Monster {
-  public static uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
+  public static readonly uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
   
   public actualDamage: number | null;
   public nthOfItsType: number;  // this field should be protected
