@@ -1,5 +1,5 @@
-import { Hero } from '../heroes/hero';
 import { ConcreteMonsterStatic } from './concrete-monster-static';
+import { HeroInterface } from '../heroes/hero-interface';
 
 export abstract class Monster {
   public static readonly uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
@@ -9,10 +9,9 @@ export abstract class Monster {
   public positionInDungeon: number; // this field should be protected, just for metamorph
 
   constructor(
-    public opponent: Hero   // this field should be protected
+    public opponent: HeroInterface   // this field should be protected
   ) {
-    this.actualDamage = this.baseDamage;
-    this.determineAttackModifiers();
+    this.actualDamage = this.calculateActualDamage();
     Monster.uncoveredInstances.push(this);
     this.nthOfItsType = Monster.uncoveredInstances.filter(
       monster => monster.constructor.name === this.constructor.name
@@ -32,10 +31,17 @@ export abstract class Monster {
     return (this.constructor as ConcreteMonsterStatic).baseDamage;
   }
 
-  private determineAttackModifiers(): void {
-    for (const piece of this.opponent.equipment) {
-      // tslint:disable-next-line: no-non-null-assertion
-      if (piece.damageModifier) this.actualDamage = piece!.modifyDamage(this);
+  private calculateActualDamage(): number | null {
+    let damage = this.baseDamage;
+    if (damage !== null) {
+      const damageModifiers = this.opponent.getDamageModifiers();
+      for(const modifier of damageModifiers.first) {
+        damage = modifier(damage);
+      }
+      for(const modifier of damageModifiers.second) {
+        damage = modifier(damage);
+      }
     }
+    return damage;
   }
 }

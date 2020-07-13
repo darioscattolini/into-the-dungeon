@@ -1,14 +1,14 @@
 import { Monster } from './monster';
-import { Hero, Equipment } from '../heroes/hero';
 import { ConcreteMonsterStatic } from './concrete-monster-static';
 import { CommonMonster } from './common-monster';
 import { RareMonster } from './rare-monster';
+import { HeroInterface } from '../heroes/hero-interface';
 
 const MockOrc: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: CommonMonster = 'Orc';
   public static readonly maxAmount: 1 | 2 = 2;
   public static readonly baseDamage = 3;
-  constructor(opponent: Hero) {
+  constructor(opponent: HeroInterface) {
     super(opponent);
   }
 };
@@ -17,7 +17,7 @@ const MockDemon: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: CommonMonster = 'Demon';
   public static readonly maxAmount: 1 | 2 = 1;
   public static readonly baseDamage = 7;
-  constructor(opponent: Hero) {
+  constructor(opponent: HeroInterface) {
     super(opponent);
   }
 };
@@ -26,12 +26,12 @@ const NullDamageMonster: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: RareMonster = 'Ally';
   public static readonly maxAmount: 1 | 2 = 1;
   public static readonly baseDamage = null;
-  constructor(opponent: Hero) {
+  constructor(opponent: HeroInterface) {
     super(opponent);
   }
 };
 
-function buildMonsterPack(opponent: Hero): Monster[] {
+function buildMonsterPack(opponent: HeroInterface): Monster[] {
   const monsterPack: Monster[] = [];
   for (let i = 0; i < 5; i++) {
     monsterPack.push(
@@ -44,12 +44,18 @@ function buildMonsterPack(opponent: Hero): Monster[] {
 }
 
 describe('Monster', () => {
-  let opponent: Hero;
+  let opponent: HeroInterface;
 
   beforeEach(() => {
-    opponent = new class extends Hero {
-      constructor() { super([]); }
-    };
+    opponent = {
+      equipment: [],
+      getDamageModifiers() {
+        return {
+          first: [ ],
+          second: [ ]
+        }
+      }
+    }
   });
 
   afterEach(() => {
@@ -60,10 +66,10 @@ describe('Monster', () => {
     let monster: Monster;
 
     beforeEach(() => {
-      monster = new MockOrc(opponent);
+      monster = new MockDemon(opponent);
     });
 
-    it('should be created (as instance of MockOrc extension)', () => {
+    it('should be created (as instance of MockDemon extension)', () => {
       expect(monster).toBeTruthy();
     });
 
@@ -71,12 +77,12 @@ describe('Monster', () => {
       expect(monster instanceof Monster).toBe(true);
     });
 
-    it('should be of type Orc', () => {
-      expect(monster.type).toBe('Orc');
+    it('should be of type Demon', () => {
+      expect(monster.type).toBe('Demon');
     });
 
-    it('should receive baseDamage of 3 from MockOrc extension', () => {
-      expect(monster.baseDamage).toBe(3);
+    it('should receive baseDamage of 7 from MockDemon extension', () => {
+      expect(monster.baseDamage).toBe(7);
     });
 
     describe('actualDamage property', () => {
@@ -88,27 +94,37 @@ describe('Monster', () => {
         expect(monster.actualDamage).toEqual(monster.baseDamage);
       });
 
-      it('should be different to baseDamage if opponent has equipment with damage modifier', () => {
-        const coolEquipment: Equipment = {
-          name: 'coolPiece',
-          damageModifier: true,
-          // tslint:disable-next-line: no-shadowed-variable
-          modifyDamage(monster: Monster) {
-            if (monster.baseDamage !== null) {
-              return monster.baseDamage - 2 < 0 ? 0 : monster.baseDamage - 2;
-            } else {
-              return monster.baseDamage;
-            }
+      it('should be 5 if opponent has equipment with -2 damage modifier', () => {
+        opponent.getDamageModifiers = function() {
+          return {
+            first: [ ],
+            second: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ]
           }
         }
-        const coolOpponent = new class extends Hero {
-          constructor() {
-            super([coolEquipment]);
+        monster = new MockDemon(opponent);
+        expect(monster.actualDamage).toEqual(5);
+      });
+
+      it('should be 0 if opponent has reducer to 1 or 2 + -2 damage modifier, in that order', () => {
+        opponent.getDamageModifiers = function() {
+          return {
+            first: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ],
+            second: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ]
           }
-        };
-        
-        const fuckedUpMonster = new MockOrc(coolOpponent);
-        expect(fuckedUpMonster.actualDamage).toEqual(1);
+        }
+        monster = new MockDemon(opponent);
+        expect(monster.actualDamage).toEqual(0);
+      });
+
+      it('should be 1 if opponent has reducer to 1 or 2 + -2 damage modifier, in reverse order', () => {
+        opponent.getDamageModifiers = function() {
+          return {
+            first: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ],
+            second: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ]
+          }
+        }
+        monster = new MockDemon(opponent);
+        expect(monster.actualDamage).toEqual(1);
       });
     });
 
