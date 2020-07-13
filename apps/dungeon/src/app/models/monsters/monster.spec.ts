@@ -23,7 +23,7 @@ const MockDemon: ConcreteMonsterStatic = class extends Monster {
 };
 
 const NullDamageMonster: ConcreteMonsterStatic = class extends Monster {
-  public static type: RareMonster = 'Ally';
+  public static readonly type: RareMonster = 'Ally';
   public static readonly maxAmount: 1 | 2 = 1;
   public static readonly baseDamage = null;
   constructor(opponent: Hero) {
