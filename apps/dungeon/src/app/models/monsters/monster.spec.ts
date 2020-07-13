@@ -1,25 +1,43 @@
 import { Monster } from './monster';
 import { Hero, Equipment } from '../heroes/hero';
+import { ConcreteMonsterStatic } from './concrete-monster-static';
+import { CommonMonster } from './common-monster';
+import { RareMonster } from './rare-monster';
 
-class ConcreteMonsterType1 extends Monster {
+const MockOrc: ConcreteMonsterStatic = class extends Monster {
+  public static type: CommonMonster = 'Orc';
+  public static maxAmount: 1 | 2 = 2;
+  public static baseDamage = 3;
   constructor(opponent: Hero) {
-    super('Scary', 2, opponent);
+    super(opponent);
   }
-}
+};
 
-class ConcreteMonsterType2 extends Monster {
+const MockDemon: ConcreteMonsterStatic = class extends Monster {
+  public static type: CommonMonster = 'Demon';
+  public static maxAmount: 1 | 2 = 1;
+  public static baseDamage = 7;
   constructor(opponent: Hero) {
-    super('Not So Scary', 0, opponent);
+    super(opponent);
   }
-}
+};
+
+const NullDamageMonster: ConcreteMonsterStatic = class extends Monster {
+  public static type: RareMonster = 'Ally';
+  public static maxAmount: 1 | 2 = 1;
+  public static baseDamage = null;
+  constructor(opponent: Hero) {
+    super(opponent);
+  }
+};
 
 function buildMonsterPack(opponent: Hero): Monster[] {
   const monsterPack: Monster[] = [];
   for (let i = 0; i < 5; i++) {
     monsterPack.push(
       i % 2 === 0 
-      ? new ConcreteMonsterType1(opponent) 
-      : new ConcreteMonsterType2(opponent)
+      ? new MockOrc(opponent) 
+      : new MockDemon(opponent)
     );
   }
   return monsterPack;
@@ -42,23 +60,23 @@ describe('Monster', () => {
     let monster: Monster;
 
     beforeEach(() => {
-      monster = new ConcreteMonsterType1(opponent);
+      monster = new MockOrc(opponent);
     });
 
-    it('should be created (as instance of an extension)', () => {
+    it('should be created (as instance of MockOrc extension)', () => {
       expect(monster).toBeTruthy();
     });
 
     it('should be an instance of Monster', () => {
-      expect(monster instanceof Monster).toStrictEqual(true);
+      expect(monster instanceof Monster).toBe(true);
     });
 
-    it('should receive name "Scary" from extension constructor', () => {
-      expect(monster.name).toStrictEqual('Scary');
+    it('should be of type Orc', () => {
+      expect(monster.type).toBe('Orc');
     });
 
-    it('should receive baseDamage of 2 from extension constructor', () => {
-      expect(monster.baseDamage).toStrictEqual(2);
+    it('should receive baseDamage of 3 from MockOrc extension', () => {
+      expect(monster.baseDamage).toBe(3);
     });
 
     describe('actualDamage property', () => {
@@ -89,17 +107,13 @@ describe('Monster', () => {
           }
         };
         
-        const fuckedUpMonster = new ConcreteMonsterType1(coolOpponent);
-        expect(fuckedUpMonster.actualDamage).toEqual(0);
+        const fuckedUpMonster = new MockOrc(coolOpponent);
+        expect(fuckedUpMonster.actualDamage).toEqual(1);
       });
     });
 
     it('should allow monsters with null baseDamage', () => {
-      const nullDamageMonster = new class extends Monster {
-        constructor() {
-          super('NullDamage', null, opponent);
-        }
-      }
+      const nullDamageMonster = new NullDamageMonster(opponent);
       expect(nullDamageMonster.baseDamage).toStrictEqual(null);
     });
 
