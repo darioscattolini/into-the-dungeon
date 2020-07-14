@@ -1,4 +1,5 @@
 import { Troll } from './troll';
+import { Monster } from './monster';
 
 describe('Troll', () => {
   let troll: Troll;
@@ -13,5 +14,9 @@ describe('Troll', () => {
 
   it('should be an instance of Troll', () => {
     expect(troll instanceof Troll).toBe(true);
+  });
+
+  it('should be an instance of Monster', () => {
+    expect(troll instanceof Monster).toBe(true);
   });
 });
