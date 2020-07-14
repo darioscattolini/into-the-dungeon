@@ -29,4 +29,8 @@ describe('Troll', () => {
   it('should have static property type with value "Troll"', () => {
     expect(Troll.type).toBe('Troll');
   });
+
+  it('should have static property baseDamage with value 1', () => {
+    expect(Troll.baseDamage).toBe(2);
+  });
 });
