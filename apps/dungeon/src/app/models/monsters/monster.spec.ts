@@ -22,7 +22,7 @@ const MockDemon: ConcreteMonsterStatic = class extends Monster {
   }
 };
 
-const NullDamageMonster: ConcreteMonsterStatic = class extends Monster {
+const MockAlly: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: RareMonster = 'Ally';
   public static readonly maxAmount: 1 | 2 = 1;
   public static readonly baseDamage = null;
@@ -32,15 +32,12 @@ const NullDamageMonster: ConcreteMonsterStatic = class extends Monster {
 };
 
 function buildMonsterPack(opponent: HeroInterface): Monster[] {
-  const monsterPack: Monster[] = [];
-  for (let i = 0; i < 5; i++) {
-    monsterPack.push(
-      i % 2 === 0 
-      ? new MockOrc(opponent) 
-      : new MockDemon(opponent)
-    );
-  }
-  return monsterPack;
+  return [
+    new MockOrc(opponent),
+    new MockDemon(opponent),
+    new MockAlly(opponent),
+    new MockOrc(opponent)
+  ];
 }
 
 describe('Monster', () => {
@@ -81,8 +78,17 @@ describe('Monster', () => {
       expect(monster.type).toBe('Demon');
     });
 
-    it('should receive baseDamage of 7 from MockDemon extension', () => {
+    it('should have baseDamage of 7', () => {
       expect(monster.baseDamage).toBe(7);
+    });
+
+    it('should allow monsters with null baseDamage', () => {
+      const mockAlly = new MockAlly(opponent);
+      expect(mockAlly.baseDamage).toBe(null);
+    });
+
+    it('should register a Hero as monster opponent', () => {
+      expect(monster.opponent).toBe(opponent);
     });
 
     describe('actualDamage property', () => {
@@ -91,10 +97,11 @@ describe('Monster', () => {
       });
 
       it('should equal baseDamage by default', () => {
-        expect(monster.actualDamage).toEqual(monster.baseDamage);
+        expect(monster.actualDamage).toBe(monster.baseDamage);
       });
 
       it('should be 5 if opponent has equipment with -2 damage modifier', () => {
+        Monster.clearUncoveredInstances();
         opponent.getDamageModifiers = function() {
           return {
             first: [ ],
@@ -102,10 +109,11 @@ describe('Monster', () => {
           }
         }
         monster = new MockDemon(opponent);
-        expect(monster.actualDamage).toEqual(5);
+        expect(monster.actualDamage).toBe(5);
       });
 
       it('should be 0 if opponent has reducer to 1 or 2 + -2 damage modifier, in that order', () => {
+        Monster.clearUncoveredInstances();
         opponent.getDamageModifiers = function() {
           return {
             first: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ],
@@ -113,10 +121,11 @@ describe('Monster', () => {
           }
         }
         monster = new MockDemon(opponent);
-        expect(monster.actualDamage).toEqual(0);
+        expect(monster.actualDamage).toBe(0);
       });
 
       it('should be 1 if opponent has reducer to 1 or 2 + -2 damage modifier, in reverse order', () => {
+        Monster.clearUncoveredInstances();
         opponent.getDamageModifiers = function() {
           return {
             first: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ],
@@ -124,36 +133,25 @@ describe('Monster', () => {
           }
         }
         monster = new MockDemon(opponent);
-        expect(monster.actualDamage).toEqual(1);
+        expect(monster.actualDamage).toBe(1);
       });
-    });
-
-    it('should allow monsters with null baseDamage', () => {
-      const nullDamageMonster = new NullDamageMonster(opponent);
-      expect(nullDamageMonster.baseDamage).toStrictEqual(null);
-    });
-
-    it('should register a Hero as monster opponent', () => {
-      expect(monster.opponent).toStrictEqual(opponent);
     });
   });
 
   describe('many monsters tests', () => {
     let monsterPack: Monster[];
-    let monsterType1_1: Monster,
-        monsterType2_1: Monster,
-        monsterType1_2: Monster,
-        monsterType2_2: Monster,
-        monsterType1_3: Monster;
+    let mockOrc1: Monster,
+        mockDemon: Monster,
+        mockAlly: Monster,
+        mockOrc2: Monster;
 
     beforeEach(() => {
       monsterPack = buildMonsterPack(opponent);
       [
-        monsterType1_1,
-        monsterType2_1,
-        monsterType1_2,
-        monsterType2_2,
-        monsterType1_3
+        mockOrc1,
+        mockDemon,
+        mockAlly,
+        mockOrc2
       ] = monsterPack;
     });
 
@@ -161,7 +159,7 @@ describe('Monster', () => {
       expect(Monster.uncoveredInstances).toEqual(monsterPack);
     });
 
-    describe('clearUncoveredInstances method', () => {
+    describe('static Monster.clearUncoveredInstances method', () => {
       it('should empty Monster.uncoveredInstances array', () => {
         expect(Monster.uncoveredInstances.length).toBe(monsterPack.length);
         Monster.clearUncoveredInstances();
@@ -170,19 +168,29 @@ describe('Monster', () => {
     });
 
     it('(their) position in dungeon should be registered in positionInDungeon property', () => {
-      expect(monsterType1_1.positionInDungeon).toBe(1);
-      expect(monsterType2_1.positionInDungeon).toBe(2);
-      expect(monsterType1_2.positionInDungeon).toBe(3);
-      expect(monsterType2_2.positionInDungeon).toBe(4);
-      expect(monsterType1_3.positionInDungeon).toBe(5);
+      expect(mockOrc1.positionInDungeon).toBe(1);
+      expect(mockDemon.positionInDungeon).toBe(2);
+      expect(mockAlly.positionInDungeon).toBe(3);
+      expect(mockOrc2.positionInDungeon).toBe(4);
     });
 
     it('(they) should store the nth instance of its type they represent in nthOfItsType property', () => {
-      expect(monsterType1_1.nthOfItsType).toBe(1);
-      expect(monsterType2_1.nthOfItsType).toBe(1);
-      expect(monsterType1_2.nthOfItsType).toBe(2);
-      expect(monsterType2_2.nthOfItsType).toBe(2);
-      expect(monsterType1_3.nthOfItsType).toBe(3);
+      expect(mockOrc1.nthOfItsType).toBe(1);
+      expect(mockDemon.nthOfItsType).toBe(1);
+      expect(mockAlly.nthOfItsType).toBe(1);
+      expect(mockOrc2.nthOfItsType).toBe(2);
+    });
+
+    it('should not allow the nth monster of its type to be higher than class maxAmount', () => {
+      expect(new MockOrc(opponent)).toThrow(
+        'There can\'t be more than 2 Orc.'
+      );
+      expect(new MockDemon(opponent)).toThrow(
+        'There can\'t be more than 1 Demon.'
+      );
+      expect(new MockAlly(opponent)).toThrow(
+        'There can\'t be more than 1 ally.'
+      );
     });
   });
 });
