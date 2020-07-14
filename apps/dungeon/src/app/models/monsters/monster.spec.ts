@@ -174,13 +174,6 @@ describe('Monster', () => {
       expect(mockOrc2.positionInDungeon).toBe(4);
     });
 
-    it('(they) should store the nth instance of its type they represent in nthOfItsType property', () => {
-      expect(mockOrc1.nthOfItsType).toBe(1);
-      expect(mockDemon.nthOfItsType).toBe(1);
-      expect(mockAlly.nthOfItsType).toBe(1);
-      expect(mockOrc2.nthOfItsType).toBe(2);
-    });
-
     it('should not allow the nth monster of its type to be higher than class maxAmount', () => {
       expect(() => new MockOrc(opponent)).toThrow(
         'There can\'t be more than 2 Orc.'

@@ -5,8 +5,9 @@ export abstract class Monster {
   public static readonly uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
   
   public actualDamage: number | null;
-  public nthOfItsType: number;  // this field should be protected
   public positionInDungeon: number; // this field should be protected, just for metamorph
+  
+  private nthOfItsType: number;  // this field should be protected
   private AbstractClass = Monster;
   private ConcreteClass = this.constructor as ConcreteMonsterStatic;
 
