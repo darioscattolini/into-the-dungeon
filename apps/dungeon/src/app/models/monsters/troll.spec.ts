@@ -10,4 +10,8 @@ describe('Troll', () => {
   it('should create an instance', () => {
     expect(troll).toBeTruthy();
   });
+
+  it('should be an instance of Troll', () => {
+    expect(troll instanceof Troll).toBe(true);
+  });
 });
