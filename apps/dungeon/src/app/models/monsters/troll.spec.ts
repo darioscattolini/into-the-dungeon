@@ -18,11 +18,15 @@ describe('Troll', () => {
     expect(troll).toBeTruthy();
   });
 
-  it('should be an instance of Troll', () => {
+  it('should create an instance of Troll', () => {
     expect(troll instanceof Troll).toBe(true);
   });
 
-  it('should be an instance of Monster', () => {
+  it('should create an instance of Monster', () => {
     expect(troll instanceof Monster).toBe(true);
+  });
+
+  it('should have static property type with value "Troll"', () => {
+    expect(Troll.type).toBe('Troll');
   });
 });
