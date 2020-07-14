@@ -33,4 +33,8 @@ describe('Troll', () => {
   it('should have static property baseDamage with value 1', () => {
     expect(Troll.baseDamage).toBe(1);
   });
+
+  it('should have static property maxAmount with value 2', () => {
+    expect(Troll.maxAmount).toBe(2);
+  });
 });
