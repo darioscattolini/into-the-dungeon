@@ -1,11 +1,17 @@
 import { Troll } from './troll';
 import { Monster } from './monster';
+import { HeroInterface } from '../heroes/hero-interface';
 
 describe('Troll', () => {
   let troll: Troll;
+  let opponent: HeroInterface;
 
   beforeEach(() => {
-    troll = new Troll();
+    opponent = {
+      equipment: [],
+      getDamageModifiers() { return { first: [], second: [] } }
+    }
+    troll = new Troll(opponent);
   });
 
   it('should create an instance', () => {
