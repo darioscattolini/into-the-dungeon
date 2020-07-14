@@ -14,6 +14,10 @@ describe('Troll', () => {
     troll = new Troll(opponent);
   });
 
+  afterEach(() => {
+    Monster.clearUncoveredInstances();
+  });
+
   it('should create an instance', () => {
     expect(troll).toBeTruthy();
   });
