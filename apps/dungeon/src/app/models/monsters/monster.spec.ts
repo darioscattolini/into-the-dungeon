@@ -182,14 +182,14 @@ describe('Monster', () => {
     });
 
     it('should not allow the nth monster of its type to be higher than class maxAmount', () => {
-      expect(new MockOrc(opponent)).toThrow(
+      expect(() => new MockOrc(opponent)).toThrow(
         'There can\'t be more than 2 Orc.'
       );
-      expect(new MockDemon(opponent)).toThrow(
+      expect(() => new MockDemon(opponent)).toThrow(
         'There can\'t be more than 1 Demon.'
       );
-      expect(new MockAlly(opponent)).toThrow(
-        'There can\'t be more than 1 ally.'
+      expect(() => new MockAlly(opponent)).toThrow(
+        'There can\'t be more than 1 Ally.'
       );
     });
   });

@@ -7,16 +7,19 @@ export abstract class Monster {
   public actualDamage: number | null;
   public nthOfItsType: number;  // this field should be protected
   public positionInDungeon: number; // this field should be protected, just for metamorph
+  private AbstractClass = Monster;
+  private ConcreteClass = this.constructor as ConcreteMonsterStatic;
 
   constructor(
     public opponent: HeroInterface   // this field should be protected
   ) {
-    this.actualDamage = this.calculateActualDamage();
-    Monster.uncoveredInstances.push(this);
-    this.nthOfItsType = Monster.uncoveredInstances.filter(
-      monster => monster.constructor.name === this.constructor.name
-    ).length;
+    this.nthOfItsType = this.calculateAmountOfInstances();
+    if (this.nthOfItsType > this.maxAmount) {
+      throw new Error(`There can't be more than ${this.maxAmount} ${this.type}.`);
+    }
+    this.AbstractClass.uncoveredInstances.push(this);
     this.positionInDungeon = Monster.uncoveredInstances.length; //for metamorph
+    this.actualDamage = this.calculateActualDamage();
   }
 
   public static clearUncoveredInstances() {
@@ -24,11 +27,22 @@ export abstract class Monster {
   }
 
   public get type() {
-    return (this.constructor as ConcreteMonsterStatic).type;
+    return this.ConcreteClass.type;
   }
 
   public get baseDamage() {
-    return (this.constructor as ConcreteMonsterStatic).baseDamage;
+    return this.ConcreteClass.baseDamage;
+  }
+
+  private get maxAmount() {
+    return this.ConcreteClass.maxAmount;
+  }
+
+  private calculateAmountOfInstances(): number {
+    const currentInstances = this.AbstractClass.uncoveredInstances.filter(
+      monster => monster.type === this.type
+    ).length;
+    return currentInstances + 1;
   }
 
   private calculateActualDamage(): number | null {
