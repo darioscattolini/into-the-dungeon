@@ -69,8 +69,6 @@
     "jest": "25.2.3",
     "jest-preset-angular": "8.1.2",
     "prettier": "2.0.4",
-    "testdouble": "^3.16.1",
-    "testdouble-jest": "^2.0.0",
     "ts-jest": "25.2.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
