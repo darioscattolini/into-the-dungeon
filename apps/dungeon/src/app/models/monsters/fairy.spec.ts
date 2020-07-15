@@ -9,7 +9,12 @@ describe('Fairy', () => {
   beforeEach(() => {
     opponent = {
       equipment: [],
-      getDamageModifiers() { return { first: [], second: [] } }
+      getDamageModifiers() { 
+        return { 
+          first: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ], 
+          second: []
+        }
+      }
     }
     fairy = new Fairy(opponent);
   });
@@ -41,4 +46,8 @@ describe('Fairy', () => {
   it('should create an instance with baseDamage of 0', () => {
     expect(fairy.baseDamage).toBe(0);
   });
+
+  it('should have actualDamage of 0 irrespective of opponent equipment', () => {
+    expect(fairy.actualDamage).toBe(0);
+  })
 });
