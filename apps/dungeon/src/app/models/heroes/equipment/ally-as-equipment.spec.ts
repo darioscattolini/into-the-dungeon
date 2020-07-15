@@ -14,4 +14,8 @@ describe('AllyAsEquipment', () => {
   it('should create an instance of AllyAsEquipment', () => {
     expect(ally).toBeTruthy();
   });
+
+  it('should create an instance with name "Ally"', () => {
+    expect(ally.name).toBe('Ally');
+  });
 });
