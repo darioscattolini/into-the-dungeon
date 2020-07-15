@@ -9,7 +9,7 @@ import { BiddingService } from './bidding.service';
 })
 export class GameService {
     // this is public just for tests
-  public players: Player[];
+  public players: Player[] | undefined;
 
   constructor(
     private playersService: PlayersService,
@@ -26,15 +26,18 @@ export class GameService {
   }
     // this is public just for tests
   public manage(): void {
-    let firstPlayer: Player = this.players[Math.floor(Math.random() * this.players.length)];
+    const players = <Player[]>this.players;
+    const randomIndex = Math.floor(Math.random() * players.length);
+    const firstPlayer: Player = players[randomIndex];
     while(this.goesOn()) {
       this.biddingService.startNewRound(firstPlayer);
     }
   }
     // this is public just for tests
   public goesOn(): boolean {
+    const players = <Player[]>this.players;
     let output = true;
-    for (const player of this.players) {
+    for (const player of players) {
       if (player.defeats === 2 || player.victories === 2) {
         output = false;
         break;
