@@ -4,7 +4,6 @@ import { Monster } from './monster';
 import { HeroInterface } from '../heroes/hero-interface';
 
 export interface ConcreteMonsterStatic {
-  readonly type: CommonMonster | RareMonster;
   readonly maxAmount: 1 | 2;
   new(opponent: HeroInterface): Monster;
 }

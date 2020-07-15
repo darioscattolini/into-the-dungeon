@@ -8,7 +8,7 @@ const MockOrc: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: CommonMonster = 'Orc';
   public static readonly maxAmount: 1 | 2 = 2;
   constructor(opponent: HeroInterface) {
-    super(3, opponent);
+    super('Orc', 3, opponent);
   }
 };
 
@@ -16,7 +16,7 @@ const MockDemon: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: CommonMonster = 'Demon';
   public static readonly maxAmount: 1 | 2 = 1;
   constructor(opponent: HeroInterface) {
-    super(7, opponent);
+    super('Demon', 7, opponent);
   }
 };
 
@@ -24,7 +24,7 @@ const MockAlly: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: RareMonster = 'Ally';
   public static readonly maxAmount: 1 | 2 = 1;
   constructor(opponent: HeroInterface) {
-    super(null, opponent);
+    super('Ally', null, opponent);
   }
 };
 

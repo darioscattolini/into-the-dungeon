@@ -1,9 +1,12 @@
 import { ConcreteMonsterStatic } from './concrete-monster-static';
 import { HeroInterface } from '../heroes/hero-interface';
+import { CommonMonster } from './common-monster';
+import { RareMonster } from './rare-monster';
 
 export abstract class Monster {
   public static readonly uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
   
+  public readonly type: CommonMonster | RareMonster;
   public readonly baseDamage: number | null;
   public readonly opponent: HeroInterface;  // this field should be protected
   public actualDamage: number | null;
@@ -14,9 +17,11 @@ export abstract class Monster {
   private ConcreteClass = this.constructor as ConcreteMonsterStatic;
 
   constructor(
+    type: CommonMonster | RareMonster,
     baseDamage: number | null,
     opponent: HeroInterface
   ) {
+    this.type = type;
     this.baseDamage = baseDamage;
     this.opponent = opponent;
     this.nthOfItsType = this.calculateAmountOfInstances();
@@ -30,10 +35,6 @@ export abstract class Monster {
 
   public static clearUncoveredInstances() {
     this.uncoveredInstances.splice(0);
-  }
-
-  public get type() {
-    return this.ConcreteClass.type;
   }
 
   private get maxAmount() {

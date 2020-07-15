@@ -9,6 +9,6 @@ export class Troll extends Monster {
   public static readonly maxAmount = 2;
 
   constructor(opponent: HeroInterface) {
-    super(1, opponent);
+    super('Troll', 1, opponent);
   }
 };
