@@ -16,6 +16,7 @@ describe('GameService', () => {
   let gameService: GameService;
   let playersService: PlayersService;
   let biddingService: BiddingService;
+  let firstPlayer: Player | undefined;
 
   beforeEach(() => {
     players = [
@@ -28,11 +29,15 @@ describe('GameService', () => {
     playersService = mockedPlayersService.mock.instances[0];
     (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
     biddingService = mockedBiddingService.mock.instances[0];
+    (biddingService.startNewRound as jest.Mock).mockImplementation(
+      (player: Player) => firstPlayer = player
+    );
   });
 
   afterEach(() => {
     mockedPlayersService.mockClear();
     mockedBiddingService.mockClear();
+    firstPlayer = undefined;
   });
   
   describe('constructor', () => {
@@ -148,8 +153,7 @@ describe('GameService', () => {
     it ('should call biddingService.startNewRound with a random Player', () => {
       mockOneRound(goesOnSpy);
       gameService.manage();
-      expect(biddingService.startNewRound)
-        .toHaveBeenCalledWith(players[0] || players[1] || players[2]);
+      expect(players).toContain(firstPlayer);
     });
   });
 
