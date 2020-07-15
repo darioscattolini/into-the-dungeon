@@ -10,7 +10,7 @@ describe('Vampire', () => {
     opponent = {
       equipment: [],
       getDamageModifiers() { return { first: [], second: [] } }
-    }
+    };
     vampire = new Vampire(opponent);
   });
 

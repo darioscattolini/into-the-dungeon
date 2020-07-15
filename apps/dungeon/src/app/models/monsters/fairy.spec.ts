@@ -15,7 +15,7 @@ describe('Fairy', () => {
           second: []
         }
       }
-    }
+    };
     fairy = new Fairy(opponent);
   });
 
@@ -49,5 +49,5 @@ describe('Fairy', () => {
 
   it('should have actualDamage of 0 irrespective of opponent equipment', () => {
     expect(fairy.actualDamage).toBe(0);
-  })
+  });
 });
