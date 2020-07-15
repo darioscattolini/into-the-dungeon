@@ -22,4 +22,8 @@ describe('AllyAsEquipment', () => {
   it('should create an instance with field available with value true', () => {
     expect(ally.available).toBe(true);
   });
+
+  it('should create an instance with field modifiesDamage with value false', () => {
+    expect(ally.modifiesDamage).toBe(false);
+  });
 });
