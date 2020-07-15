@@ -10,7 +10,8 @@ export abstract class Monster {
   public readonly baseDamage: number | null;
   public readonly opponent: HeroInterface;  // this field should be protected
   public readonly positionInDungeon: number; // this field should be protected, just for metamorph
-  public readonly actualDamage: number | null;
+  
+  protected _actualDamage: number | null;
   
   private readonly nthOfItsType: number;  // this field should be protected
   private readonly AbstractClass: typeof Monster;
@@ -32,11 +33,15 @@ export abstract class Monster {
     }
     this.AbstractClass.uncoveredInstances.push(this);
     this.positionInDungeon = Monster.uncoveredInstances.length; //for metamorph
-    this.actualDamage = this.calculateActualDamage();
+    this._actualDamage = this.calculateActualDamage();
   }
 
   public static clearUncoveredInstances() {
     this.uncoveredInstances.splice(0);
+  }
+
+  public get actualDamage() {
+    return this._actualDamage;
   }
 
   private get maxAmount() {
