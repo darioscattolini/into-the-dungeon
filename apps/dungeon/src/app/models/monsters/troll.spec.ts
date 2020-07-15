@@ -18,6 +18,14 @@ describe('Troll', () => {
     Monster.clearUncoveredInstances();
   });
 
+  it('should have static property type with value "Troll"', () => {
+    expect(Troll.type).toBe('Troll');
+  });
+
+  it('should have static property maxAmount with value 2', () => {
+    expect(Troll.maxAmount).toBe(2);
+  });
+
   it('should create an instance', () => {
     expect(troll).toBeTruthy();
   });
@@ -30,11 +38,7 @@ describe('Troll', () => {
     expect(troll instanceof Monster).toBe(true);
   });
 
-  it('should have static property type with value "Troll"', () => {
-    expect(Troll.type).toBe('Troll');
-  });
-
-  it('should have static property maxAmount with value 2', () => {
-    expect(Troll.maxAmount).toBe(2);
+  it('should create an instance with baseDamage of 1', () => {
+    expect(troll.baseDamage).toBe(1);
   });
 });
