@@ -5,6 +5,7 @@ export abstract class Monster {
   public static readonly uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
   
   public readonly baseDamage: number | null;
+  public readonly opponent: HeroInterface;  // this field should be protected
   public actualDamage: number | null;
   public positionInDungeon: number; // this field should be protected, just for metamorph
   
@@ -14,9 +15,10 @@ export abstract class Monster {
 
   constructor(
     baseDamage: number | null,
-    public opponent: HeroInterface   // this field should be protected
+    opponent: HeroInterface
   ) {
     this.baseDamage = baseDamage;
+    this.opponent = opponent;
     this.nthOfItsType = this.calculateAmountOfInstances();
     if (this.nthOfItsType > this.maxAmount) {
       throw new Error(`There can't be more than ${this.maxAmount} ${this.type}.`);
