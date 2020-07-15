@@ -9,12 +9,12 @@ export abstract class Monster {
   public readonly type: CommonMonster | RareMonster;
   public readonly baseDamage: number | null;
   public readonly opponent: HeroInterface;  // this field should be protected
-  public actualDamage: number | null;
-  public positionInDungeon: number; // this field should be protected, just for metamorph
+  public readonly positionInDungeon: number; // this field should be protected, just for metamorph
+  public readonly actualDamage: number | null;
   
-  private nthOfItsType: number;  // this field should be protected
-  private AbstractClass = Monster;
-  private ConcreteClass = this.constructor as ConcreteMonsterStatic;
+  private readonly nthOfItsType: number;  // this field should be protected
+  private readonly AbstractClass = Monster;
+  private readonly ConcreteClass = this.constructor as ConcreteMonsterStatic;
 
   constructor(
     type: CommonMonster | RareMonster,
