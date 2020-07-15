@@ -2,7 +2,7 @@ import { Golem } from './golem';
 import { Monster } from './monster';
 import { HeroInterface } from '../heroes/hero-interface';
 
-describe('Vampire', () => {
+describe('Golem', () => {
   let golem: Golem;
   let opponent: HeroInterface;
 

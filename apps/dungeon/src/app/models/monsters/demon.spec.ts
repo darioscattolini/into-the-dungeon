@@ -2,7 +2,7 @@ import { Demon } from './demon';
 import { Monster } from './monster';
 import { HeroInterface } from '../heroes/hero-interface';
 
-describe('Vampire', () => {
+describe('Demon', () => {
   let demon: Demon;
   let opponent: HeroInterface;
 
