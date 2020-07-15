@@ -13,11 +13,15 @@ import { HomeComponent } from './home.component';
 class TargetStubComponent {}
 
 class Page {
-  get buttons()      { return Array.from(this.queryAll<HTMLButtonElement>('button')); }
-  get oneDeviceBtn() { return this.buttons.find(button => button.textContent.includes('One Device')); }
-  get onlineBtn()    { return this.buttons.find(button => button.textContent.includes('Online')); }
   get heading()      { return this.query<HTMLElement>('h1'); }
   get description()  { return this.query<HTMLElement>('#description'); }
+  get buttons()      { return Array.from(this.queryAll<HTMLButtonElement>('button')); }
+  get oneDeviceBtn() { 
+    return this.buttons.find(button => (<string>button.textContent).includes('One Device'));
+  }
+  get onlineBtn()    { 
+    return this.buttons.find(button => (<string>button.textContent).includes('Online'));
+  }
   
   constructor(private fixture: ComponentFixture<HomeComponent>) { }
 
@@ -73,14 +77,15 @@ describe('HomeComponent', () => {
   });
 
   it('should contain a #description element with certain keywords', () => {
-    expect(page.description.textContent.toLowerCase()).toContain('hero');
-    expect(page.description.textContent.toLowerCase()).toContain('dungeon');
-    expect(page.description.textContent.toLowerCase()).toContain('monster');
-    expect(page.description.textContent.toLowerCase()).toContain('equipment');
-    expect(page.description.textContent.toLowerCase()).toContain('survive');
-    expect(page.description.textContent.toLowerCase()).toContain('online');
-    expect(page.description.textContent.toLowerCase()).toContain('single device');
-    expect(page.description.textContent.toLowerCase()).toContain('multi-player');
+    const descriptionContent = <string>page.description.textContent?.toLowerCase();
+    expect(descriptionContent).toContain('hero');
+    expect(descriptionContent).toContain('dungeon');
+    expect(descriptionContent).toContain('monster');
+    expect(descriptionContent).toContain('equipment');
+    expect(descriptionContent).toContain('survive');
+    expect(descriptionContent).toContain('online');
+    expect(descriptionContent).toContain('single device');
+    expect(descriptionContent).toContain('multi-player');
   });
 
   it('should contain two buttons', () => {
@@ -96,14 +101,44 @@ describe('HomeComponent', () => {
   });
 
   it ('should navigate to /one-device when one-device button clicked', fakeAsync(() => {
-    fixture.ngZone.run(() => { page.oneDeviceBtn.click() });
-    flush();
-    expect(location.path()).toBe('/' + paths.oneDevice);
+    if (fixture.ngZone) {
+
+      fixture.ngZone.run(() => { 
+
+        if (page.oneDeviceBtn) {
+          page.oneDeviceBtn.click();
+        } else {
+          throw new Error('Cannot run test because page.oneDeviceBtn is undefined');
+        }
+
+      });
+
+      flush();
+
+      expect(location.path()).toBe('/' + paths.oneDevice);
+
+    } else {
+      throw new Error('Cannot run test because fixture.ngZone is null');
+    }
   }));
 
   it ('should navigate to /online when online button clicked', fakeAsync(() => {
-    fixture.ngZone.run(() => { page.onlineBtn.click() });
-    flush();
-    expect(location.path()).toBe('/' + paths.online);
+    if (fixture.ngZone) {
+
+      fixture.ngZone.run(() => { 
+        if (page.onlineBtn) {
+          page.onlineBtn.click();
+        } else {
+          throw new Error('Cannot run test because page.onlineBtn is undefined');
+        }
+      });
+
+      flush();
+
+      expect(location.path()).toBe('/' + paths.online);
+
+    } else {
+      throw new Error('Cannot run test because fixture.ngZone is null');
+    }
   }));
 });
