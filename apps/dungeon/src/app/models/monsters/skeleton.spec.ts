@@ -38,7 +38,7 @@ describe('Skeleton', () => {
     expect(skeleton.type).toBe('Skeleton');
   });
 
-  it('should create an instance with baseDamage of 1', () => {
-    expect(skeleton.baseDamage).toBe(1);
+  it('should create an instance with baseDamage of 2', () => {
+    expect(skeleton.baseDamage).toBe(2);
   });
 });
