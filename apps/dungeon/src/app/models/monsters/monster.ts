@@ -4,6 +4,7 @@ import { HeroInterface } from '../heroes/hero-interface';
 export abstract class Monster {
   public static readonly uncoveredInstances: Monster[] = []; // this field should be private (or perhaps protected)
   
+  public readonly baseDamage: number | null;
   public actualDamage: number | null;
   public positionInDungeon: number; // this field should be protected, just for metamorph
   
@@ -12,8 +13,10 @@ export abstract class Monster {
   private ConcreteClass = this.constructor as ConcreteMonsterStatic;
 
   constructor(
+    baseDamage: number | null,
     public opponent: HeroInterface   // this field should be protected
   ) {
+    this.baseDamage = baseDamage;
     this.nthOfItsType = this.calculateAmountOfInstances();
     if (this.nthOfItsType > this.maxAmount) {
       throw new Error(`There can't be more than ${this.maxAmount} ${this.type}.`);
@@ -29,10 +32,6 @@ export abstract class Monster {
 
   public get type() {
     return this.ConcreteClass.type;
-  }
-
-  public get baseDamage() {
-    return this.ConcreteClass.baseDamage;
   }
 
   private get maxAmount() {

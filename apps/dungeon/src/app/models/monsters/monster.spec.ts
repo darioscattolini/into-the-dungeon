@@ -7,27 +7,24 @@ import { HeroInterface } from '../heroes/hero-interface';
 const MockOrc: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: CommonMonster = 'Orc';
   public static readonly maxAmount: 1 | 2 = 2;
-  public static readonly baseDamage = 3;
   constructor(opponent: HeroInterface) {
-    super(opponent);
+    super(3, opponent);
   }
 };
 
 const MockDemon: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: CommonMonster = 'Demon';
   public static readonly maxAmount: 1 | 2 = 1;
-  public static readonly baseDamage = 7;
   constructor(opponent: HeroInterface) {
-    super(opponent);
+    super(7, opponent);
   }
 };
 
 const MockAlly: ConcreteMonsterStatic = class extends Monster {
   public static readonly type: RareMonster = 'Ally';
   public static readonly maxAmount: 1 | 2 = 1;
-  public static readonly baseDamage = null;
   constructor(opponent: HeroInterface) {
-    super(opponent);
+    super(null, opponent);
   }
 };
 
