@@ -13,14 +13,16 @@ export abstract class Monster {
   public readonly actualDamage: number | null;
   
   private readonly nthOfItsType: number;  // this field should be protected
-  private readonly AbstractClass = Monster;
-  private readonly ConcreteClass = this.constructor as ConcreteMonsterStatic;
+  private readonly AbstractClass: typeof Monster;
+  private readonly ConcreteClass: ConcreteMonsterStatic;
 
   constructor(
     type: CommonMonster | RareMonster,
     baseDamage: number | null,
     opponent: HeroInterface
   ) {
+    this.AbstractClass = Monster;
+    this.ConcreteClass = this.constructor as ConcreteMonsterStatic;
     this.type = type;
     this.baseDamage = baseDamage;
     this.opponent = opponent;
