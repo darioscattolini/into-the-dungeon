@@ -9,5 +9,6 @@ export class Fairy extends Monster {
 
   constructor(opponent: HeroInterface) {
     super('Fairy', 0, opponent);
+    this._actualDamage = 0;
   }
 };
