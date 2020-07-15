@@ -1,7 +1,44 @@
 import { Dragon } from './dragon';
+import { Monster } from './monster';
+import { HeroInterface } from '../heroes/hero-interface';
 
 describe('Dragon', () => {
+  let dragon: Dragon;
+  let opponent: HeroInterface;
+
+  beforeEach(() => {
+    opponent = {
+      equipment: [],
+      getDamageModifiers() { return { first: [], second: [] } }
+    }
+    dragon = new Dragon(opponent);
+  });
+
+  afterEach(() => {
+    Monster.clearUncoveredInstances();
+  });
+
+  it('should have static property maxAmount with value 1', () => {
+    expect(Dragon.maxAmount).toBe(1);
+  });
+
   it('should create an instance', () => {
-    expect(new Dragon()).toBeTruthy();
+    expect(dragon).toBeTruthy();
+  });
+
+  it('should create an instance of Dragon', () => {
+    expect(dragon instanceof Dragon).toBe(true);
+  });
+
+  it('should create an instance of Monster', () => {
+    expect(dragon instanceof Monster).toBe(true);
+  });
+  
+  it('should create an instance with type "Dragon"', () => {
+    expect(dragon.type).toBe('Dragon');
+  });
+
+  it('should create an instance with baseDamage of 9', () => {
+    expect(dragon.baseDamage).toBe(9);
   });
 });
