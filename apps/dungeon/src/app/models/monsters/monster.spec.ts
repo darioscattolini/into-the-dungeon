@@ -5,7 +5,6 @@ import { RareMonster } from './rare-monster';
 import { HeroInterface } from '../heroes/hero-interface';
 
 const MockOrc: ConcreteMonsterStatic = class extends Monster {
-  public static readonly type: CommonMonster = 'Orc';
   public static readonly maxAmount: 1 | 2 = 2;
   constructor(opponent: HeroInterface) {
     super('Orc', 3, opponent);
@@ -13,7 +12,6 @@ const MockOrc: ConcreteMonsterStatic = class extends Monster {
 };
 
 const MockDemon: ConcreteMonsterStatic = class extends Monster {
-  public static readonly type: CommonMonster = 'Demon';
   public static readonly maxAmount: 1 | 2 = 1;
   constructor(opponent: HeroInterface) {
     super('Demon', 7, opponent);
@@ -21,7 +19,6 @@ const MockDemon: ConcreteMonsterStatic = class extends Monster {
 };
 
 const MockAlly: ConcreteMonsterStatic = class extends Monster {
-  public static readonly type: RareMonster = 'Ally';
   public static readonly maxAmount: 1 | 2 = 1;
   constructor(opponent: HeroInterface) {
     super('Ally', null, opponent);
