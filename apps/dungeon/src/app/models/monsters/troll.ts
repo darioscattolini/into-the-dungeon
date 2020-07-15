@@ -5,7 +5,6 @@ import { staticImplements } from '../../utilities';
 
 @staticImplements<ConcreteMonsterStatic>()
 export class Troll extends Monster {
-  public static readonly type = 'Troll';
   public static readonly maxAmount = 2;
 
   constructor(opponent: HeroInterface) {
