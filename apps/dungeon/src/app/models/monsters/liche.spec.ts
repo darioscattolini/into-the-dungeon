@@ -26,7 +26,7 @@ describe('Vampire', () => {
     expect(liche).toBeTruthy();
   });
 
-  it('should create an instance of Golem', () => {
+  it('should create an instance of Liche', () => {
     expect(liche instanceof Liche).toBe(true);
   });
 
