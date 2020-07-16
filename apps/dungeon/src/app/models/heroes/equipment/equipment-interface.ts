@@ -1,23 +1,20 @@
 import { Monster } from '../../monsters/monster';
 
-interface BaseEquipment {
+export type DamageModifier = (baseDamage: number) => number;
+
+export interface EquipmentBase {
   name: string;
   available: boolean; // discarded or not
   modifiesDamage: boolean;
-  canBeUsedAgainst? (monster: Monster): boolean;
-  useAgainst? (monster: Monster): void;
 }
 
-export type DamageModifier = (baseDamage: number) => number;
+export interface EquipmentWeapon extends EquipmentBase {
+  canBeUsedAgainst (monster: Monster): boolean;
+  useAgainst (monster: Monster): void;
+}
 
-interface EquipmentWithDamageModifier extends BaseEquipment {
+export interface EquipmentWithDamageModifier extends EquipmentBase {
   modifiesDamage: true;
-  order: 'first' | 'second';
+  modifierOrder: 'first' | 'second';
   damageModifier: DamageModifier;
 }
-
-interface EquipmentWithoutDamageModifier extends BaseEquipment {
-  modifiesDamage: false;
-}
-
-export type EquipmentInterface = EquipmentWithDamageModifier | EquipmentWithoutDamageModifier;
