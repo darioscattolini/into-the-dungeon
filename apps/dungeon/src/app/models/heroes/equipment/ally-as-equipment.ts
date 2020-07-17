@@ -1,4 +1,3 @@
-import { EquipmentWeapon } from './equipment-interface';
 import { Monster } from '../../monsters/monster';
 
 export class AllyAsEquipment {
@@ -12,9 +11,11 @@ export class AllyAsEquipment {
   }
 
   public canBeUsedAgainst(monster: Monster) {
+    if (monster.positionInDungeon > this.positionInDungeon + 1) {
+      this.available = false;
+    }
     return monster.positionInDungeon === this.positionInDungeon + 1;
   }
 }
 
-// canBeUsedAgainst? (monster: Monster): boolean; if monster is of nth type. calls discard method conditionally in case it is not used in previous monster
 // useAgainst? (monster: Monster): void; calls discard method after use
