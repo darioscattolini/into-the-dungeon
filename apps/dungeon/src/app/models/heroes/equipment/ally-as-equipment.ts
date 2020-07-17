@@ -3,16 +3,20 @@ import { Monster } from '../../monsters/monster';
 export class AllyAsEquipment {
   public readonly name = 'Ally';
   public readonly modifiesDamage = false;
-  public available = true;
+  private _available = true;
   private positionInDungeon: number;
 
   constructor(positionInDungeon: number) {
     this.positionInDungeon = positionInDungeon;
   }
 
+  public get available() {
+    return this._available;
+  }
+
   public canBeUsedAgainst(monster: Monster) {
     if (monster.positionInDungeon > this.positionInDungeon + 1) {
-      this.available = false;
+      this._available = false;
     }
     return monster.positionInDungeon === this.positionInDungeon + 1;
   }
