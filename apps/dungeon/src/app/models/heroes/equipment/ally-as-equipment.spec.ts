@@ -58,11 +58,11 @@ describe('AllyAsEquipment', () => {
     const monster1 = new class extends Monster {} ('Troll', 1, opponent);
     const monster2 = new class extends Monster {} ('Ally', null, opponent);
     const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-    
+    expect(ally.canBeUsedAgainst(monster3)).toBe(true);
     expect(ally.available).toBe(true);
     
     const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-    
+    expect(ally.canBeUsedAgainst(monster4)).toBe(false);
     expect(ally.available).toBe(false);
   });
 });
