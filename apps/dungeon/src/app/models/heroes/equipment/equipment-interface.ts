@@ -18,3 +18,9 @@ export interface EquipmentWithDamageModifier extends EquipmentBase {
   modifierOrder: 'first' | 'second';
   damageModifier: DamageModifier;
 }
+
+export type EquipmentWeaponWithDamageModifier = EquipmentWeapon & EquipmentWithDamageModifier;
+
+export type EquipmentInterface = EquipmentWeapon | 
+  EquipmentWithDamageModifier | 
+  EquipmentWeaponWithDamageModifier;
