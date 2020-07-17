@@ -25,6 +25,7 @@ export class AllyAsEquipment {
     if (!this.canBeUsedAgainst(monster)) {
       throw new Error('The ally can only be used against the monster after it');
     }
+    return { defeat: true };
   }
 }
 
