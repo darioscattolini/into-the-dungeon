@@ -86,4 +86,13 @@ describe('AllyAsEquipment', () => {
     const monster3 = new class extends Monster {} ('Troll', 1, opponent);
     expect(ally.useAgainst(monster3)).toEqual(effect);
   });
+
+  it('should be discarded after use', () => {
+    const effect = { defeat: true };
+    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+    const monster2 = new class extends Monster {} ('Ally', null, opponent);
+    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+    ally.useAgainst(monster3);
+    expect(ally.available).toBe(false);
+  });
 });
