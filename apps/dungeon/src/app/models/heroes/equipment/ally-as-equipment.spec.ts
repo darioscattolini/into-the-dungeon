@@ -78,4 +78,12 @@ describe('AllyAsEquipment', () => {
     expect(() => { ally.useAgainst(monster4) })
       .toThrow('The ally can only be used against the monster after it');
   });
+
+  it('should return a defeat effect if used', () => {
+    const effect = { defeat: true };
+    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+    const monster2 = new class extends Monster {} ('Ally', null, opponent);
+    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+    expect(ally.useAgainst(monster3)).toEqual(effect);
+  });
 });
