@@ -42,58 +42,62 @@ describe('AllyAsEquipment', () => {
     expect(ally.modifiesDamage).toBe(false);
   });
 
-  it('can only be used against ally\'s next monster', () => {
-    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster2 = new class extends Monster {} ('Ally', null, opponent);
-    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-    
-    expect(ally.canBeUsedAgainst(monster1)).toBe(false);
-    expect(ally.canBeUsedAgainst(monster2)).toBe(false);
-    expect(ally.canBeUsedAgainst(monster3)).toBe(true);
-    expect(ally.canBeUsedAgainst(monster4)).toBe(false);
+  describe('canBeUsedAgainst', () => {
+    it('can only be used against ally\'s next monster', () => {
+      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster2 = new class extends Monster {} ('Ally', null, opponent);
+      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster4 = new class extends Monster {} ('Orc', 3, opponent);
+      
+      expect(ally.canBeUsedAgainst(monster1)).toBe(false);
+      expect(ally.canBeUsedAgainst(monster2)).toBe(false);
+      expect(ally.canBeUsedAgainst(monster3)).toBe(true);
+      expect(ally.canBeUsedAgainst(monster4)).toBe(false);
+    });
+  
+    it('should be discarded after ally\'s next monster', () => {
+      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster2 = new class extends Monster {} ('Ally', null, opponent);
+      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+      expect(ally.canBeUsedAgainst(monster3)).toBe(true);
+      expect(ally.available).toBe(true);
+      
+      const monster4 = new class extends Monster {} ('Orc', 3, opponent);
+      expect(ally.canBeUsedAgainst(monster4)).toBe(false);
+      expect(ally.available).toBe(false);
+    });
   });
 
-  it('should be discarded after ally\'s next monster', () => {
-    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster2 = new class extends Monster {} ('Ally', null, opponent);
-    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-    expect(ally.canBeUsedAgainst(monster3)).toBe(true);
-    expect(ally.available).toBe(true);
-    
-    const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-    expect(ally.canBeUsedAgainst(monster4)).toBe(false);
-    expect(ally.available).toBe(false);
-  });
+  describe('useAgainst', () => {
+    it('should return a defeat effect', () => {
+      const effect = { defeat: true };
+      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster2 = new class extends Monster {} ('Ally', null, opponent);
+      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+      expect(ally.useAgainst(monster3)).toEqual(effect);
+    });
 
-  it('should throw error if used against wrong monster', () => {
-    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster2 = new class extends Monster {} ('Ally', null, opponent);
-    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-    expect(() => { ally.useAgainst(monster1) })
-      .toThrow('The ally can only be used against the monster after it');
-    expect(() => { ally.useAgainst(monster2) })
-      .toThrow('The ally can only be used against the monster after it');
-    expect(() => { ally.useAgainst(monster4) })
-      .toThrow('The ally can only be used against the monster after it');
-  });
-
-  it('should return a defeat effect if used', () => {
-    const effect = { defeat: true };
-    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster2 = new class extends Monster {} ('Ally', null, opponent);
-    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-    expect(ally.useAgainst(monster3)).toEqual(effect);
-  });
-
-  it('should be discarded after use', () => {
-    const effect = { defeat: true };
-    const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-    const monster2 = new class extends Monster {} ('Ally', null, opponent);
-    const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-    expect(ally.available).toBe(true);
-    ally.useAgainst(monster3);
-    expect(ally.available).toBe(false);
+    it('should throw error if used against wrong monster', () => {
+      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster2 = new class extends Monster {} ('Ally', null, opponent);
+      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster4 = new class extends Monster {} ('Orc', 3, opponent);
+      expect(() => { ally.useAgainst(monster1) })
+        .toThrow('The ally can only be used against the monster after it');
+      expect(() => { ally.useAgainst(monster2) })
+        .toThrow('The ally can only be used against the monster after it');
+      expect(() => { ally.useAgainst(monster4) })
+        .toThrow('The ally can only be used against the monster after it');
+    });
+  
+    it('should discard ally after use', () => {
+      const effect = { defeat: true };
+      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
+      const monster2 = new class extends Monster {} ('Ally', null, opponent);
+      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
+      expect(ally.available).toBe(true);
+      ally.useAgainst(monster3);
+      expect(ally.available).toBe(false);
+    });
   });
 });
