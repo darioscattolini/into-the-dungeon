@@ -20,6 +20,12 @@ export class AllyAsEquipment {
     }
     return monster.positionInDungeon === this.positionInDungeon + 1;
   }
+
+  public useAgainst(monster: Monster) {
+    if (!this.canBeUsedAgainst(monster)) {
+      throw new Error('The ally can only be used against the monster after it');
+    }
+  }
 }
 
 // useAgainst? (monster: Monster): void; calls discard method after use

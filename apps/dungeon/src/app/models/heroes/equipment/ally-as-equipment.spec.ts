@@ -71,8 +71,11 @@ describe('AllyAsEquipment', () => {
     const monster2 = new class extends Monster {} ('Ally', null, opponent);
     const monster3 = new class extends Monster {} ('Troll', 1, opponent);
     const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-    expect(ally.useAgainst(monster1)).toThrow('The ally can only be used against the following monster');
-    expect(ally.useAgainst(monster2)).toThrow('The ally can only be used against the following monster');
-    expect(ally.useAgainst(monster4)).toThrow('The ally can only be used against the following monster');
+    expect(() => { ally.useAgainst(monster1) })
+      .toThrow('The ally can only be used against the monster after it');
+    expect(() => { ally.useAgainst(monster2) })
+      .toThrow('The ally can only be used against the monster after it');
+    expect(() => { ally.useAgainst(monster4) })
+      .toThrow('The ally can only be used against the monster after it');
   });
 });
