@@ -16,7 +16,7 @@ export class AllyAsEquipment {
 
   public canBeUsedAgainst(monster: Monster) {
     if (monster.positionInDungeon > this.positionInDungeon + 1) {
-      this._available = false;
+      this.discardAfterUseOrOmission();
     }
     return monster.positionInDungeon === this.positionInDungeon + 1;
   }
@@ -25,11 +25,11 @@ export class AllyAsEquipment {
     if (!this.canBeUsedAgainst(monster)) {
       throw new Error('The ally can only be used against the monster after it');
     }
-    this.discardAfterUse();
+    this.discardAfterUseOrOmission();
     return { defeat: true };
   }
 
-  private discardAfterUse() {
+  private discardAfterUseOrOmission() {
     this._available = false;
   }
 }
