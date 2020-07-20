@@ -1,4 +1,4 @@
-import { ConcreteMonsterStatic } from './concrete-monster-static';
+import { IDerivedMonsterStatic } from './derived-monster-static.interface';
 import { HeroInterface } from '../heroes/hero-interface';
 import { CommonMonster } from './common-monster';
 import { RareMonster } from './rare-monster';
@@ -15,7 +15,7 @@ export abstract class Monster {
   
   private readonly nthOfItsType: number;  // this field should be protected
   private readonly AbstractClass: typeof Monster;
-  private readonly ConcreteClass: ConcreteMonsterStatic;
+  private readonly ConcreteClass: IDerivedMonsterStatic;
 
   constructor(
     type: CommonMonster | RareMonster,
@@ -23,7 +23,7 @@ export abstract class Monster {
     opponent: HeroInterface
   ) {
     this.AbstractClass = Monster;
-    this.ConcreteClass = this.constructor as ConcreteMonsterStatic;
+    this.ConcreteClass = this.constructor as IDerivedMonsterStatic;
     this.type = type;
     this.baseDamage = baseDamage;
     this.opponent = opponent;

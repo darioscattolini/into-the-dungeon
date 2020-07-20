@@ -1,9 +1,9 @@
 import { Monster } from './monster';
-import { ConcreteMonsterStatic } from './concrete-monster-static';
+import { IDerivedMonsterStatic } from './derived-monster-static.interface';
 import { HeroInterface } from '../heroes/hero-interface';
 import { staticImplements } from '../../utilities';
 
-@staticImplements<ConcreteMonsterStatic>()
+@staticImplements<IDerivedMonsterStatic>()
 export class Troll extends Monster {
   public static readonly maxAmount = 2;
 

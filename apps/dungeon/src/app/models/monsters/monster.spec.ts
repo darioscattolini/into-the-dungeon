@@ -1,24 +1,22 @@
 import { Monster } from './monster';
-import { ConcreteMonsterStatic } from './concrete-monster-static';
-import { CommonMonster } from './common-monster';
-import { RareMonster } from './rare-monster';
+import { IDerivedMonsterStatic } from './derived-monster-static.interface';
 import { HeroInterface } from '../heroes/hero-interface';
 
-const MockOrc: ConcreteMonsterStatic = class extends Monster {
+const MockOrc: IDerivedMonsterStatic = class extends Monster {
   public static readonly maxAmount: 1 | 2 = 2;
   constructor(opponent: HeroInterface) {
     super('Orc', 3, opponent);
   }
 };
 
-const MockDemon: ConcreteMonsterStatic = class extends Monster {
+const MockDemon: IDerivedMonsterStatic = class extends Monster {
   public static readonly maxAmount: 1 | 2 = 1;
   constructor(opponent: HeroInterface) {
     super('Demon', 7, opponent);
   }
 };
 
-const MockAlly: ConcreteMonsterStatic = class extends Monster {
+const MockAlly: IDerivedMonsterStatic = class extends Monster {
   public static readonly maxAmount: 1 | 2 = 1;
   constructor(opponent: HeroInterface) {
     super('Ally', null, opponent);
