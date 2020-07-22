@@ -1,4 +1,5 @@
 // PLAYER
+import { IPlayer } from './player/player.interface';
 import { Player } from './player/player';
 
-export { Player };
+export { IPlayer, Player };
