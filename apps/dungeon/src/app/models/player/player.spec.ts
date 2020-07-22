@@ -93,20 +93,20 @@ describe('Player', () => {
     });
   });
 
-  describe('beKilledInDungeon', () => {
+  describe('dieInDungeon', () => {
     it('should increase defeats by one', () => {
-      player.beKilledInDungeon();
+      player.dieInDungeon();
       const afterOneDefeat = player.defeats;
-      player.beKilledInDungeon();
+      player.dieInDungeon();
       const afterTwoDefeats = player.defeats;
       expect(afterOneDefeat).toStrictEqual(1);
       expect(afterTwoDefeats).toStrictEqual(2);
     });
 
     it('should not allow a third defeat', () => {
-      player.beKilledInDungeon();
-      player.beKilledInDungeon();
-      expect(() => { player.beKilledInDungeon(); })
+      player.dieInDungeon();
+      player.dieInDungeon();
+      expect(() => { player.dieInDungeon(); })
         .toThrow(new Error('The game must end after a player reaches 2 defeats'));
     });
   });
@@ -141,7 +141,7 @@ describe('Player', () => {
         ]
       );
 
-      john.beKilledInDungeon();
+      john.dieInDungeon();
       expect(Player.buildRanking(players)).toDeepEqual(
         [
           [anna, john, julia, mark]
@@ -156,7 +156,7 @@ describe('Player', () => {
         ]
       );
 
-      julia.beKilledInDungeon();
+      julia.dieInDungeon();
       expect(Player.buildRanking(players)).toDeepEqual(
         [
           [anna],

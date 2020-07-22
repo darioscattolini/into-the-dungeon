@@ -50,7 +50,7 @@ export class Player {
     this.updateScore();
   }
 
-  public beKilledInDungeon(): void {
+  public dieInDungeon(): void {
     if(this._defeats === 2) {
       throw new Error('The game must end after a player reaches 2 defeats');
     }

@@ -173,34 +173,34 @@ describe('GameService', () => {
     });
 
     it ('should return true with some players with 1 defeat', () => {
-      players[0].beKilledInDungeon();
-      players[2].beKilledInDungeon();
+      players[0].dieInDungeon();
+      players[2].dieInDungeon();
       expect(gameService.goesOn()).toStrictEqual(true);
     });
 
     it ('should return true with mixes of 1 defeat/1 victory', () => {
-      players[0].beKilledInDungeon();
+      players[0].dieInDungeon();
       players[1].surviveDungeon();
-      players[2].beKilledInDungeon();
+      players[2].dieInDungeon();
       players[2].surviveDungeon();
       expect(gameService.goesOn()).toStrictEqual(true);
     });
 
     it('should return false when 1 player gets 2 victories', () => {
-      players[0].beKilledInDungeon();
+      players[0].dieInDungeon();
       players[1].surviveDungeon();
-      players[2].beKilledInDungeon();
+      players[2].dieInDungeon();
       players[2].surviveDungeon();
       players[2].surviveDungeon();
       expect(gameService.goesOn()).toStrictEqual(false);
     });
 
     it('should return false when 1 player gets 2 defeats', () => {
-      players[0].beKilledInDungeon();
+      players[0].dieInDungeon();
       players[1].surviveDungeon();
-      players[2].beKilledInDungeon();
+      players[2].dieInDungeon();
       players[2].surviveDungeon();
-      players[2].beKilledInDungeon();
+      players[2].dieInDungeon();
       expect(gameService.goesOn()).toStrictEqual(false);
     });
   });
