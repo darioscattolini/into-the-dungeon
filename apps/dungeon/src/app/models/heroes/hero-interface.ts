@@ -1,4 +1,4 @@
-import { EquipmentInterface, DamageModifier } from './equipment/equipment-interface';
+import { IEquipment, DamageModifier } from './equipment/equipment.interface';
 
 export interface DamageModifiersMessage {
   first: DamageModifier[],
@@ -6,6 +6,6 @@ export interface DamageModifiersMessage {
 }
 
 export interface HeroInterface {
-  equipment: EquipmentInterface[];
+  equipment: IEquipment[];
   getDamageModifiers(): DamageModifiersMessage;
 }

@@ -1,8 +1,8 @@
 import { Monster } from '../../monsters/monster';
-import { EquipmentWeapon } from './equipment-interface';
+import { IWeapon } from './equipment.interface';
 import { IDefeatEffect } from './effect.interface';
 
-export class AllyAsEquipment implements EquipmentWeapon {
+export class AllyAsEquipment implements IWeapon {
   public readonly name = 'Ally';
   public readonly modifiesDamage = false;
   private _available = true;

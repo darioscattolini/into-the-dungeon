@@ -1,7 +1,7 @@
-import { EquipmentInterface } from './equipment/equipment-interface';
+import { IEquipment } from './equipment/equipment.interface';
 
 export abstract class Hero {
   
-  constructor(public equipment: EquipmentInterface[]) { }
+  constructor(public equipment: IEquipment[]) { }
 
 }
