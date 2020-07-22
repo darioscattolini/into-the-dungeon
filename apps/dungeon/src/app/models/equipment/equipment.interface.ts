@@ -1,4 +1,4 @@
-import { Monster } from '../../monster/monster';
+import { Monster } from '../monster/monster';
 
 export type DamageModifier = (baseDamage: number) => number;
 

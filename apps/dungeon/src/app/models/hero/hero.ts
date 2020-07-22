@@ -1,4 +1,4 @@
-import { IEquipment } from './equipment/equipment.interface';
+import { IEquipment } from '../equipment/equipment.interface';
 
 export abstract class Hero {
   
