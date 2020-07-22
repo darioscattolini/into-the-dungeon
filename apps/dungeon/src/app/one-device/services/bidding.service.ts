@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
-import { Player } from '../../models/player/player';
+import { IPlayer } from '../../models/models';
 
 @Injectable({
   providedIn: OneDeviceModule
@@ -9,11 +9,11 @@ export class BiddingService {
 
   constructor() { }
 
-  public startNewRound(startingPlayer: Player): void {
+  public startNewRound(startingPlayer: IPlayer): void {
     this.chooseHero(startingPlayer);
   }
 
-  public chooseHero(startingPlayer: Player): void {
+  public chooseHero(startingPlayer: IPlayer): void {
 
   }
 }

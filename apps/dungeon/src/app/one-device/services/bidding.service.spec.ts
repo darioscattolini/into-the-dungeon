@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BiddingService } from './bidding.service';
-import { Player } from '../../models/player/player';
+import { IPlayer } from '../../models/models';
 
 describe('BiddingServiceService', () => {
   let service: BiddingService;
@@ -20,18 +20,24 @@ describe('BiddingServiceService', () => {
   });
 
   describe('startNewRound', () => {
-    let chooseHeroSpy: jest.SpyInstance<void, [Player]>;
+    let chooseHeroSpy: jest.SpyInstance<void, [IPlayer]>;
 
     beforeEach(() => {
       chooseHeroSpy = jest.spyOn(service, 'chooseHero')
-        .mockImplementation((player: Player) => {});
+        .mockImplementation((player: IPlayer) => {});
     });
 
     it('should make starting player choose a hero', () => {
-      const startingPlayer = new Player('John');
-      service.startNewRound(startingPlayer);
+      const stubStartingPlayer: IPlayer = {
+        name: 'stub',
+        victories: 0,
+        defeats: 0,
+        surviveDungeon() {},
+        dieInDungeon() {}
+      }
+      service.startNewRound(stubStartingPlayer);
       expect(chooseHeroSpy).toHaveBeenCalledTimes(1);
-      expect(chooseHeroSpy).toHaveBeenCalledWith(startingPlayer);
+      expect(chooseHeroSpy).toHaveBeenCalledWith(stubStartingPlayer);
     });
   });
 
