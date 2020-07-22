@@ -1,10 +1,10 @@
 import { Ally } from './ally';
 import { Monster } from './monster';
-import { HeroInterface } from '../heroes/hero-interface';
+import { IHero } from '../heroes/hero.interface';
 
 describe('Ally', () => {
   let ally: Ally;
-  let opponent: HeroInterface;
+  let opponent: IHero;
 
   beforeEach(() => {
     opponent = {

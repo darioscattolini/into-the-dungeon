@@ -1,11 +1,11 @@
 import { IEquipment, DamageModifier } from './equipment/equipment.interface';
 
-export interface DamageModifiersMessage {
+export interface IDamageModifiersMessage {
   first: DamageModifier[],
   second: DamageModifier[]
 }
 
-export interface HeroInterface {
+export interface IHero {
   equipment: IEquipment[];
-  getDamageModifiers(): DamageModifiersMessage;
+  getDamageModifiers(): IDamageModifiersMessage;
 }

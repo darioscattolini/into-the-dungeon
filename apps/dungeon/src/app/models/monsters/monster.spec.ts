@@ -1,29 +1,29 @@
 import { Monster } from './monster';
 import { IDerivedMonsterStatic } from './derived-monster-static.interface';
-import { HeroInterface } from '../heroes/hero-interface';
+import { IHero } from '../heroes/hero.interface';
 
 const MockOrc: IDerivedMonsterStatic = class extends Monster {
   public static readonly maxAmount: 1 | 2 = 2;
-  constructor(opponent: HeroInterface) {
+  constructor(opponent: IHero) {
     super('Orc', 3, opponent);
   }
 };
 
 const MockDemon: IDerivedMonsterStatic = class extends Monster {
   public static readonly maxAmount: 1 | 2 = 1;
-  constructor(opponent: HeroInterface) {
+  constructor(opponent: IHero) {
     super('Demon', 7, opponent);
   }
 };
 
 const MockAlly: IDerivedMonsterStatic = class extends Monster {
   public static readonly maxAmount: 1 | 2 = 1;
-  constructor(opponent: HeroInterface) {
+  constructor(opponent: IHero) {
     super('Ally', null, opponent);
   }
 };
 
-function buildMonsterPack(opponent: HeroInterface): Monster[] {
+function buildMonsterPack(opponent: IHero): Monster[] {
   return [
     new MockOrc(opponent),
     new MockDemon(opponent),
@@ -33,7 +33,7 @@ function buildMonsterPack(opponent: HeroInterface): Monster[] {
 }
 
 describe('Monster', () => {
-  let opponent: HeroInterface;
+  let opponent: IHero;
 
   beforeEach(() => {
     opponent = {

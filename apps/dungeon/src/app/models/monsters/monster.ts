@@ -1,5 +1,5 @@
 import { IDerivedMonsterStatic } from './derived-monster-static.interface';
-import { HeroInterface } from '../heroes/hero-interface';
+import { IHero } from '../heroes/hero.interface';
 import { CommonMonster } from './common-monster';
 import { RareMonster } from './rare-monster';
 
@@ -8,7 +8,7 @@ export abstract class Monster {
   
   public readonly type: CommonMonster | RareMonster;
   public readonly baseDamage: number | null;
-  public readonly opponent: HeroInterface;  // this field should be protected
+  public readonly opponent: IHero;  // this field should be protected
   public readonly positionInDungeon: number; // this field should be protected, just for metamorph
   
   protected _actualDamage: number | null;
@@ -20,7 +20,7 @@ export abstract class Monster {
   constructor(
     type: CommonMonster | RareMonster,
     baseDamage: number | null,
-    opponent: HeroInterface
+    opponent: IHero
   ) {
     this.AbstractClass = Monster;
     this.ConcreteClass = this.constructor as IDerivedMonsterStatic;

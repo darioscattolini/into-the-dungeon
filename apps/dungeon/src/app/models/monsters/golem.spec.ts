@@ -1,10 +1,10 @@
 import { Golem } from './golem';
 import { Monster } from './monster';
-import { HeroInterface } from '../heroes/hero-interface';
+import { IHero } from '../heroes/hero.interface';
 
 describe('Golem', () => {
   let golem: Golem;
-  let opponent: HeroInterface;
+  let opponent: IHero;
 
   beforeEach(() => {
     opponent = {
