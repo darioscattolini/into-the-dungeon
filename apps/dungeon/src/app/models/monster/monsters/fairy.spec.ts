@@ -1,6 +1,6 @@
 import { Fairy } from './fairy';
-import { Monster } from './monster';
-import { IHero } from '../hero/hero.interface';
+import { Monster } from '../monster';
+import { IHero } from '../../hero/hero.interface';
 
 describe('Fairy', () => {
   let fairy: Fairy;
