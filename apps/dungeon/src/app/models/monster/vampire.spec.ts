@@ -1,6 +1,6 @@
 import { Vampire } from './vampire';
 import { Monster } from './monster';
-import { IHero } from '../heroes/hero.interface';
+import { IHero } from '../hero/hero.interface';
 
 describe('Vampire', () => {
   let vampire: Vampire;

@@ -1,6 +1,6 @@
 import { Monster } from './monster';
 import { IDerivedMonsterStatic } from './derived-monster-static.interface';
-import { IHero } from '../heroes/hero.interface';
+import { IHero } from '../hero/hero.interface';
 import { staticImplements } from '../../utilities';
 
 @staticImplements<IDerivedMonsterStatic>()

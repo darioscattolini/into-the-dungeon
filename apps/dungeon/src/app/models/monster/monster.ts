@@ -1,5 +1,5 @@
 import { IDerivedMonsterStatic } from './derived-monster-static.interface';
-import { IHero } from '../heroes/hero.interface';
+import { IHero } from '../hero/hero.interface';
 import { CommonMonster } from './common-monster';
 import { RareMonster } from './rare-monster';
 

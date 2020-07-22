@@ -1,6 +1,6 @@
 import { Liche } from './liche';
 import { Monster } from './monster';
-import { IHero } from '../heroes/hero.interface';
+import { IHero } from '../hero/hero.interface';
 
 describe('Liche', () => {
   let liche: Liche;

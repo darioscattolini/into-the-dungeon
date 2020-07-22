@@ -1,6 +1,6 @@
 import { CommonMonster } from './common-monster';
 import { RareMonster } from './rare-monster';
-import { IHero } from '../heroes/hero.interface';
+import { IHero } from '../hero/hero.interface';
 
 export interface IMonster {
   readonly type: CommonMonster | RareMonster;

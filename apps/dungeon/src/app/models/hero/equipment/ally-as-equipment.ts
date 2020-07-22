@@ -1,4 +1,4 @@
-import { Monster } from '../../monsters/monster';
+import { Monster } from '../../monster/monster';
 import { IWeapon } from './equipment.interface';
 import { IDefeatEffect } from './effect.interface';
 
