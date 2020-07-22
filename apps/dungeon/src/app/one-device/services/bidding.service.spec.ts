@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BiddingService } from './bidding.service';
-import { Player } from '../../models/player';
+import { Player } from '../../models/player/player';
 
 describe('BiddingServiceService', () => {
   let service: BiddingService;

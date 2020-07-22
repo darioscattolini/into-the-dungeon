@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
 import { PlayersService } from './players.service';
-import { Player } from '../../models/player';
+import { Player } from '../../models/player/player';
 import { BiddingService } from './bidding.service';
 
 @Injectable({

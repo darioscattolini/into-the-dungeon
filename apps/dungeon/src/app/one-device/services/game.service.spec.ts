@@ -3,7 +3,7 @@ import { mocked } from 'ts-jest/utils';
 import { GameService } from './game.service';
 import { PlayersService } from './players.service';
 import { BiddingService } from './bidding.service';
-import { Player } from '../../models/player';
+import { Player } from '../../models/player/player';
 
 jest.mock('./players.service');
 const mockedPlayersService = mocked(PlayersService, true);
