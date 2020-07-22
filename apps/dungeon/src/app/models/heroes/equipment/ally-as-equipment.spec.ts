@@ -1,6 +1,6 @@
 import { AllyAsEquipment } from './ally-as-equipment';
 import { IHero } from '../hero.interface';
-import { Monster } from '../../monsters/monster';
+import { Monster } from '../../monster/monster';
 
 describe('AllyAsEquipment', () => {
   let ally: AllyAsEquipment;
