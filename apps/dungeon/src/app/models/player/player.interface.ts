@@ -1,7 +1,7 @@
 export interface IPlayer {
-  name: string;
-  victories: number;
-  defeats: number;
+  readonly name: string;
+  readonly victories: number;
+  readonly defeats: number;
   surviveDungeon(): void;
   dieInDungeon(): void;
 }
