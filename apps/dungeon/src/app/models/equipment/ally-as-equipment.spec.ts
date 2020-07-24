@@ -1,11 +1,11 @@
 import { AllyAsEquipment } from './ally-as-equipment';
-import { IHero } from '../hero/hero.interface';
+import { Hero } from '../models';
 import { Monster } from '../monster/monster';
 
 describe('AllyAsEquipment', () => {
   let ally: AllyAsEquipment;
   let allysPosition: number;
-  let opponent: IHero;
+  let opponent: Hero;
 
   beforeEach(() => {
     allysPosition = 2;

@@ -1,6 +1,6 @@
-import { IHero } from '../hero.interface';
+import { Hero } from '../models';
 
-type HeroConditionModifier = (hero: IHero) => void;
+type HeroConditionModifier = (hero: Hero) => void;
 
 export interface IEffect {
   defeat?: boolean;

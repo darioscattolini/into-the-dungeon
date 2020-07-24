@@ -1,7 +1,7 @@
 import { Monster } from './monster';
-import { IHero } from '../hero/hero.interface';
+import { Hero } from '../models';
 
 export interface IDerivedMonsterStatic {
   readonly maxAmount: 1 | 2;
-  new(opponent: IHero): Monster;
+  new(opponent: Hero): Monster;
 }

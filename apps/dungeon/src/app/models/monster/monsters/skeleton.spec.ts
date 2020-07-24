@@ -1,10 +1,10 @@
 import { Skeleton } from './skeleton';
 import { Monster } from '../monster';
-import { IHero } from '../../hero/hero.interface';
+import { Hero } from '../../models';
 
 describe('Skeleton', () => {
   let skeleton: Skeleton;
-  let opponent: IHero;
+  let opponent: Hero;
 
   beforeEach(() => {
     opponent = {
