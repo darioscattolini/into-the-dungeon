@@ -1,11 +1,16 @@
 import { IEquipment } from '../equipment/equipment.interface';
-import { IDamageModifiersMessage } from './damage-modifiers-message.interface';
+import { DamageModifier } from '../equipment/equipment.interface';
+
+interface IDamageModifierMessage {
+  first: DamageModifier[],
+  second: DamageModifier[]
+}
 
 export abstract class Hero {
   
   constructor(public equipment: IEquipment[]) { }
 
-  getDamageModifiers(): IDamageModifiersMessage {
+  getDamageModifiers(): IDamageModifierMessage {
     return {
       first: [],
       second: []
