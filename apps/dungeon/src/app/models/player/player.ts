@@ -1,6 +1,4 @@
-import { IPlayer } from './player.interface';
-
-export class Player implements IPlayer {
+export class Player {
   private _name: string;
   private _victories: number;
   private _defeats: number;
