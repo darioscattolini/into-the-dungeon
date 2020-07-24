@@ -6,10 +6,10 @@ import { BiddingService } from './bidding.service';
 import { Player } from '../../models/player/player';
 
 jest.mock('./players.service');
-const mockedPlayersService = mocked(PlayersService, true);
+const MockedPlayersService = mocked(PlayersService, true);
 
 jest.mock('./bidding.service.ts');
-const mockedBiddingService = mocked(BiddingService, true);
+const MockedBiddingService = mocked(BiddingService, true);
 
 describe('GameService', () => {
   let players: Player[];
@@ -26,17 +26,17 @@ describe('GameService', () => {
     ];
     TestBed.configureTestingModule({ providers: [GameService, PlayersService, BiddingService]});
     gameService = TestBed.inject(GameService);
-    playersService = mockedPlayersService.mock.instances[0];
+    playersService = TestBed.inject(PlayersService);
     (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
-    biddingService = mockedBiddingService.mock.instances[0];
+    biddingService = TestBed.inject(BiddingService);
     (biddingService.startNewRound as jest.Mock).mockImplementation(
       (player: Player) => firstPlayer = player
     );
   });
 
   afterEach(() => {
-    mockedPlayersService.mockClear();
-    mockedBiddingService.mockClear();
+    MockedPlayersService.mockClear();
+    MockedBiddingService.mockClear();
     firstPlayer = undefined;
   });
   
@@ -205,3 +205,26 @@ describe('GameService', () => {
     });
   });
 });
+
+/*** ALTERNATIVE SETUP WITH NO TESTBED NOR CONSTRUCTOR TESTS
+beforeEach(() => {
+  players = [
+    new Player('John'),
+    new Player('Anna'),
+    new Player('Julia')
+  ];
+  playersServiceAsMock.getPlayersList.mockClear();
+  playersServiceAsMock.getPlayersList.mockReturnValue(players);
+
+  biddingServiceAsMock.startNewRound.mockClear();
+  biddingServiceAsMock.startNewRound.mockImplementation(
+    (player: Player) => firstPlayer = player
+  );
+  
+  gameService = new GameService(playersService, biddingService);  
+});
+
+afterEach(() => {
+  firstPlayer = undefined;
+});
+*/
