@@ -1,4 +1,4 @@
-import { Monster } from '../monster/monster';
+import { Monster } from '../models';
 
 export interface ICombatResult {
   monster: Monster;

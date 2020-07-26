@@ -1,22 +1,18 @@
-import { IEquipment } from '../equipment/equipment.interface';
+import { CompanionType } from '../models';
 
-interface IDamageEffect {
+export interface IDamageEffect {
   type: 'damage';
   amount: number;
 }
 
-interface IEquipmentEffect {
+export interface IAddCompanionEffect {
+  type: 'companion';
+  companion: CompanionType;
+}
+
+export interface ILoseEquipmentEffect {
   type: 'equipment';
-  effect: 'add' | 'remove';
+  lose: 'any';
 }
 
-interface IAddEquipmentEffect extends IEquipmentEffect {
-  effect: 'add';
-  item: IEquipment;
-}
-
-interface IRemoveEquipmentEffect extends IEquipmentEffect {
-  effect: 'remove';
-}
-
-export type MonsterEffect = IDamageEffect | IAddEquipmentEffect | IRemoveEquipmentEffect;
+export type IMonsterEffect = IDamageEffect | IAddCompanionEffect | ILoseEquipmentEffect;
