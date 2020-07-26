@@ -10,5 +10,6 @@ export { Hero };
 
 // MESSAGES
 import { ICombatResult } from './messages/icombat-result';
+import { MonsterEffect } from './messages/imonster-effect';
 
-export { ICombatResult };
+export { ICombatResult, MonsterEffect };
