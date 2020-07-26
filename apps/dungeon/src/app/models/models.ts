@@ -8,8 +8,34 @@ import { Hero } from './hero/hero';
 
 export { Hero };
 
+// MONSTER
+
+import { Monster } from './monster/monster';
+import { CommonMonsterType } from './monster/common-monster-type';
+import { RareMonsterType } from './monster/rare-monster-type';
+
+export { Monster, CommonMonsterType, RareMonsterType };
+
+// COMPANION
+import { CompanionType } from './companion/companion-type';
+
+export { CompanionType };
+
 // MESSAGES
 import { ICombatResult } from './messages/icombat-result';
-import { MonsterEffect } from './messages/imonster-effect';
+import { 
+  IMonsterEffect, 
+  IDamageEffect, 
+  IAddCompanionEffect, 
+  ILoseEquipmentEffect
+} from './messages/imonster-effect';
+import { ICompanionEffect } from './messages/icompanion-effect';
 
-export { ICombatResult, MonsterEffect };
+export { 
+  ICombatResult, 
+  IMonsterEffect, 
+  IDamageEffect, 
+  IAddCompanionEffect, 
+  ILoseEquipmentEffect,
+  ICompanionEffect
+};

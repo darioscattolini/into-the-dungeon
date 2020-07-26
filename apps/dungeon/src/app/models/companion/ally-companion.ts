@@ -1,12 +1,12 @@
 import { Subject, PartialObserver, Subscription } from 'rxjs';
 import { Monster } from '../models';
-import { IWeapon } from './equipment.interface';
 import { ICombatResult } from '../models';
+import { ICompanionEffect } from '../messages/icompanion-effect';
+import { ICompanion } from './companion.interface';
 
   // still not sure if it should be equipment
-export class AllyAsEquipment implements IWeapon {
-  public readonly name = 'Ally';
-  public readonly type = 'Weapon';
+export class AllyCompanion implements ICompanion {
+  public readonly type = 'Ally';
   
   private _available = true;
   private readonly targetPosition: number;
@@ -26,11 +26,11 @@ export class AllyAsEquipment implements IWeapon {
   public appliesThisRound(monster: Monster): boolean {
     return this.targetPosition === monster.positionInDungeon;
   }
-
-  public apply(monster: Monster) {
-    return [
-      () => { } // monster defeat
-    ]
+    // what happens with incorrect turns?
+  public produceEffect(): ICompanionEffect {
+    return {
+      monsterDefeated: true
+    }
   }
   // should be private?
   public discard() {
@@ -38,7 +38,7 @@ export class AllyAsEquipment implements IWeapon {
     this._available = false;
   }
 
-  private getCombatResultObserver(): PartialObserver<ICombatResult> {  // VERIFY
+  private getCombatResultObserver(): PartialObserver<ICombatResult> {
     return {
       next: (combatResult: ICombatResult) => {
         if (combatResult.monster.positionInDungeon === this.targetPosition) {
