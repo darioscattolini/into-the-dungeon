@@ -1,21 +1,11 @@
 import { Vampire } from './vampire';
 import { Monster } from '../monster';
-import { Hero } from '../../models';
 
 describe('Vampire', () => {
   let vampire: Vampire;
-  let opponent: Hero;
 
   beforeEach(() => {
-    opponent = {
-      equipment: [],
-      getDamageModifiers() { return { first: [], second: [] } }
-    };
-    vampire = new Vampire(opponent);
-  });
-
-  afterEach(() => {
-    Monster.clearUncoveredInstances();
+    vampire = new Vampire();
   });
 
   it('should have static property maxAmount with value 2', () => {

@@ -1,181 +1,93 @@
 import { Monster } from './monster';
-import { IDerivedMonsterStatic } from './derived-monster-static.interface';
-import { Hero } from '../models';
+import { CommonMonsterType } from './common-monster-type';
+import { RareMonsterType } from './rare-monster-type';
+import { MonsterEffect } from '../models';
 
-const MockOrc: IDerivedMonsterStatic = class extends Monster {
-  public static readonly maxAmount: 1 | 2 = 2;
-  constructor(opponent: Hero) {
-    super('Orc', 3, opponent);
+const MockOrc = class extends Monster {
+  protected readonly _type: CommonMonsterType = 'Orc';
+  protected readonly _baseDamage = 3;
+
+  public get type() {
+    return this._type;
   }
+
+  public get baseDamage() {
+    return this._baseDamage;
+  }
+
+  public produceEffect(): MonsterEffect {
+    return {
+      type: 'damage',
+      amount: this._baseDamage
+    }
+  }
+
 };
 
-const MockDemon: IDerivedMonsterStatic = class extends Monster {
-  public static readonly maxAmount: 1 | 2 = 1;
-  constructor(opponent: Hero) {
-    super('Demon', 7, opponent);
+const MockJellyCube = class extends Monster {
+  protected readonly _type: RareMonsterType = 'Jelly Cube';
+  protected readonly _baseDamage = null;
+
+  public get type() {
+    return this._type;
+  }
+
+  public get baseDamage() {
+    return this._baseDamage;
+  }
+
+  public produceEffect(): MonsterEffect {
+    return {
+      type: 'equipment',
+      effect: 'remove'
+    }
   }
 };
-
-const MockAlly: IDerivedMonsterStatic = class extends Monster {
-  public static readonly maxAmount: 1 | 2 = 1;
-  constructor(opponent: Hero) {
-    super('Ally', null, opponent);
-  }
-};
-
-function buildMonsterPack(opponent: Hero): Monster[] {
-  return [
-    new MockOrc(opponent),
-    new MockDemon(opponent),
-    new MockAlly(opponent),
-    new MockOrc(opponent)
-  ];
-}
 
 describe('Monster', () => {
-  let opponent: Hero;
+  let orc: Monster;
+  let jellyCube: Monster;
 
   beforeEach(() => {
-    opponent = {
-      equipment: [],
-      getDamageModifiers() {
-        return {
-          first: [ ],
-          second: [ ]
-        }
-      }
-    }
+    orc = new MockOrc();
+    jellyCube = new MockJellyCube();
   });
 
-  afterEach(() => {
-    Monster.clearUncoveredInstances();
-  })
-
-  describe('single monster tests', () => {
-    let monster: Monster;
-
-    beforeEach(() => {
-      monster = new MockDemon(opponent);
-    });
-
-    it('should be created (as instance of MockDemon extension)', () => {
-      expect(monster).toBeTruthy();
-    });
-
-    it('should be an instance of Monster', () => {
-      expect(monster instanceof Monster).toBe(true);
-    });
-
-    it('should be of type Demon', () => {
-      expect(monster.type).toBe('Demon');
-    });
-
-    it('should have baseDamage of 7', () => {
-      expect(monster.baseDamage).toBe(7);
-    });
-
-    it('should allow monsters with null baseDamage', () => {
-      const mockAlly = new MockAlly(opponent);
-      expect(mockAlly.baseDamage).toBe(null);
-    });
-
-    it('should register a Hero as monster opponent', () => {
-      expect(monster.opponent).toBe(opponent);
-    });
-
-    describe('actualDamage property', () => {
-      it('should be defined', () => {
-        expect(monster.actualDamage).toBeDefined();
-      });
-
-      it('should equal baseDamage by default', () => {
-        expect(monster.actualDamage).toBe(monster.baseDamage);
-      });
-
-      it('should be 5 if opponent has equipment with -2 damage modifier', () => {
-        Monster.clearUncoveredInstances();
-        opponent.getDamageModifiers = function() {
-          return {
-            first: [ ],
-            second: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ]
-          }
-        }
-        monster = new MockDemon(opponent);
-        expect(monster.actualDamage).toBe(5);
-      });
-
-      it('should be 0 if opponent has reducer to 1 or 2 + -2 damage modifier, in that order', () => {
-        Monster.clearUncoveredInstances();
-        opponent.getDamageModifiers = function() {
-          return {
-            first: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ],
-            second: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ]
-          }
-        }
-        monster = new MockDemon(opponent);
-        expect(monster.actualDamage).toBe(0);
-      });
-
-      it('should be 1 if opponent has reducer to 1 or 2 + -2 damage modifier, in reverse order', () => {
-        Monster.clearUncoveredInstances();
-        opponent.getDamageModifiers = function() {
-          return {
-            first: [ (baseDamage: number) => baseDamage - 2 < 0 ? 0 : baseDamage - 2 ],
-            second: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ]
-          }
-        }
-        monster = new MockDemon(opponent);
-        expect(monster.actualDamage).toBe(1);
-      });
-    });
+  it('should create orc (through MockOrc extension)', () => {
+    expect(orc).toBeTruthy();
   });
 
-  describe('many monsters tests', () => {
-    let monsterPack: Monster[];
-    let mockOrc1: Monster,
-        mockDemon: Monster,
-        mockAlly: Monster,
-        mockOrc2: Monster;
+  it('should create instances of Monster', () => {
+    expect(orc instanceof Monster).toBe(true);
+    expect(jellyCube instanceof Monster).toBe(true);
+  });
 
-    beforeEach(() => {
-      monsterPack = buildMonsterPack(opponent);
-      [
-        mockOrc1,
-        mockDemon,
-        mockAlly,
-        mockOrc2
-      ] = monsterPack;
-    });
+  it('should create instances with definite type', () => {
+    expect(orc.type).toBeDefined();
+    expect(jellyCube.type).toBeDefined();
+  });
 
-    it('(they) should be registered in static property uncoveredInstances', () => {
-      expect(Monster.uncoveredInstances).toEqual(monsterPack);
-    });
+  it('should create instances with definite baseDamage', () => {
+    expect(orc.baseDamage).toBeDefined();
+    expect(jellyCube.baseDamage).toBeDefined();
+  });
 
-    describe('static Monster.clearUncoveredInstances method', () => {
-      it('should empty Monster.uncoveredInstances array', () => {
-        expect(Monster.uncoveredInstances.length).toBe(monsterPack.length);
-        Monster.clearUncoveredInstances();
-        expect(Monster.uncoveredInstances.length).toBe(0);
-      });
-    });
+  it('should allow monsters with null baseDamage', () => {
+    expect(jellyCube.baseDamage).toBe(null);
+  });
 
-    it('(their) position in dungeon should be registered in positionInDungeon property', () => {
-      expect(mockOrc1.positionInDungeon).toBe(1);
-      expect(mockDemon.positionInDungeon).toBe(2);
-      expect(mockAlly.positionInDungeon).toBe(3);
-      expect(mockOrc2.positionInDungeon).toBe(4);
-    });
+  it('should create instances with positionInDungeon undefined by default', () => {
+    expect(orc.positionInDungeon).not.toBeDefined();
+    expect(jellyCube.positionInDungeon).not.toBeDefined();
+  });
 
-    it('should not allow the nth monster of its type to be higher than class maxAmount', () => {
-      expect(() => new MockOrc(opponent)).toThrow(
-        'There can\'t be more than 2 Orc.'
-      );
-      expect(() => new MockDemon(opponent)).toThrow(
-        'There can\'t be more than 1 Demon.'
-      );
-      expect(() => new MockAlly(opponent)).toThrow(
-        'There can\'t be more than 1 Ally.'
-      );
-    });
+  it('should change positionInDungeon to 2 for monster added to dungeon in position 2', () => {
+    orc.addToDungeonInPosition(2);
+    expect(orc.positionInDungeon).toBe(2);
+  });
+
+  it('should create instances with definite effect', () => {
+    expect(orc.produceEffect()).toBeDefined();
+    expect(jellyCube.produceEffect()).toBeDefined();
   });
 });

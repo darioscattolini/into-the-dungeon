@@ -1,21 +1,11 @@
 import { Ally } from './ally';
 import { Monster } from '../monster';
-import { Hero } from '../../models';
 
 describe('Ally', () => {
   let ally: Ally;
-  let opponent: Hero;
 
   beforeEach(() => {
-    opponent = {
-      equipment: [],
-      getDamageModifiers() { return { first: [], second: [] } }
-    };
-    ally = new Ally(opponent);
-  });
-
-  afterEach(() => {
-    Monster.clearUncoveredInstances();
+    ally = new Ally();
   });
 
   it('should have static property maxAmount with value 1', () => {
@@ -40,5 +30,12 @@ describe('Ally', () => {
 
   it('should create an instance with baseDamage of null', () => {
     expect(ally.baseDamage).toBe(null);
+  });
+
+  it('should produce a companion: ally effect', () => {
+    expect(ally.produceEffect()).toEqual({
+      type: 'companion',
+      companion: 'Ally'
+    });
   });
 });

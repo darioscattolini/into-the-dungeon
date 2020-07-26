@@ -1,21 +1,11 @@
 import { Golem } from './golem';
 import { Monster } from '../monster';
-import { Hero } from '../../models';
 
 describe('Golem', () => {
   let golem: Golem;
-  let opponent: Hero;
 
   beforeEach(() => {
-    opponent = {
-      equipment: [],
-      getDamageModifiers() { return { first: [], second: [] } }
-    };
-    golem = new Golem(opponent);
-  });
-
-  afterEach(() => {
-    Monster.clearUncoveredInstances();
+    golem = new Golem();
   });
 
   it('should have static property maxAmount with value 2', () => {

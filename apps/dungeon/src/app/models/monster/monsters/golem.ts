@@ -1,13 +1,12 @@
-import { Monster } from '../monster';
+import { CommonMonster } from '../common-monster';
 import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
-import { Hero } from '../../models';
 import { staticImplements } from '../../../utilities';
 
 @staticImplements<IDerivedMonsterStatic>()
-export class Golem extends Monster {
+export class Golem extends CommonMonster {
   public static readonly maxAmount = 2;
 
-  constructor(opponent: Hero) {
-    super('Golem', 5, opponent);
+  constructor() {
+    super('Golem', 5);
   }
 };

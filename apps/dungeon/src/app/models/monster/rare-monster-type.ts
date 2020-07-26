@@ -1,4 +1,4 @@
-export type RareMonster = 
+export type RareMonsterType = 
   'Fairy' |
   'Ally' |
   'Mimetic' |

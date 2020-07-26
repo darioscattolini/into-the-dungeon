@@ -1,26 +1,11 @@
 import { Fairy } from './fairy';
 import { Monster } from '../monster';
-import { Hero } from '../../models';
 
 describe('Fairy', () => {
   let fairy: Fairy;
-  let opponent: Hero;
 
   beforeEach(() => {
-    opponent = {
-      equipment: [],
-      getDamageModifiers() { 
-        return { 
-          first: [ (baseDamage: number) => baseDamage % 2 === 1 ? 1 : 2 ], 
-          second: []
-        }
-      }
-    };
-    fairy = new Fairy(opponent);
-  });
-
-  afterEach(() => {
-    Monster.clearUncoveredInstances();
+    fairy = new Fairy();
   });
 
   it('should have static property maxAmount with value 1', () => {
@@ -47,7 +32,8 @@ describe('Fairy', () => {
     expect(fairy.baseDamage).toBe(0);
   });
 
-  it('should have actualDamage of 0 irrespective of opponent equipment', () => {
+  it('should have actualDamage of 0 even if attempting to set it to different value', () => {
+    fairy.actualDamage = 4;
     expect(fairy.actualDamage).toBe(0);
   });
 });
