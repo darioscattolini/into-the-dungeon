@@ -1,30 +1,23 @@
-import { Monster } from '../monster/monster';
-
-export type DamageModifier = (baseDamage: number) => number;
+import { Subject } from 'rxjs';
+import { Monster } from '../models';
+import { Hero, ICombatResult } from '../models';
 
 export interface IEquipment {
   name: string;
+  type: 'Weapon' | 'HitPoints' | 'DamageReducer' | 'Reviver';
+  // hero: Hero;
   available: boolean; // discarded or not
-  modifiesDamage: boolean;
-  modifierOrder?: 'first' | 'second';
-  damageModifier?: DamageModifier;
-  canBeUsedAgainst? (monster: Monster): boolean;
-  useAgainst? (monster: Monster): void;
+  compulsory?: boolean; // must be used
+  unconfigured?: boolean; // before Dungeon
+  appliesThisRound(opponent?: Monster): boolean;
+  apply(opponent?: Monster): Function[];
+  discard(): void;
+  subscribeToCombatResult?(combatResult$: Subject<ICombatResult>): void;
+  // unsuscribeToCombatResult?(): void; private, after discard
 }
 
-export interface IBaseEquipment {
-  name: string;
-  available: boolean; // discarded or not
-  modifiesDamage: boolean;
-}
-
-export interface IWeapon extends IBaseEquipment {
-  canBeUsedAgainst (monster: Monster): boolean;
-  useAgainst (monster: Monster): void;
-}
-
-export interface IEquipmentWithDamageModifier extends IBaseEquipment {
-  modifiesDamage: true;
-  modifierOrder: 'first' | 'second';
-  damageModifier: DamageModifier;
+export interface IWeapon extends IEquipment {
+  type: 'Weapon';
+  appliesThisRound(opponent: Monster): boolean;
+  apply(opponent: Monster): Function[];
 }

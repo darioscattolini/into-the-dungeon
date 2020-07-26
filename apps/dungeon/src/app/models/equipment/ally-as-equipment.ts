@@ -1,37 +1,57 @@
-import { Monster } from '../monster/monster';
+import { Subject, PartialObserver, Subscription } from 'rxjs';
+import { Monster } from '../models';
 import { IWeapon } from './equipment.interface';
-import { IDefeatEffect } from './effect.interface';
+import { ICombatResult } from '../models';
 
+  // still not sure if it should be equipment
 export class AllyAsEquipment implements IWeapon {
   public readonly name = 'Ally';
-  public readonly modifiesDamage = false;
+  public readonly type = 'Weapon';
+  
   private _available = true;
-  private positionInDungeon: number;
+  private readonly targetPosition: number;
+  private readonly combatResultObserver: PartialObserver<ICombatResult>;
+  private subscription: Subscription;
 
-  constructor(positionInDungeon: number) {
-    this.positionInDungeon = positionInDungeon;
+  constructor(targetPosition: number, combatResult$: Subject<ICombatResult>) {
+    this.targetPosition = targetPosition;
+    this.combatResultObserver = this.getCombatResultObserver();
+    this.subscription = combatResult$.subscribe(this.combatResultObserver);
   }
 
   public get available(): boolean {
     return this._available;
   }
 
-  public canBeUsedAgainst(monster: Monster): boolean {
-    if (monster.positionInDungeon > this.positionInDungeon + 1) {
-      this.discardAfterUseOrOmission();
-    }
-    return monster.positionInDungeon === this.positionInDungeon + 1;
+  public appliesThisRound(monster: Monster): boolean {
+    return this.targetPosition === monster.positionInDungeon;
   }
 
-  public useAgainst(monster: Monster): IDefeatEffect {
-    if (!this.canBeUsedAgainst(monster)) {
-      throw new Error('The ally can only be used against the monster after it');
-    }
-    this.discardAfterUseOrOmission();
-    return { defeat: true };
+  public apply(monster: Monster) {
+    return [
+      () => { } // monster defeat
+    ]
   }
-
-  private discardAfterUseOrOmission(): void {
+  // should be private?
+  public discard() {
+    this.unsuscribeToCombatResult();
     this._available = false;
+  }
+
+  private getCombatResultObserver(): PartialObserver<ICombatResult> {  // VERIFY
+    return {
+      next: (combatResult: ICombatResult) => {
+        if (combatResult.monster.positionInDungeon === this.targetPosition) {
+          this.discard();
+        }
+      },
+      error: (error: any) => {
+        console.error('Combat result observer has thrown error: ' + error);
+      }
+    }
+  }
+
+  private unsuscribeToCombatResult() {
+    this.subscription.unsubscribe();
   }
 }

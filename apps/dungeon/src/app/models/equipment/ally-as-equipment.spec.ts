@@ -1,25 +1,31 @@
 import { AllyAsEquipment } from './ally-as-equipment';
-import { Hero } from '../models';
-import { Monster } from '../monster/monster';
+import { Monster } from '../models';
+import { CommonMonsterType } from '../monster/common-monster-type';
+import { ICombatResult } from '../models';
+import { Subject } from 'rxjs';
+
+class MockMonster extends Monster {
+  protected _type: CommonMonsterType = 'Orc';
+  protected _baseDamage = 3;
+
+  public get type() {
+    return this._type;
+  }
+
+  public get baseDamage() {
+    return this._baseDamage;
+  }
+}
 
 describe('AllyAsEquipment', () => {
   let ally: AllyAsEquipment;
-  let allysPosition: number;
-  let opponent: Hero;
+  let targetsPosition: number;
+  let combatResult$: Subject<ICombatResult>
 
   beforeEach(() => {
-    allysPosition = 2;
-    ally = new AllyAsEquipment(allysPosition);
-    opponent = {
-      equipment: [],
-      getDamageModifiers() {
-        return {
-          first: [],
-          second: []
-        }
-      }
-    };
-    Monster.clearUncoveredInstances();
+    targetsPosition = 2;
+    combatResult$ = new Subject<ICombatResult>();
+    ally = new AllyAsEquipment(targetsPosition, combatResult$);
   });
   
   it('should create an instance', () => {
@@ -34,41 +40,51 @@ describe('AllyAsEquipment', () => {
     expect(ally.name).toBe('Ally');
   });
 
+  it('should create an instance with type "Weapon"', () => {
+    expect(ally.type).toBe('Weapon');
+  });
+
   it('should create an instance with field available with value true', () => {
     expect(ally.available).toBe(true);
   });
 
-  it('should create an instance with field modifiesDamage with value false', () => {
-    expect(ally.modifiesDamage).toBe(false);
+  it('should not apply in round not corresponding to targetsPosition', () => {
+    const monster = new MockMonster();
+    monster.addToDungeonInPosition(targetsPosition - 1);
+    expect(ally.appliesThisRound(monster)).toBe(false);
   });
 
-  describe('canBeUsedAgainst', () => {
-    it('can only be used against ally\'s next monster', () => {
-      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-      const monster2 = new class extends Monster {} ('Ally', null, opponent);
-      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-      const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-      
-      expect(ally.canBeUsedAgainst(monster1)).toBe(false);
-      expect(ally.canBeUsedAgainst(monster2)).toBe(false);
-      expect(ally.canBeUsedAgainst(monster3)).toBe(true);
-      expect(ally.canBeUsedAgainst(monster4)).toBe(false);
-    });
-  
-    it('should be discarded after ally\'s next monster', () => {
-      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-      const monster2 = new class extends Monster {} ('Ally', null, opponent);
-      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-      expect(ally.canBeUsedAgainst(monster3)).toBe(true);
-      expect(ally.available).toBe(true);
-      
-      const monster4 = new class extends Monster {} ('Orc', 3, opponent);
-      expect(ally.canBeUsedAgainst(monster4)).toBe(false);
-      expect(ally.available).toBe(false);
-    });
+  it('should apply in round corresponding to targetsPosition', () => {
+    const monster = new MockMonster();
+    monster.addToDungeonInPosition(targetsPosition);
+    expect(ally.appliesThisRound(monster)).toBe(true);
   });
 
-  describe('useAgainst', () => {
+  it('should not be discarded in round when it appears', () => {
+    const monster = new MockMonster();
+    monster.addToDungeonInPosition(targetsPosition - 1);
+    
+    combatResult$.next({
+      monster: monster,
+      defeated: true
+    });
+
+    expect(ally.available).toBe(true);
+  });
+
+  it('should be discarded in round immediately after it', () => {
+    const monster = new MockMonster();
+    monster.addToDungeonInPosition(targetsPosition);
+    
+    combatResult$.next({
+      monster: monster,
+      defeated: true
+    });
+
+    expect(ally.available).toBe(false);
+  });
+/*  
+  describe('apply', () => {
     it('should return a defeat effect', () => {
       const effect = { defeat: true };
       const monster1 = new class extends Monster {} ('Troll', 1, opponent);
@@ -90,14 +106,5 @@ describe('AllyAsEquipment', () => {
         .toThrow('The ally can only be used against the monster after it');
     });
   
-    it('should discard ally after use', () => {
-      const effect = { defeat: true };
-      const monster1 = new class extends Monster {} ('Troll', 1, opponent);
-      const monster2 = new class extends Monster {} ('Ally', null, opponent);
-      const monster3 = new class extends Monster {} ('Troll', 1, opponent);
-      expect(ally.available).toBe(true);
-      ally.useAgainst(monster3);
-      expect(ally.available).toBe(false);
-    });
-  });
+  });*/
 });
