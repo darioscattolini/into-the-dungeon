@@ -21,13 +21,14 @@ import { CompanionType } from './companion/companion-type';
 
 export { CompanionType };
 
-// MESSAGES
+// MESSAGE
 import { ICombatResult } from './messages/icombat-result';
 import { 
   IMonsterEffect, 
   IDamageEffect, 
   IAddCompanionEffect, 
-  ILoseEquipmentEffect
+  ILoseEquipmentEffect,
+  ITransformationEffect
 } from './messages/imonster-effect';
 import { ICompanionEffect } from './messages/icompanion-effect';
 
@@ -37,5 +38,6 @@ export {
   IDamageEffect, 
   IAddCompanionEffect, 
   ILoseEquipmentEffect,
+  ITransformationEffect,
   ICompanionEffect
 };
