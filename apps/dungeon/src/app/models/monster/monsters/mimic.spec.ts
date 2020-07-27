@@ -1,6 +1,6 @@
 import { Mimic } from './mimic';
 import { Monster } from '../monster';
-import { ITransformationEffect, TransformerFunction } from '../../models';
+import { ITransformationEffect } from '../../models';
 import { noEquipHeroStub, oneEquipHeroStub } from '../../mocks';
 
 describe('Mimic', () => {
@@ -34,6 +34,11 @@ describe('Mimic', () => {
     expect(mimic.baseDamage).toBe(null);
   });
 
+  it('should throw error if trying to produceEffect before mimicking', () => {
+    expect(() => { mimic.produceEffect() })
+      .toThrowError('Mimic must transform before attacking');
+  });
+
   describe('startingAction', () => {
     let startingAction: ITransformationEffect;
     
@@ -58,15 +63,16 @@ describe('Mimic', () => {
     });
 
     describe('transformer function', () => {
-      
-      let transform: TransformerFunction; 
       let noEquipMimic: Monster;
       let oneEquipMimic: Monster;
 
       beforeEach(() => {
-        transform = startingAction.transformer;
-        noEquipMimic = transform(noEquipHeroStub);
-        oneEquipMimic = transform(oneEquipHeroStub);
+        noEquipMimic = new Mimic()
+          .startingAction()
+          .transformer(noEquipHeroStub);
+        oneEquipMimic = new Mimic()
+          .startingAction()
+          .transformer(oneEquipHeroStub);
       });
       
       it('should return a Mimic', () => {
@@ -80,6 +86,18 @@ describe('Mimic', () => {
 
       it('should return a Mimic of baseDamage 1 for hero with 1 equipment', () => {
         expect(oneEquipMimic.baseDamage).toBe(1);
+      });
+
+      it('should return a Mimic that produces a damage effect', () => {
+        expect(noEquipMimic.produceEffect()).toEqual({
+          type: 'damage',
+          amount: 0
+        });
+
+        expect(oneEquipMimic.produceEffect()).toEqual({
+          type: 'damage',
+          amount: 1
+        });
       });
     });
   });
