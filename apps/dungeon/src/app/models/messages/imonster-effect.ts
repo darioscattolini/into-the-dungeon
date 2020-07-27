@@ -19,7 +19,7 @@ type TransformerFunction = (player?: Player) => Monster;
 
 export interface ITransformationEffect {
   type: 'transformation';
-  parameter: 'player' | 'none';
+  parameter: 'hero' | 'none';
   transformation: TransformerFunction;
 }
 
