@@ -1,9 +1,10 @@
 import { Hero } from './hero';
+import { stubEquipment } from '../mocks';
 
 class ConcreteHero extends Hero { 
-  constructor() {
-    super([]);
-  }
+  protected equipment = [
+    stubEquipment
+  ];
 }
 
 describe('Hero', () => {
@@ -13,13 +14,17 @@ describe('Hero', () => {
     hero = new ConcreteHero();
   });
 
-  describe('constructor', () => {
-    it('should help create an instance of an extension', () => {
+  describe('Hero', () => {
+    it('should be created as instance of Concrete extension', () => {
       expect(hero).toBeTruthy();
     });
 
-    it('should create an instance of Monster', () => {
+    it('should be an instance of Hero', () => {
       expect(hero instanceof Hero).toStrictEqual(true);
+    });
+
+    it('should return its equipmentSize', () => {
+      expect(hero.equipmentSize).toBeDefined();
     });
   });
 });
