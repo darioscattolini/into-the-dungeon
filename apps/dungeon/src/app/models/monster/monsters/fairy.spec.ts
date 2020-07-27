@@ -36,4 +36,8 @@ describe('Fairy', () => {
     fairy.actualDamage = 4;
     expect(fairy.actualDamage).toBe(0);
   });
+
+  it('should have a null startingAction', () => {
+    expect(fairy.startingAction()).toBeNull();
+  });
 });

@@ -38,4 +38,8 @@ describe('Ally', () => {
       companion: 'Ally'
     });
   });
+
+  it('should have a null startingAction', () => {
+    expect(ally.startingAction()).toBeNull();
+  });
 });

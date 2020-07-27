@@ -1,7 +1,7 @@
 import { Monster } from './monster';
 import { CommonMonsterType } from './common-monster-type';
 import { RareMonsterType } from './rare-monster-type';
-import { MonsterEffect } from '../models';
+import { IMonsterEffect } from '../models';
 
 const MockOrc = class extends Monster {
   protected readonly _type: CommonMonsterType = 'Orc';
@@ -15,7 +15,11 @@ const MockOrc = class extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): MonsterEffect {
+  public startingAction() {
+    return null;
+  }
+
+  public produceEffect(): IMonsterEffect {
     return {
       type: 'damage',
       amount: this._baseDamage
@@ -36,10 +40,17 @@ const MockJellyCube = class extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): MonsterEffect {
+  public startingAction(): IMonsterEffect {
+    return {
+      type: 'damage',
+      amount: 1
+    }
+  }
+
+  public produceEffect(): IMonsterEffect {
     return {
       type: 'equipment',
-      effect: 'remove'
+      lose: 'any'
     }
   }
 };
@@ -77,8 +88,8 @@ describe('Monster', () => {
   });
 
   it('should create instances with positionInDungeon undefined by default', () => {
-    expect(orc.positionInDungeon).not.toBeDefined();
-    expect(jellyCube.positionInDungeon).not.toBeDefined();
+    expect(orc.positionInDungeon).toBeUndefined();
+    expect(jellyCube.positionInDungeon).toBeUndefined();
   });
 
   it('should change positionInDungeon to 2 for monster added to dungeon in position 2', () => {
@@ -89,5 +100,19 @@ describe('Monster', () => {
   it('should create instances with definite effect', () => {
     expect(orc.produceEffect()).toBeDefined();
     expect(jellyCube.produceEffect()).toBeDefined();
+  });
+
+  it('should allow extensions returning null startingAction', () => {
+    expect(orc.startingAction()).toBeNull();
+  });
+
+  it('should allow extensions returning definite startingAction', () => {
+    const jellyStartingAction = jellyCube.startingAction();
+    expect(jellyCube.startingAction).toBeTruthy();
+  });
+
+  it('should require startingAction implementation', () => {
+    const startingActionEffect = 
+    expect(jellyCube.startingAction()).toBeDefined();
   });
 });

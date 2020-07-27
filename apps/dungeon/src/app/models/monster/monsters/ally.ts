@@ -25,4 +25,8 @@ export class Ally extends Monster {
       companion: 'Ally'
     }
   }
+
+  public startingAction(): null {
+    return null;
+  }
 };

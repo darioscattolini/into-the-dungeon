@@ -14,6 +14,8 @@ export abstract class Monster {
 
   public abstract produceEffect(): IMonsterEffect;
 
+  public abstract startingAction(): IMonsterEffect | null;
+
   public get positionInDungeon() {
     return this._positionInDungeon
   }

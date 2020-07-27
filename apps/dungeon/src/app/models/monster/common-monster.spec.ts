@@ -60,4 +60,8 @@ describe('Monster', () => {
     monster.actualDamage = 7;
     expect(monster.produceEffect().amount).toBe(7);
   });
+
+  it('should return a startingAction of null value', () => {
+    expect(monster.startingAction()).toBeNull();
+  });
 });

@@ -31,4 +31,8 @@ export class Fairy extends Monster {
       amount: this.actualDamage
     }
   }
+
+  public startingAction(): null {
+    return null;
+  }
 };

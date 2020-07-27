@@ -40,4 +40,8 @@ export abstract class CommonMonster extends Monster {
       amount: this._actualDamage
     }
   }
+
+  public startingAction(): null {
+    return null;
+  }
 }
