@@ -20,7 +20,7 @@ type TransformerFunction = (hero?: Hero) => Monster;
 export interface ITransformationEffect {
   type: 'transformation';
   parameter: 'hero' | 'none';
-  transformation: TransformerFunction;
+  transformer: TransformerFunction;
 }
 
 export type IMonsterEffect = IDamageEffect | 
