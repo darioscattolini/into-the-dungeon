@@ -28,8 +28,7 @@ import {
   IDamageEffect, 
   IAddCompanionEffect, 
   ILoseEquipmentEffect,
-  ITransformationEffect,
-  TransformerFunction
+  ITransformationEffect
 } from './messages/imonster-effect';
 import { ICompanionEffect } from './messages/icompanion-effect';
 
@@ -40,6 +39,5 @@ export {
   IAddCompanionEffect, 
   ILoseEquipmentEffect,
   ITransformationEffect,
-  ICompanionEffect,
-  TransformerFunction
+  ICompanionEffect
 };
