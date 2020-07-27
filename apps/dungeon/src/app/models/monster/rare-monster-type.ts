@@ -1,7 +1,7 @@
 export type RareMonsterType = 
   'Fairy' |
   'Ally' |
-  'Mimetic' |
+  'Mimic' |
   'Jelly Cube' |
   'Dracula' |
   'Metamorph';
