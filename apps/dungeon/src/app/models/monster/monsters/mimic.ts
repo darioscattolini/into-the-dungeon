@@ -7,7 +7,7 @@ import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
 export class Mimic extends Monster {
   public static readonly maxAmount = 1;
   
-  protected _type: RareMonsterType = 'Mimic';
+  protected readonly _type: RareMonsterType = 'Mimic';
   protected _baseDamage: number | null = null;
 
   public get type() {
