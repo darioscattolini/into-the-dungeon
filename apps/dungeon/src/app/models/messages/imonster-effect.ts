@@ -15,7 +15,7 @@ export interface ILoseEquipmentEffect {
   lose: 'any';
 }
 
-type TransformerFunction = (hero?: Hero) => Monster;
+type TransformerFunction = ( () => Monster ) | ( (hero: Hero) => Monster );
 
 export interface ITransformationEffect {
   type: 'transformation';

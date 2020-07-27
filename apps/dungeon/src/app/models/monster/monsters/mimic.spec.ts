@@ -30,7 +30,7 @@ describe('Mimic', () => {
     expect(mimic.type).toBe('Mimic');
   });
 
-  it('should create an instance with baseDamage of null', () => {
+  it('should create an instance with baseDamage of null at first', () => {
     expect(mimic.baseDamage).toBe(null);
   });
 
@@ -67,16 +67,8 @@ describe('Mimic', () => {
         expect(noEquipMimic.baseDamage).toBe(0);
       });
 
-      it('should return a Mimic of actualDamage 0 for hero with no equipment', () => {
-        expect(noEquipMimic.actualDamage).toBe(0);
-      });
-
       it('should return a Mimic of baseDamage 1 for hero with 1 equipment', () => {
         expect(oneEquipMimic.baseDamage).toBe(1);
-      });
-
-      it('should return a Mimic of actualDamage 1 for hero with 1 equipment', () => {
-        expect(oneEquipMimic.actualDamage).toBe(1);
       });
     });
   });
