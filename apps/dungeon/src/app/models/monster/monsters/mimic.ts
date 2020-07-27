@@ -32,7 +32,7 @@ export class Mimic extends Monster {
       parameter: 'hero',
       transformer: (hero: Hero) => {
         this._baseDamage = hero.equipmentSize;
-        return this as Mimic;
+        return this;
       }
     }
   }
