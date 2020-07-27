@@ -1,6 +1,6 @@
 import { Mimic } from './mimic';
 import { Monster } from '../monster';
-import { ITransformationEffect } from '../../models';
+import { ITransformationEffect, TransformerFunction } from '../../models';
 import { noEquipHeroStub, oneEquipHeroStub } from '../../mocks';
 
 describe('Mimic', () => {
@@ -35,7 +35,11 @@ describe('Mimic', () => {
   });
 
   describe('startingAction', () => {
-    const startingAction: ITransformationEffect = mimic.startingAction();
+    let startingAction: ITransformationEffect;
+    
+    beforeEach(() => {
+      startingAction = mimic.startingAction();
+    });
     
     it('should be nonnull', () => {
       expect(startingAction).not.toBeNull();
@@ -54,10 +58,17 @@ describe('Mimic', () => {
     });
 
     describe('transformer function', () => {
-      const transform = startingAction.transformer;
-      const noEquipMimic = transform(noEquipHeroStub);
-      const oneEquipMimic = transform(oneEquipHeroStub);
+      
+      let transform: TransformerFunction; 
+      let noEquipMimic: Monster;
+      let oneEquipMimic: Monster;
 
+      beforeEach(() => {
+        transform = startingAction.transformer;
+        noEquipMimic = transform(noEquipHeroStub);
+        oneEquipMimic = transform(oneEquipHeroStub);
+      });
+      
       it('should return a Mimic', () => {
         expect(noEquipMimic instanceof Mimic).toBe(true);
         expect(oneEquipMimic instanceof Mimic).toBe(true);
