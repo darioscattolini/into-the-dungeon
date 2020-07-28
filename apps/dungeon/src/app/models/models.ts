@@ -22,7 +22,7 @@ import { CompanionType } from './companion/companion-type';
 export { CompanionType };
 
 // MESSAGE
-import { ICombatResult } from './messages/icombat-result';
+import { ICombatResult } from './message/icombat-result';
 import { 
   IMonsterEffect, 
   IDamageEffect, 
@@ -30,8 +30,8 @@ import {
   ILoseEquipmentEffect,
   ITransformationEffect,
   TransformerFunction
-} from './messages/imonster-effect';
-import { ICompanionEffect } from './messages/icompanion-effect';
+} from './message/imonster-effect';
+import { ICompanionEffect } from './message/icompanion-effect';
 
 export { 
   ICombatResult, 

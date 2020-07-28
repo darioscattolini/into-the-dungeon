@@ -1,7 +1,7 @@
 import { Subject, PartialObserver, Subscription } from 'rxjs';
 import { Monster } from '../models';
 import { ICombatResult } from '../models';
-import { ICompanionEffect } from '../messages/icompanion-effect';
+import { ICompanionEffect } from '../models';
 import { ICompanion } from './companion.interface';
 
   // still not sure if it should be equipment
