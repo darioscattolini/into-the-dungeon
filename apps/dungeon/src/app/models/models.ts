@@ -65,6 +65,8 @@ import {
   TransformerFunction
 } from './message/imonster-effect';
 import { ICompanionEffect } from './message/icompanion-effect';
+import { IPlayerActionRequest, IPlayerChoiceRequest } from './message/iplayer-action-request';
+import { IPlayerActionResponse, IPlayerChoiceResponse } from './message/iplayer-action-response';
 
 export { 
   ICombatResult, 
@@ -74,5 +76,9 @@ export {
   ILoseEquipmentEffect,
   ITransformationEffect,
   TransformerFunction,
-  ICompanionEffect
+  ICompanionEffect,
+  IPlayerActionRequest,
+  IPlayerChoiceRequest,
+  IPlayerActionResponse,
+  IPlayerChoiceResponse
 };
