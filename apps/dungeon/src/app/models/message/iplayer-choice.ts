@@ -1,5 +1,4 @@
 export interface IPlayerChoiceRequest {
-  type: 'choice';
   options: [];
 }
 

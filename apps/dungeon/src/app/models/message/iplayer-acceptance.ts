@@ -1,5 +1,4 @@
 export interface IPlayerAcceptanceRequest {
-  type: 'acceptance';
   content: string;
 }
 
