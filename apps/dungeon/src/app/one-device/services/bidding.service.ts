@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
-import { Player, IHero } from '../../models/models';
+import { Player, Hero } from '../../models/models';
 import { HeroesService } from './heroes.service';
 import { UIControllerService } from './uicontroller.service';
 
@@ -9,10 +9,16 @@ import { UIControllerService } from './uicontroller.service';
 })
 export class BiddingService {
 
+  private _hero: Hero | undefined;
+
   constructor(
     private heroesService: HeroesService,
     private uiController: UIControllerService
   ) { }
+
+  public get hero() {
+    return this._hero;
+  }
 
   public startNewRound(startingPlayer: Player): void {
     this.chooseHero(startingPlayer);
@@ -28,6 +34,6 @@ export class BiddingService {
 
     const chosenHero = heroes[choice.response].name;
 
-    this.heroesService.getHero(chosenHero);
+    this._hero = this.heroesService.getHero(chosenHero);
   }
 }
