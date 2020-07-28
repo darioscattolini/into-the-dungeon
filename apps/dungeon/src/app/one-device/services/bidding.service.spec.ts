@@ -3,7 +3,14 @@ import { mocked } from 'ts-jest/utils';
 
 import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
-import { Player } from '../../models/models';
+import { 
+  Player, 
+  IHero, 
+  heroes, 
+  IPlayerChoiceRequest, 
+  IPlayerActionResponse, 
+  IPlayerActionRequest 
+} from '../../models/models';
 
 jest.mock('./heroes.service');
 const MockedHeroesService = mocked(HeroesService, true);
@@ -48,14 +55,31 @@ describe('BiddingServiceService', () => {
 
   describe('chooseHero', () => {
     let startingPlayer: Player;
+    let heroUIData: IHero[];
+    let requestActionSpy: jest.SpyInstance<IPlayerActionResponse, [IPlayerActionRequest]>
+    let requestActionParameter: IPlayerActionRequest | undefined;
 
     beforeEach(() => {
       startingPlayer = new Player('first');
+      heroUIData = heroes;
+      requestActionSpy = jest.spyOn(startingPlayer, 'requestAction')
+        .mockImplementation((request: IPlayerActionRequest) => {
+          requestActionParameter = request;
+        });
       biddingService.chooseHero(startingPlayer);
+    });
+
+    afterEach(() => {
+      requestActionParameter = undefined;
     });
 
     it('should ask HeroService for heroes', () => {
       expect(heroesService.getHeroes).toHaveBeenCalledTimes(1);
+    });
+
+    it('should make a choice requestAction to startingPlayer', () => {
+      // tslint:disable-next-line: no-non-null-assertion
+      expect(requestActionParameter.type).toBe('choice');
     });
   });
 });
