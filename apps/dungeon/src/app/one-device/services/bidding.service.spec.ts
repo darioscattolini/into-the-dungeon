@@ -1,20 +1,32 @@
 import { TestBed } from '@angular/core/testing';
+import { mocked } from 'ts-jest/utils';
+
 import { BiddingService } from './bidding.service';
+import { HeroesService } from './heroes.service';
 import { Player } from '../../models/models';
 
+jest.mock('./heroes.service');
+const MockedHeroesService = mocked(HeroesService, true);
+
 describe('BiddingServiceService', () => {
-  let service: BiddingService;
+  let biddingService: BiddingService;
+  let heroesService: HeroesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BiddingService]
+      providers: [BiddingService, HeroesService]
     });
-    service = TestBed.inject(BiddingService);
+    biddingService = TestBed.inject(BiddingService);
+    heroesService = TestBed.inject(HeroesService);
   });
 
   describe('constructor', () => {
     it('should create service', () => {
-      expect(service).toBeTruthy();
+      expect(biddingService).toBeTruthy();
+    });
+
+    it('should ask for an instance of HeroesService', () => {
+      expect(MockedHeroesService).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -22,22 +34,28 @@ describe('BiddingServiceService', () => {
     let chooseHeroSpy: jest.SpyInstance<void, [Player]>;
 
     beforeEach(() => {
-      chooseHeroSpy = jest.spyOn(service, 'chooseHero')
+      chooseHeroSpy = jest.spyOn(biddingService, 'chooseHero')
         .mockImplementation((player: Player) => {});
     });
 
     it('should make starting player choose a hero', () => {
       const startingPlayer = new Player('First');
-      service.startNewRound(startingPlayer);
+      biddingService.startNewRound(startingPlayer);
       expect(chooseHeroSpy).toHaveBeenCalledTimes(1);
       expect(chooseHeroSpy).toHaveBeenCalledWith(startingPlayer);
     });
   });
 
-  /*describe('chooseHero', () => {
-    it('should retrieve heroes from HeroService', () => {
+  describe('chooseHero', () => {
+    let startingPlayer: Player;
 
-    })
-  });*/
+    beforeEach(() => {
+      startingPlayer = new Player('first');
+      biddingService.chooseHero(startingPlayer);
+    });
 
+    /*it('should ask HeroService for heroes', () => {
+      expect(heroesService.getHeroes).toHaveBeenCalledTimes(1);
+    });*/
+  });
 });
