@@ -65,12 +65,8 @@ import {
   TransformerFunction
 } from './message/imonster-effect';
 import { ICompanionEffect } from './message/icompanion-effect';
-import { 
-  IPlayerActionRequest, IPlayerChoiceRequest, IPlayerAcceptanceRequest
-} from './message/iplayer-action-request';
-import {
-  IPlayerActionResponse, IPlayerChoiceResponse, IPlayerAcceptanceResponse
-} from './message/iplayer-action-response';
+import { IPlayerChoiceRequest, IPlayerChoiceResponse } from './message/iplayer-choice';
+import { IPlayerAcceptanceRequest, IPlayerAcceptanceResponse } from './message/iplayer-acceptance';
 
 export { 
   ICombatResult, 
@@ -81,10 +77,8 @@ export {
   ITransformationEffect,
   TransformerFunction,
   ICompanionEffect,
-  IPlayerActionRequest,
   IPlayerChoiceRequest,
   IPlayerAcceptanceRequest,
-  IPlayerActionResponse,
   IPlayerChoiceResponse,
   IPlayerAcceptanceResponse
 };
