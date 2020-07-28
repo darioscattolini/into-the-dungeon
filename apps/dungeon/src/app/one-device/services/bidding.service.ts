@@ -20,10 +20,14 @@ export class BiddingService {
 
   public async chooseHero(startingPlayer: Player): Promise<void> {
     const heroes = this.heroesService.getHeroesUIData();
-    
-    await this.uiController.requestChoice({
+
+    const choice = await this.uiController.requestChoice({
       player: startingPlayer.name,
       options: heroes
     });
+
+    const chosenHero = heroes[choice.response].name;
+
+    this.heroesService.getHero(chosenHero);
   }
 }
