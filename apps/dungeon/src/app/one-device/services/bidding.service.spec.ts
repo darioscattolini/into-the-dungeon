@@ -67,11 +67,14 @@ describe('BiddingServiceService', () => {
     beforeEach(() => {
       startingPlayer = new Player('starting');
       heroUIData = heroes;
-      (uiController.requestChoice as jest.Mock).mockImplementation(
-        (request: IChoiceRequest) => {
+
+      (heroesService.getHeroesUIData as jest.Mock)
+        .mockImplementation(() => heroUIData);
+        
+      (uiController.requestChoice as jest.Mock)
+        .mockImplementation((request: IChoiceRequest) => {
           requestChoiceParameter = request;
-        }
-      );
+        });
     
       biddingService.chooseHero(startingPlayer);
     });
@@ -80,8 +83,8 @@ describe('BiddingServiceService', () => {
       requestChoiceParameter = undefined;
     });
 
-    it('should ask HeroService for heroes', () => {
-      expect(heroesService.getHeroes).toHaveBeenCalledTimes(1);
+    it('should ask HeroService for heroes data', () => {
+      expect(heroesService.getHeroesUIData).toHaveBeenCalledTimes(1);
     });
 
     it('should make a uiController.requestChoice to startingPlayer', () => {

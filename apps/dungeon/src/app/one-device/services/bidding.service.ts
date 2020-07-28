@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
-import { Player } from '../../models/models';
+import { Player, IHero } from '../../models/models';
 import { HeroesService } from './heroes.service';
 import { UIControllerService } from './uicontroller.service';
 
@@ -19,10 +19,11 @@ export class BiddingService {
   }
 
   public async chooseHero(startingPlayer: Player): Promise<void> {
-    const heroes = this.heroesService.getHeroes();
+    const heroes = this.heroesService.getHeroesUIData();
+    
     await this.uiController.requestChoice({
       player: startingPlayer.name,
-      options: []
+      options: heroes
     });
   }
 }
