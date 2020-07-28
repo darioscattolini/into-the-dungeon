@@ -82,3 +82,19 @@ export {
   IPlayerActionResponse,
   IPlayerChoiceResponse
 };
+
+// UI
+import { IHero } from './ui/hero/ihero';
+import { bard } from './ui/hero/bard';
+import { mage } from './ui/hero/mage';
+import { ninja } from './ui/hero/ninja';
+import { princess } from './ui/hero/princess';
+
+const heroes: IHero[] = [
+  bard,
+  mage,
+  ninja,
+  princess
+];
+
+export { IHero, heroes }
