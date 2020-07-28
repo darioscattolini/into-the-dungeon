@@ -36,22 +36,14 @@ describe('BiddingServiceService', () => {
     it('should create service', () => {
       expect(biddingService).toBeTruthy();
     });
-
-    it('should ask for an instance of HeroesService', () => {
-      expect(MockedHeroesService).toHaveBeenCalled();
-    });
-
-    it('should ask for an instance of UIController', () => {
-      expect(MockedUIControlleService).toHaveBeenCalled();
-    });
   });
 
   describe('startNewRound', () => {
-    let chooseHeroSpy: jest.SpyInstance<void, [Player]>;
+    let chooseHeroSpy: jest.SpyInstance<Promise<void>, [Player]>;
 
     beforeEach(() => {
       chooseHeroSpy = jest.spyOn(biddingService, 'chooseHero')
-        .mockImplementation((player: Player) => {});
+        .mockImplementation(async (player: Player) => {});
     });
 
     it('should make starting player choose a hero', () => {
