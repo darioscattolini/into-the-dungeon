@@ -13,8 +13,37 @@ export { Hero };
 import { Monster } from './monster/monster';
 import { CommonMonsterType } from './monster/common-monster-type';
 import { RareMonsterType } from './monster/rare-monster-type';
+import { IDerivedMonsterStatic } from './monster/derived-monster-static.interface';
+import { Goblin } from './monster/monsters/goblin';
+import { Skeleton } from './monster/monsters/skeleton';
+import { Orc } from './monster/monsters/orc';
+import { Vampire } from './monster/monsters/vampire';
+import { Golem } from './monster/monsters/golem';
+import { Litch } from './monster/monsters/litch';
+import { Demon } from './monster/monsters/demon';
+import { Dragon } from './monster/monsters/dragon';
+import { Fairy } from './monster/monsters/fairy';
+import { Ally } from './monster/monsters/ally';
+import { Mimic } from './monster/monsters/mimic';
+import { JellyCube } from './monster/monsters/jelly-cube';
+import { Dracula } from './monster/monsters/dracula';
+import { Metamorph } from './monster/monsters/metamorph';
 
-export { Monster, CommonMonsterType, RareMonsterType };
+const CommonMonsterClasses: IDerivedMonsterStatic[] = [
+  Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon
+];
+
+const RareMonsterClasses: IDerivedMonsterStatic[] = [
+  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
+];
+
+export { 
+  Monster, 
+  CommonMonsterType, 
+  RareMonsterType, 
+  CommonMonsterClasses, 
+  RareMonsterClasses 
+};
 
 // COMPANION
 import { CompanionType } from './companion/companion-type';
