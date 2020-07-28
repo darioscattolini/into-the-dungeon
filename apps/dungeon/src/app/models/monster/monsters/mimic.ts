@@ -1,4 +1,4 @@
-import { Monster, ITransformationEffect, IDamageEffect, Hero } from '../../models';
+import { Monster, ITransformationEffect, IDamageEffect } from '../../models';
 import { RareMonsterType } from '../rare-monster-type';
 import { staticImplements } from '../../../utilities';
 import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
@@ -29,9 +29,9 @@ export class Mimic extends Monster {
   public startingAction(): ITransformationEffect {
     return {
       type: 'transformation',
-      parameter: 'hero',
-      transformer: (hero: Hero) => {
-        this._baseDamage = hero.equipmentSize;
+      parameter: 'equipmentSize',
+      transformer: (equipmentSize: number) => {
+        this._baseDamage = equipmentSize;
         return this;
       }
     }

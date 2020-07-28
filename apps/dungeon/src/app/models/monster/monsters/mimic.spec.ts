@@ -54,8 +54,8 @@ describe('Mimic', () => {
       expect(startingAction.type).toBe('transformation');
     });
 
-    it('should specify hero as parameter for transformer function', () => {
-      expect(startingAction.parameter).toBe('hero');
+    it('should specify equipmentSize as parameter for transformer function', () => {
+      expect(startingAction.parameter).toBe('equipmentSize');
     });
 
     it('should specify a transformer function', () => {
@@ -69,10 +69,10 @@ describe('Mimic', () => {
       beforeEach(() => {
         noEquipMimic = new Mimic()
           .startingAction()
-          .transformer(noEquipHeroStub);
+          .transformer(0);
         oneEquipMimic = new Mimic()
           .startingAction()
-          .transformer(oneEquipHeroStub);
+          .transformer(1);
       });
       
       it('should return a Mimic', () => {

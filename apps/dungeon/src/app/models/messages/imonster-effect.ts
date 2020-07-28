@@ -1,4 +1,4 @@
-import { CompanionType, Monster, Hero } from '../models';
+import { CompanionType, Monster, Hero, Player } from '../models';
 
 export interface IDamageEffect {
   type: 'damage';
@@ -15,12 +15,10 @@ export interface ILoseEquipmentEffect {
   lose: 'any';
 }
 
-type TransformerFunction = ( () => Monster ) | ( (hero: Hero) => Monster );
-
 export interface ITransformationEffect {
   type: 'transformation';
-  parameter: 'hero' | 'none';
-  transformer: TransformerFunction;
+  parameter: 'equipmentSize' | 'playersVictories' | 'positionInDungeon';
+  transformer: (parameter: number) => Monster;
 }
 
 export type IMonsterEffect = IDamageEffect | 
