@@ -17,6 +17,6 @@ export class BiddingService {
   }
 
   public chooseHero(startingPlayer: Player): void {
-
+    const heroes = this.heroesService.getHeroes();
   }
 }
