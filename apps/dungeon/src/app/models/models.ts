@@ -5,8 +5,12 @@ export { Player };
 
 // HERO
 import { Hero } from './hero/hero';
+import { Bard } from './hero/heroes/bard';
+import { Mage } from './hero/heroes/mage';
+import { Ninja } from './hero/heroes/ninja';
+import { Princess } from './hero/heroes/princess';
 
-export { Hero };
+export { Hero, Bard, Mage, Ninja, Princess };
 
 // MONSTER
 import { Monster } from './monster/monster';
