@@ -1,7 +1,6 @@
 import { Mimic } from './mimic';
 import { Monster } from '../monster';
 import { ITransformationEffect } from '../../models';
-import { noEquipHeroStub, oneEquipHeroStub } from '../../mocks';
 
 describe('Mimic', () => {
   let mimic: Mimic;

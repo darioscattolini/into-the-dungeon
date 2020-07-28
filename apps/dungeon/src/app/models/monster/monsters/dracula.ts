@@ -1,4 +1,4 @@
-import { Monster, ITransformationEffect, IDamageEffect, Player } from '../../models';
+import { Monster, ITransformationEffect, IDamageEffect } from '../../models';
 import { RareMonsterType } from '../rare-monster-type';
 import { CommonMonsterType } from '../common-monster-type';
 import { staticImplements } from '../../../utilities';

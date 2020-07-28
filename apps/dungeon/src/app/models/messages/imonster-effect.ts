@@ -1,4 +1,4 @@
-import { CompanionType, Monster, Hero, Player } from '../models';
+import { CompanionType, Monster } from '../models';
 
 export interface IDamageEffect {
   type: 'damage';
