@@ -9,7 +9,6 @@ import { Hero } from './hero/hero';
 export { Hero };
 
 // MONSTER
-
 import { Monster } from './monster/monster';
 import { CommonMonsterType } from './monster/common-monster-type';
 import { RareMonsterType } from './monster/rare-monster-type';
