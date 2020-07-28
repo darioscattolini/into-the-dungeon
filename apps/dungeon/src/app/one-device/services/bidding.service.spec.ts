@@ -9,7 +9,10 @@ import {
   IHero, 
   heroes, 
   IChoiceRequest, 
-  IChoiceResponse
+  Bard,
+  Mage,
+  Ninja,
+  Princess
 } from '../../models/models';
 
 jest.mock('./heroes.service');
@@ -71,6 +74,20 @@ describe('BiddingServiceService', () => {
       (heroesService.getHeroesUIData as jest.Mock)
         .mockImplementation(() => heroUIData);
 
+      (heroesService.getHero as jest.Mock)
+        .mockImplementation((heroName: 'Bard' | 'Mage' | 'Ninja' | 'Princess') => {
+          switch(heroName) {
+            case('Bard'):
+              return new Bard();
+            case('Mage'):
+              return new Mage();
+            case('Ninja'):
+              return new Ninja();
+            case('Princess'):
+              return new Princess();
+          }
+        });
+
       (uiController.requestChoice as jest.Mock)
         .mockImplementation((request: IChoiceRequest) => {
           requestChoiceParameter = request;
@@ -101,56 +118,92 @@ describe('BiddingServiceService', () => {
         .toEqual(expect.arrayContaining(heroUIData));
     });
 
-    it('should ask HeroesService to build Bard if chosen by player', fakeAsync(() => {
+    it('should ask HeroesService to build Bard if chosen by player', async () => {
+      const bardIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Bard');
+
       (uiController.requestChoice as jest.Mock)
-        .mockImplementation((request: IChoiceRequest) => {
-          return {
-            response: request.options.findIndex((hero: IHero) => hero.name === 'Bard')
-          };
-        });
+        .mockResolvedValue({response: bardIndex});
+
+      await biddingService.chooseHero(startingPlayer);
       
-      biddingService.chooseHero(startingPlayer);
-      tick();
       expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Bard');
-    }));
+    });
 
-    it('should ask HeroesService to build Mage if chosen by player', fakeAsync(() => {
+    it('should ask HeroesService to build Mage if chosen by player', async () => {
+      const mageIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Mage');
+
       (uiController.requestChoice as jest.Mock)
-        .mockImplementation((request: IChoiceRequest) => {
-          return {
-            response: request.options.findIndex((hero: IHero) => hero.name === 'Mage')
-          };
-        });
-      
-      biddingService.chooseHero(startingPlayer);
-      tick();
+        .mockResolvedValue({response: mageIndex});
+
+      await biddingService.chooseHero(startingPlayer);
+
       expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Mage');
-    }));
+    });
 
-    it('should ask HeroesService to build Ninja if chosen by player', fakeAsync(() => {
+    it('should ask HeroesService to build Ninja if chosen by player', async () => {
+      const ninjaIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Ninja');
+
       (uiController.requestChoice as jest.Mock)
-        .mockImplementation((request: IChoiceRequest) => {
-          return {
-            response: request.options.findIndex((hero: IHero) => hero.name === 'Ninja')
-          };
-        });
-      
-      biddingService.chooseHero(startingPlayer);
-      tick();
+        .mockResolvedValue({response: ninjaIndex});
+
+      await biddingService.chooseHero(startingPlayer);
+
       expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Ninja');
-    }));
+    });
 
-    it('should ask HeroesService to build Princess if chosen by player', fakeAsync(() => {
+    it('should ask HeroesService to build Princess if chosen by player', async () => {
+      const princessIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Princess');
+
       (uiController.requestChoice as jest.Mock)
-        .mockImplementation((request: IChoiceRequest) => {
-          return {
-            response: request.options.findIndex((hero: IHero) => hero.name === 'Princess')
-          };
-        });
+        .mockResolvedValue({response: princessIndex});
       
-      biddingService.chooseHero(startingPlayer);
-      tick();
+      await biddingService.chooseHero(startingPlayer);
+      
       expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Princess');
-    }));
+    });
+
+    it('should store built Bard in getter hero field', async () => {
+      const bardIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Bard');
+
+      (uiController.requestChoice as jest.Mock)
+        .mockResolvedValue({response: bardIndex});
+
+      await biddingService.chooseHero(startingPlayer);
+      
+      expect(biddingService.hero instanceof Bard).toBe(true);
+    });
+
+    it('should store built Mage in getter hero field', async () => {
+      const mageIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Mage');
+
+      (uiController.requestChoice as jest.Mock)
+        .mockResolvedValue({response: mageIndex});
+
+      await biddingService.chooseHero(startingPlayer);
+      
+      expect(biddingService.hero instanceof Mage).toBe(true);
+    });
+
+    it('should store built Ninja in getter hero field', async () => {
+      const ninjaIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Ninja');
+
+      (uiController.requestChoice as jest.Mock)
+        .mockResolvedValue({response: ninjaIndex});
+
+      await biddingService.chooseHero(startingPlayer);
+      
+      expect(biddingService.hero instanceof Ninja).toBe(true);
+    });
+
+    it('should store built Princess in getter hero field', async () => {
+      const princessIndex = heroUIData.findIndex((hero: IHero) => hero.name === 'Princess');
+
+      (uiController.requestChoice as jest.Mock)
+        .mockResolvedValue({response: princessIndex});
+
+      await biddingService.chooseHero(startingPlayer);
+      
+      expect(biddingService.hero instanceof Princess).toBe(true);
+    });
   });
 });
