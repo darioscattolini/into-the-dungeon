@@ -54,8 +54,8 @@ describe('BiddingServiceService', () => {
       biddingService.chooseHero(startingPlayer);
     });
 
-    /*it('should ask HeroService for heroes', () => {
+    it('should ask HeroService for heroes', () => {
       expect(heroesService.getHeroes).toHaveBeenCalledTimes(1);
-    });*/
+    });
   });
 });
