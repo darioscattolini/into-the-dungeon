@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { OneDeviceModule } from '../one-device.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: OneDeviceModule
 })
 export class UIControllerService {
 
