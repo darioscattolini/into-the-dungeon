@@ -1,6 +1,6 @@
 import { Dracula } from './dracula';
 import { Monster } from '../monster';
-import { ITransformationEffect, Player } from '../../models';
+import { ITransformationEffect } from '../../models';
 
 describe('Dracula', () => {
   let dracula: Dracula;
@@ -53,8 +53,8 @@ describe('Dracula', () => {
       expect(startingAction.type).toBe('transformation');
     });
 
-    it('should specify player as parameter for transformer function', () => {
-      expect(startingAction.parameter).toBe('player');
+    it('should specify playersVictories as parameter for transformer function', () => {
+      expect(startingAction.parameter).toBe('playersVictories');
     });
 
     it('should specify a transformer function', () => {
@@ -66,15 +66,12 @@ describe('Dracula', () => {
       let oneVictoryDracula: Monster;
 
       beforeEach(() => {
-        const noVictoryPlayer = new Player('no victory');
-        const oneVictoryPlayer = new Player('one victory');
-        oneVictoryPlayer.surviveDungeon();
         noVictoryDracula = new Dracula()
           .startingAction()
-          .transformer(noVictoryPlayer);
+          .transformer(0);
         oneVictoryDracula = new Dracula()
           .startingAction()
-          .transformer(oneVictoryPlayer);
+          .transformer(1);
       });
       
       it('should stay the same for players with no victories', () => {
