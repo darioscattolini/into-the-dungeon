@@ -1,8 +1,8 @@
-export interface IPlayerChoiceRequest {
+export interface IChoiceRequest {
   player: string;
   options: [];
 }
 
-export interface IPlayerChoiceResponse {
+export interface IChoiceResponse {
   response: number;
 }
