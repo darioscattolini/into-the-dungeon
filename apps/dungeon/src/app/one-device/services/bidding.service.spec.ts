@@ -16,7 +16,7 @@ jest.mock('./heroes.service');
 const MockedHeroesService = mocked(HeroesService, true);
 
 jest.mock('./uicontroller.service');
-const MockedUIControlleService = mocked(UIControllerService, true);
+const MockedUIControllerService = mocked(UIControllerService, true);
 
 describe('BiddingServiceService', () => {
   let biddingService: BiddingService;
@@ -30,6 +30,11 @@ describe('BiddingServiceService', () => {
     biddingService = TestBed.inject(BiddingService);
     heroesService = TestBed.inject(HeroesService);
     uiController = TestBed.inject(UIControllerService);
+  });
+
+  afterEach(() => {
+    MockedHeroesService.mockClear();
+    MockedUIControllerService.mockClear();
   });
 
   describe('constructor', () => {
@@ -79,9 +84,17 @@ describe('BiddingServiceService', () => {
       expect(heroesService.getHeroes).toHaveBeenCalledTimes(1);
     });
 
-    it('should make a requestChoice to startingPlayer', () => {
+    it('should make a uiController.requestChoice to startingPlayer', () => {
       // tslint:disable-next-line: no-non-null-assertion
       expect(requestChoiceParameter!.player).toBe('starting');
+    });
+
+    it('should make a uiController.requestChoice passing hero ui data as options', () => {
+      // tslint:disable-next-line: no-non-null-assertion
+      expect(requestChoiceParameter!.options).toHaveLength(heroUIData.length);
+      // tslint:disable-next-line: no-non-null-assertion
+      expect(requestChoiceParameter!.options)
+        .toEqual(expect.arrayContaining(heroUIData));
     });
   });
 });
