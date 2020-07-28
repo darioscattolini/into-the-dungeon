@@ -15,10 +15,12 @@ export interface ILoseEquipmentEffect {
   lose: 'any';
 }
 
+export type TransformerFunction = (parameter: number) => Monster;
+
 export interface ITransformationEffect {
   type: 'transformation';
   parameter: 'equipmentSize' | 'playersVictories' | 'positionInDungeon';
-  transformer: (parameter: number) => Monster;
+  transformer: TransformerFunction;
 }
 
 export type IMonsterEffect = IDamageEffect | 

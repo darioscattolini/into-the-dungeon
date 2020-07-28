@@ -1,6 +1,6 @@
 import { Dracula } from './dracula';
 import { Monster } from '../monster';
-import { ITransformationEffect } from '../../models';
+import { ITransformationEffect, TransformerFunction } from '../../models';
 
 describe('Dracula', () => {
   let dracula: Dracula;
@@ -62,38 +62,39 @@ describe('Dracula', () => {
     });
 
     describe('transformer function', () => {
-      let noVictoryDracula: Monster;
-      let oneVictoryDracula: Monster;
+      let transform: TransformerFunction;
 
       beforeEach(() => {
-        noVictoryDracula = new Dracula()
-          .startingAction()
-          .transformer(0);
-        oneVictoryDracula = new Dracula()
-          .startingAction()
-          .transformer(1);
+        transform = startingAction.transformer;
+      });
+
+      it('should return something', () => {
+        expect(transform(1)).toBeTruthy();
       });
       
-      it('should stay the same for players with no victories', () => {
-        expect(noVictoryDracula.type).toBe('Vampire');
-        expect(noVictoryDracula.baseDamage).toBe(4);
+      it('should stay as Vampire for players with no victories', () => {
+        expect(transform(0).type).toBe('Vampire');
+      });
+
+      it('should stay with baseDamage 4 for players with no victories', () => {
+        expect(transform(0).baseDamage).toBe(4);
       });
 
       it('should return a Dracula for players with one victory', () => {
-        expect(oneVictoryDracula.type).toBe('Dracula');
+        expect(transform(1).type).toBe('Dracula');
       });
 
       it('should return a Dracula of baseDamage 8 for players with one victory', () => {
-        expect(oneVictoryDracula.baseDamage).toBe(8);
+        expect(transform(1).baseDamage).toBe(8);
       });
 
       it('should produce damage effect after checking form', () => {
-        expect(noVictoryDracula.produceEffect()).toEqual({
+        expect(transform(0).produceEffect()).toEqual({
           type: 'damage',
           amount: 4
         });
 
-        expect(oneVictoryDracula.produceEffect()).toEqual({
+        expect(transform(1).produceEffect()).toEqual({
           type: 'damage',
           amount: 8
         });
