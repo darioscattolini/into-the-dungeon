@@ -68,9 +68,9 @@ describe('BiddingServiceService', () => {
     let requestChoiceParameter: IChoiceRequest | undefined;
 
     beforeEach(() => {
-      startingPlayer = new Player('first');
+      startingPlayer = new Player('starting');
       heroUIData = heroes;
-      uiController.requestChoice.mockImplementation(
+      (uiController.requestChoice as jest.Mock).mockImplementation(
         (request: IChoiceRequest) => {
           requestChoiceParameter = request;
         }
@@ -87,9 +87,9 @@ describe('BiddingServiceService', () => {
       expect(heroesService.getHeroes).toHaveBeenCalledTimes(1);
     });
 
-    it('should make a choice requestAction to startingPlayer', () => {
+    it('should make a requestChoice to startingPlayer', () => {
       // tslint:disable-next-line: no-non-null-assertion
-      expect(requestChoiceParameter.type).toBe('choice');
+      expect(requestChoiceParameter!.player).toBe('starting');
     });
   });
 });
