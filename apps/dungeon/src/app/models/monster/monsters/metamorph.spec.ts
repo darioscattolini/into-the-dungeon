@@ -7,9 +7,9 @@ import { Orc } from './orc';
 import { Vampire } from './vampire';
 import { Golem } from './golem';
 import { Litch } from './litch';
-import { Dragon } from './dragon';
 import { Demon } from './demon';
 import { Dracula } from './dracula';
+import { Dragon } from './dragon';
 
 describe('Metamorph', () => {
   let metamorph: Metamorph;
