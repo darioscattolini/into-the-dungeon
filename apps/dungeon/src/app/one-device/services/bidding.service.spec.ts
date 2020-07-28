@@ -3,28 +3,33 @@ import { mocked } from 'ts-jest/utils';
 
 import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
+import { UIControllerService } from './uicontroller.service';
 import { 
   Player, 
   IHero, 
   heroes, 
-  IPlayerChoiceRequest, 
-  IPlayerActionResponse, 
-  IPlayerActionRequest 
+  IChoiceRequest, 
+  IChoiceResponse
 } from '../../models/models';
 
 jest.mock('./heroes.service');
 const MockedHeroesService = mocked(HeroesService, true);
 
+jest.mock('./uicontroller.service');
+const MockedUIControlleService = mocked(UIControllerService, true);
+
 describe('BiddingServiceService', () => {
   let biddingService: BiddingService;
   let heroesService: HeroesService;
+  let uiController: UIControllerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BiddingService, HeroesService]
+      providers: [BiddingService, HeroesService, UIControllerService]
     });
     biddingService = TestBed.inject(BiddingService);
     heroesService = TestBed.inject(HeroesService);
+    uiController = TestBed.inject(UIControllerService);
   });
 
   describe('constructor', () => {
@@ -34,6 +39,10 @@ describe('BiddingServiceService', () => {
 
     it('should ask for an instance of HeroesService', () => {
       expect(MockedHeroesService).toHaveBeenCalled();
+    });
+
+    it('should ask for an instance of UIController', () => {
+      expect(MockedUIControlleService).toHaveBeenCalled();
     });
   });
 
@@ -56,21 +65,22 @@ describe('BiddingServiceService', () => {
   describe('chooseHero', () => {
     let startingPlayer: Player;
     let heroUIData: IHero[];
-    let requestActionSpy: jest.SpyInstance<IPlayerActionResponse, [IPlayerActionRequest]>
-    let requestActionParameter: IPlayerActionRequest | undefined;
+    let requestChoiceParameter: IChoiceRequest | undefined;
 
     beforeEach(() => {
       startingPlayer = new Player('first');
       heroUIData = heroes;
-      requestActionSpy = jest.spyOn(startingPlayer, 'requestAction')
-        .mockImplementation((request: IPlayerActionRequest) => {
-          requestActionParameter = request;
-        });
+      uiController.requestChoice.mockImplementation(
+        (request: IChoiceRequest) => {
+          requestChoiceParameter = request;
+        }
+      );
+    
       biddingService.chooseHero(startingPlayer);
     });
 
     afterEach(() => {
-      requestActionParameter = undefined;
+      requestChoiceParameter = undefined;
     });
 
     it('should ask HeroService for heroes', () => {
@@ -79,7 +89,7 @@ describe('BiddingServiceService', () => {
 
     it('should make a choice requestAction to startingPlayer', () => {
       // tslint:disable-next-line: no-non-null-assertion
-      expect(requestActionParameter.type).toBe('choice');
+      expect(requestChoiceParameter.type).toBe('choice');
     });
   });
 });
