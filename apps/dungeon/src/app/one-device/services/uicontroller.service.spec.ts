@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 
 import { UIControllerService } from './uicontroller.service';
 
@@ -6,7 +6,9 @@ describe('UIControllerService', () => {
   let service: UIControllerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [UIControllerService]
+    });
     service = TestBed.inject(UIControllerService);
   });
 
@@ -15,29 +17,10 @@ describe('UIControllerService', () => {
   });
 
   describe('requestChoice', () => {
-    it('shoud throw error with no parameter', () => {
-      expect(service.requestChoice())
-        .toThrow('requestChoice must be called with a ChoiceRequest parameter');
-    });
-
-    it('shoud throw error with empty parameter', () => {
-      expect(service.requestChoice({}))
-        .toThrow('requestChoice must be called with a ChoiceRequest parameter');
-    });
-
-    it('shoud throw error with incomplete parameter', () => {
-      expect(service.requestChoice({player: 'player'}))
-        .toThrow('requestChoice must be called with a ChoiceRequest parameter');
-    });
-
-    it('shoud throw error with incomplete parameter', () => {
-      expect(service.requestChoice({options: ['one', 'two']}))
-        .toThrow('requestChoice must be called with a ChoiceRequest parameter');
-    });
-
-    it('shoud throw error with only one option', () => {
-      expect(service.requestAction({player: 'player', options: ['one']}))
-        .toThrow('requestChoice must be called with a ChoiceRequest parameter');
+    it('shoud throw error with only one option', async () => {
+      await expect(service.requestChoice({player: 'player', options: ['one']}))
+        .rejects
+        .toThrow('requestChoice must be called with at least two options');
     });
 
     // it should wait for user choice

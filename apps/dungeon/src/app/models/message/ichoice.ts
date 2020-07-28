@@ -1,6 +1,6 @@
 export interface IChoiceRequest {
   player: string;
-  options: [];
+  options: any[];
 }
 
 export interface IChoiceResponse {
