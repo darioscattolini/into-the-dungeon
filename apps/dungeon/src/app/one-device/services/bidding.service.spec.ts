@@ -26,7 +26,7 @@ describe('BiddingServiceService', () => {
     });
 
     it('should ask for an instance of HeroesService', () => {
-      expect(MockedHeroesService).toHaveBeenCalledTimes(1);
+      expect(MockedHeroesService).toHaveBeenCalled();
     });
   });
 
