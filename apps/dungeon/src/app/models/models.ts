@@ -9,8 +9,9 @@ import { Bard } from './hero/heroes/bard';
 import { Mage } from './hero/heroes/mage';
 import { Ninja } from './hero/heroes/ninja';
 import { Princess } from './hero/heroes/princess';
+import { IDerivedHeroStatic } from './hero/derived-hero-static.interface';
 
-export { Hero, Bard, Mage, Ninja, Princess };
+export { Hero, Bard, Mage, Ninja, Princess, IDerivedHeroStatic };
 
 // MONSTER
 import { Monster } from './monster/monster';
