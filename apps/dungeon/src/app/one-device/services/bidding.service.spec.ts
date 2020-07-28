@@ -70,34 +70,75 @@ describe('BiddingServiceService', () => {
 
       (heroesService.getHeroesUIData as jest.Mock)
         .mockImplementation(() => heroUIData);
-        
+
       (uiController.requestChoice as jest.Mock)
         .mockImplementation((request: IChoiceRequest) => {
           requestChoiceParameter = request;
         });
-    
-      biddingService.chooseHero(startingPlayer);
-    });
+      });
 
     afterEach(() => {
       requestChoiceParameter = undefined;
     });
 
-    it('should ask HeroService for heroes data', () => {
+    it('should ask HeroesService for heroes data', () => {
+      biddingService.chooseHero(startingPlayer);
       expect(heroesService.getHeroesUIData).toHaveBeenCalledTimes(1);
     });
 
     it('should make a uiController.requestChoice to startingPlayer', () => {
+      biddingService.chooseHero(startingPlayer);
       // tslint:disable-next-line: no-non-null-assertion
       expect(requestChoiceParameter!.player).toBe('starting');
     });
 
     it('should make a uiController.requestChoice passing hero ui data as options', () => {
+      biddingService.chooseHero(startingPlayer);
       // tslint:disable-next-line: no-non-null-assertion
       expect(requestChoiceParameter!.options).toHaveLength(heroUIData.length);
       // tslint:disable-next-line: no-non-null-assertion
       expect(requestChoiceParameter!.options)
         .toEqual(expect.arrayContaining(heroUIData));
+    });
+
+    it('should ask HeroesService to build Bard if chosen by player', () => {
+      (uiController.requestChoice as jest.Mock)
+        .mockImplementation((request: IChoiceRequest) => {
+          return request.options.findIndex((hero: IHero) => hero.name === 'Bard');
+        });
+      
+      biddingService.chooseHero(startingPlayer);
+      expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Bard');
+    });
+
+    it('should ask HeroesService to build Mage if chosen by player', () => {
+      (uiController.requestChoice as jest.Mock)
+        .mockImplementation((request: IChoiceRequest) => {
+          return request.options.findIndex((hero: IHero) => hero.name === 'Mage');
+        });
+      
+      biddingService.chooseHero(startingPlayer);
+      expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Mage');
+    });
+
+    it('should ask HeroesService to build Ninja if chosen by player', () => {
+      (uiController.requestChoice as jest.Mock)
+        .mockImplementation((request: IChoiceRequest) => {
+          return request.options.findIndex((hero: IHero) => hero.name === 'Ninja');
+        });
+      
+      biddingService.chooseHero(startingPlayer);
+      expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Ninja');
+    });
+
+    it('should ask HeroesService to build Princess if chosen by player', () => {
+      (uiController.requestChoice as jest.Mock)
+        .mockImplementation((request: IChoiceRequest) => {
+          return request.options.findIndex((hero: IHero) => hero.name === 'Princess');
+        });
+      
+      biddingService.chooseHero(startingPlayer);
+      expect(heroesService.getHero).toHaveBeenNthCalledWith(1, 'Princess');
     });
   });
 });
