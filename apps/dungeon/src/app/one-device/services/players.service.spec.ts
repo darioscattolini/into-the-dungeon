@@ -58,6 +58,21 @@ describe('PlayersService', () => {
       expect(returned.name).toStrictEqual('John');
       expect(returned).toBeInstanceOf(Player);
     });
+
+    it('should order players in round while added using player.nextPlayer field', () => {
+      const first = service.addPlayer('first');
+      const second = service.addPlayer('second');
+      expect(first.nextPlayer).toBe(second);
+      expect(second.nextPlayer).toBe(first);
+
+      const third = service.addPlayer('third');
+      expect(second.nextPlayer).toBe(third);
+      expect(third.nextPlayer).toBe(first);
+
+      const fourth = service.addPlayer('fourth');
+      expect(third.nextPlayer).toBe(fourth);
+      expect(fourth.nextPlayer).toBe(first);
+    });
   });
 
   describe('getPlayersList', () => {

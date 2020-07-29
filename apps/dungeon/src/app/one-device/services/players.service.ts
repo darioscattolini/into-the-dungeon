@@ -26,6 +26,12 @@ export class PlayersService {
     }
 
     const player = new Player(name);
+    
+    if (this.players.length > 0) {
+      this.players[this.players.length - 1].nextPlayer = player;
+      player.nextPlayer = this.players[0];
+    }
+    
     this.players.push(player);
     return player;
   }
