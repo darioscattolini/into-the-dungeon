@@ -16,7 +16,7 @@ describe('GameService', () => {
   let gameService: GameService;
   let playersService: PlayersService;
   let biddingService: BiddingService;
-  let firstPlayer: Player | undefined;
+ 
 
   beforeEach(() => {
     players = [
@@ -29,15 +29,11 @@ describe('GameService', () => {
     playersService = TestBed.inject(PlayersService);
     (playersService.getPlayersList as jest.Mock).mockReturnValue(players);
     biddingService = TestBed.inject(BiddingService);
-    (biddingService.startNewRound as jest.Mock).mockImplementation(
-      (player: Player) => firstPlayer = player
-    );
   });
 
   afterEach(() => {
     MockedPlayersService.mockClear();
     MockedBiddingService.mockClear();
-    firstPlayer = undefined;
   });
   
   describe('constructor', () => {
@@ -69,10 +65,10 @@ describe('GameService', () => {
       (playersService.getPlayersList as jest.Mock).mockReturnValue([new Player('John')]);
     }
 
-    let manageSpy: jest.SpyInstance<void, []>;
+    let manageSpy: jest.SpyInstance;
     beforeEach(() => {
       manageSpy = jest.spyOn(gameService, 'manage')
-        .mockImplementation(() => {});
+        .mockImplementation(async () => {});
     });
 
     it('should call playersManager.getPlayersList', () => {
@@ -106,6 +102,7 @@ describe('GameService', () => {
 
   describe('manage', () => {
     let goesOnSpy: jest.SpyInstance<boolean, []>;
+    let receivedFirstPlayerName: string | undefined;
      
       // one player wins or loses two dungeons in a row
     // tslint:disable-next-line: no-shadowed-variable
@@ -127,33 +124,43 @@ describe('GameService', () => {
     }
     
     beforeEach(() => {
+      (biddingService.startNewRound as jest.Mock).mockImplementation(
+        // tslint:disable-next-line: no-shadowed-variable
+        (players: Player[], firstPlayerName: string) => {
+          receivedFirstPlayerName = firstPlayerName;
+        }
+      );
       goesOnSpy = jest.spyOn(gameService, 'goesOn');
       gameService.players = players;
     });
 
-    it('should check if game goes on once per round + 1', () => {
+    afterEach(() => {
+      receivedFirstPlayerName = undefined;
+    });
+
+    it('should check if game goes on once per round + 1', async () => {
       mockOneRound(goesOnSpy);
-      gameService.manage();
+      await gameService.manage();
       expect(goesOnSpy).toHaveBeenCalledTimes(2);
       mockFourRounds(goesOnSpy);
-      gameService.manage();
+      await gameService.manage();
       expect(goesOnSpy).toHaveBeenCalledTimes(5);
     });
 
-    it ('should call biddingService.startNewRound once per round', () => {
+    it ('should call biddingService.startNewRound once per round', async () => {
       mockOneRound(goesOnSpy);
-      gameService.manage();
+      await gameService.manage();
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(1);
       (biddingService.startNewRound as jest.Mock).mockClear();
       mockFourRounds(goesOnSpy);
-      gameService.manage();
+      await gameService.manage();
       expect(biddingService.startNewRound).toHaveBeenCalledTimes(4);
     });
     
-    it ('should call biddingService.startNewRound with a random Player', () => {
+    it ('should call biddingService.startNewRound with a random Player', async () => {
       mockOneRound(goesOnSpy);
-      gameService.manage();
-      expect(players).toContain(firstPlayer);
+      await gameService.manage();
+      expect(players.map(player => player.name)).toContain(receivedFirstPlayerName);
     });
   });
 

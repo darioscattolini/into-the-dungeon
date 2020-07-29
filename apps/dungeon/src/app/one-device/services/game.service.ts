@@ -9,7 +9,7 @@ import { BiddingService } from './bidding.service';
 })
 export class GameService {
     // this is public just for tests
-  public players: Player[] | undefined;
+  public players: Player[] = [];
 
   constructor(
     private playersService: PlayersService,
@@ -21,16 +21,16 @@ export class GameService {
     if (players.length < 2) {
       throw new Error('There must be at least two players to start the game');
     }
-    this.players = players;
+    players.forEach(player => this.players.push(player));
     this.manage();
   }
     // this is public just for tests
-  public manage(): void {
-    const players = <Player[]>this.players;
-    const randomIndex = Math.floor(Math.random() * players.length);
-    const firstPlayer: Player = players[randomIndex];
+  public async manage(): Promise<void> {
+    const randomIndex = Math.floor(Math.random() * this.players.length);
+    const firstPlayer = this.players[randomIndex];
+    const playersCopy = this.players.slice(0);
     while(this.goesOn()) {
-      this.biddingService.startNewRound(firstPlayer);
+      await this.biddingService.startNewRound(playersCopy, firstPlayer.name);
     }
   }
     // this is public just for tests
