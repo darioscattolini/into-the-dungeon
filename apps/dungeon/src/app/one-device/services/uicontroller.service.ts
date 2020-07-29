@@ -9,7 +9,7 @@ export class UIControllerService {
 
   constructor() { }
 
-  public async requestChoice(request: IChoiceRequest): Promise<IChoiceResponse> {
+  public async requestChoice<T>(request: IChoiceRequest<T>): Promise<IChoiceResponse> {
     if (request.options.length < 2) throw new Error(
       'requestChoice must be called with at least two options'
     );

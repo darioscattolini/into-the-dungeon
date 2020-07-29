@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { OneDeviceModule } from '../one-device.module';
-import { Bard, Mage, Ninja, Princess, IDerivedHeroStatic, IHero, heroes, Hero } from '../../models/models';
+import { Bard, Mage, Ninja, Princess, heroes, Hero, IChoiceRequest, IHero } from '../../models/models';
+import { UIControllerService } from './uicontroller.service';
 
 @Injectable({
   providedIn: OneDeviceModule
@@ -15,13 +16,18 @@ export class HeroesService {
   }
   private heroesUIData = heroes;
 
-  constructor() { }
+  constructor(
+    private uiController: UIControllerService
+  ) { }
 
-  public getHeroesUIData(): IHero[] {
-    return this.heroesUIData.slice(0);
-  }
-
-  public getHero(heroName: 'Bard' | 'Mage' | 'Ninja' | 'Princess'): Hero {
-    return new this.constructors[heroName]();
+  public async chooseHero(playerName: string): Promise<Hero> {
+    const request: IChoiceRequest<IHero> = {
+      player: playerName,
+      options: this.heroesUIData.slice(0)
+    };
+    const choice = await this.uiController.requestChoice(request);
+    const heroName = heroes[choice.response].name;
+    const hero: Hero = new this.constructors[heroName]();
+    return hero;
   }
 }
