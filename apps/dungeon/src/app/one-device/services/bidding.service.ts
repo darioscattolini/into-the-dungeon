@@ -21,9 +21,11 @@ export class BiddingService {
     return this._hero;
   }
 
-  public async startNewRound(players: Player[]): Promise<void> {
+  public async startNewRound(players: Player[], firstPlayerName: string): Promise<void> {
+    if (!players.some(player => player.name === firstPlayerName)) {
+      throw new Error('Received players list has no player with received name');
+    }
     players.forEach(player => this.players.push(player));
-    const startingPlayer = this.players[0];
-    this._hero = await this.heroesService.chooseHero(startingPlayer.name);
+    this._hero = await this.heroesService.chooseHero(firstPlayerName);
   }
 }

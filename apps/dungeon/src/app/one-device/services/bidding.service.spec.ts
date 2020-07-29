@@ -42,21 +42,30 @@ describe('BiddingServiceService', () => {
     let players: Player[];
 
     beforeEach(() => {
-      players = [new Player('first'), new Player('second')];
+      players = [new Player('John'), new Player('Julia')];
     });
 
-    it('should call heroService.chooseHero with first player', async () => {
-      const startingPlayer = players[0];
-      await biddingService.startNewRound(players);
+    it('should check that name received as firstPlayer belongs to one of players', async () => {
+      expect.assertions(1);
+      try {
+        await biddingService.startNewRound(players, 'Anna');
+      } catch (error) {
+        expect(error.message)
+          .toEqual('Received players list has no player with received name');
+      }
+    });
+
+    it('should call heroService.chooseHero with name of player passed as first', async () => {
+      await biddingService.startNewRound(players, 'Julia');
       expect(heroesService.chooseHero).toHaveBeenCalledTimes(1);
-      expect(heroesService.chooseHero).toHaveBeenCalledWith(startingPlayer.name);
+      expect(heroesService.chooseHero).toHaveBeenCalledWith('Julia');
     });
 
     it('should store return from heroService.chooseHero in getter hero field', async () => {
       const hero = new Bard();
       (heroesService.chooseHero as jest.Mock<Promise<Hero>, [string]>)
         .mockResolvedValue(hero);
-      await biddingService.startNewRound(players);
+      await biddingService.startNewRound(players, 'Julia');
       expect(biddingService.hero).toBe(hero);
     });
   });
