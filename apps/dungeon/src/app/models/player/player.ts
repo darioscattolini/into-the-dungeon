@@ -1,4 +1,5 @@
 export class Player {
+  public nextPlayer: Player | undefined;
   private _name: string;
   private _victories: number;
   private _defeats: number;

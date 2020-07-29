@@ -73,6 +73,10 @@ describe('Player', () => {
     it('should create a player with 0 defeats', () => {
       expect(player.defeats).toStrictEqual(0);
     });
+
+    it('should create a player with undefined nextPlayer', () => {
+      expect(player.nextPlayer).toBeUndefined();
+    });
   });
 
   describe('surviveDungeon', () => {
