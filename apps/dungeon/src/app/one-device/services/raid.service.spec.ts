@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DungeonService } from './dungeon.service';
+import { RaidService } from './raid.service';
 
 describe('DungeonService', () => {
-  let service: DungeonService;
+  let service: RaidService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DungeonService);
+    service = TestBed.inject(RaidService);
   });
 
   it('should be created', () => {
