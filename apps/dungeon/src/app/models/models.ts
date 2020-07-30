@@ -56,20 +56,22 @@ export { CompanionType };
 
 // MESSAGE
 import { ICombatResult } from './message/icombat-result';
+import { IRaidResult } from './message/iraid-result';
 import { 
   IMonsterEffect, 
   IDamageEffect, 
   IAddCompanionEffect, 
   ILoseEquipmentEffect,
   ITransformationEffect,
-  TransformerFunction
+  TransformerFunction,
 } from './message/imonster-effect';
 import { ICompanionEffect } from './message/icompanion-effect';
 import { IChoiceRequest, IChoiceResponse } from './message/ichoice';
 import { IAcceptanceRequest, IAcceptanceResponse } from './message/iacceptance';
 
 export { 
-  ICombatResult, 
+  ICombatResult,
+  IRaidResult,
   IMonsterEffect, 
   IDamageEffect, 
   IAddCompanionEffect, 
