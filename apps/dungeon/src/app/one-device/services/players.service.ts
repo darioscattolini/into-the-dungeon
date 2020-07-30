@@ -43,4 +43,10 @@ export class PlayersService {
   public getPlayersList(): Player[] {
     return this.players.slice(0);
   }
+
+  public getRandomPlayer(): Player {
+    const randomIndex = Math.floor(Math.random() * this.players.length);
+    const randomPlayer = this.players[randomIndex];
+    return randomPlayer;
+  }
 }
