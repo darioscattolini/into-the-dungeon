@@ -55,6 +55,7 @@ import { CompanionType } from './companion/companion-type';
 export { CompanionType };
 
 // MESSAGE
+import { IBiddingResult } from './message/ibidding-result';
 import { ICombatResult } from './message/icombat-result';
 import { IRaidResult } from './message/iraid-result';
 import { 
@@ -70,6 +71,7 @@ import { IChoiceRequest, IChoiceResponse } from './message/ichoice';
 import { IAcceptanceRequest, IAcceptanceResponse } from './message/iacceptance';
 
 export { 
+  IBiddingResult,
   ICombatResult,
   IRaidResult,
   IMonsterEffect, 

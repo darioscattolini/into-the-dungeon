@@ -48,7 +48,7 @@ describe('BiddingServiceService', () => {
     it('should check that name received as firstPlayer belongs to one of players', async () => {
       expect.assertions(1);
       try {
-        await biddingService.startNewRound(players, 'Anna');
+        await biddingService.getResult(players, 'Anna');
       } catch (error) {
         expect(error.message)
           .toEqual('Received players list has no player with received name');
@@ -56,7 +56,7 @@ describe('BiddingServiceService', () => {
     });
 
     it('should call heroService.chooseHero with name of player passed as first', async () => {
-      await biddingService.startNewRound(players, 'Julia');
+      await biddingService.getResult(players, 'Julia');
       expect(heroesService.chooseHero).toHaveBeenCalledTimes(1);
       expect(heroesService.chooseHero).toHaveBeenCalledWith('Julia');
     });
@@ -65,8 +65,27 @@ describe('BiddingServiceService', () => {
       const hero = new Bard();
       (heroesService.chooseHero as jest.Mock<Promise<Hero>, [string]>)
         .mockResolvedValue(hero);
-      await biddingService.startNewRound(players, 'Julia');
+      await biddingService.getResult(players, 'Julia');
       expect(biddingService.hero).toBe(hero);
     });
   });
 });
+
+/*private async manageRound(firstPlayerName: string) {
+    let currentPlayer = firstPlayerName;
+    while(this.players.length > 1) {
+      // options: see monster or retire
+      // uiController.requestChoice()
+      // if (retire) get out of array, or perhaps we should keep another actives array, and check for missing nextPlayer
+        // currentPlayer = currentPlayer.nextPlayer and continue loop
+      // if (monster), monsterService.getMonster()
+      // options: add monster or remove equipment
+      // uiController.requestChoice()
+      // if (addMonster) add monster to monster mace stored in this service
+        // currentPlayer = currentPlayer.nextPlayer, and continue loop
+      // if (removeEquipment) equipmentService o heroService getEquipData and build options
+      // uiController.requestChoice()
+      // equipService or heroService process result
+      // currentPlayer = currentPlayer.nextPlayer
+    }
+  }*/
