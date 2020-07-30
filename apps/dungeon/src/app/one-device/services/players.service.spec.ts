@@ -96,4 +96,58 @@ describe('PlayersService', () => {
       expect(service.getPlayersList().length).toStrictEqual(2);
     });
   });
+
+  describe('getRandomPlayer', () => {
+    beforeEach(() => {
+      service.addPlayer('John');
+      service.addPlayer('Anna');
+      service.addPlayer('Chris');
+      service.addPlayer('Julia');
+    });
+
+    it('should return a Player', () => {
+      const randomPlayer = service.getRandomPlayer();
+      expect(randomPlayer instanceof Player).toBe(true);
+    });
+
+    it('should only return players from its list', () => {
+      let unexpected = 0;
+      for (let i = 0; i < 100; i++) {
+        const randomPlayer = service.getRandomPlayer();
+        switch(randomPlayer.name) {
+          case 'John':
+          case 'Anna':
+          case 'Chris':
+          case 'Julia':
+            break;
+          default:
+            unexpected++;
+        }
+        expect(unexpected).toBe(0);
+      }
+    });
+
+    it('should return all players given enough calls', () => {
+      const count = {
+        John: 0,
+        Anna: 0,
+        Chris: 0,
+        Julia: 0
+      }
+      while(
+        count.John === 0 ||
+        count.Anna === 0 ||
+        count.Chris === 0 ||
+        count.Julia === 0
+      ) {
+        const randomPlayer = service.getRandomPlayer();
+        count[randomPlayer.name]++;
+      }
+      const allHaveBeenReturned = true;
+      expect(allHaveBeenReturned).toBe(true);
+    });
+
+    // It would be great to test that players are returned randomly,
+    // following no pattern.
+  });
 });
