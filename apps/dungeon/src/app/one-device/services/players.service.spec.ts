@@ -141,7 +141,8 @@ describe('PlayersService', () => {
         count.Julia === 0
       ) {
         const randomPlayer = service.getRandomPlayer();
-        count[randomPlayer.name]++;
+        const name = randomPlayer.name as 'John' | 'Anna' | 'Chris' | 'Julia';
+        count[name]++;
       }
       const allHaveBeenReturned = true;
       expect(allHaveBeenReturned).toBe(true);
