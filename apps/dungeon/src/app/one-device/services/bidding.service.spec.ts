@@ -5,7 +5,7 @@ import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
 // import { UIControllerService } from './uicontroller.service';
 import { Player, Hero } from '../../models/models';
-import { noEquipHeroStub } from '../../models/mocks';
+import { noEquipHeroStub } from '../../mocks/hero.mocks';
 
 jest.mock('./heroes.service');
 const MockedHeroesService = mocked(HeroesService, true);

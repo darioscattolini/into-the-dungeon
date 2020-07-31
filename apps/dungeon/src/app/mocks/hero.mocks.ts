@@ -1,5 +1,5 @@
-import { Hero } from './hero';
-import { stubEquipment } from '../mocks';
+import { Hero } from '../models/models';
+import { stubEquipment } from './equipment.mocks';
 
 class NoEquipHero extends Hero {
   protected equipment = [];

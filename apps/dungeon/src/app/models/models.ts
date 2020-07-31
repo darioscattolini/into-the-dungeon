@@ -13,6 +13,11 @@ import { IDerivedHeroStatic } from './hero/derived-hero-static.interface';
 
 export { Hero, Bard, Mage, Ninja, Princess, IDerivedHeroStatic };
 
+// EQUIPMENT
+import { IEquipment } from './equipment/equipment.interface';
+
+export { IEquipment };
+
 // MONSTER
 import { Monster } from './monster/monster';
 import { CommonMonsterType } from './monster/common-monster-type';

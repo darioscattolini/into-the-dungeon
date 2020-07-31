@@ -1,4 +1,4 @@
-import { IEquipment } from "./equipment.interface";
+import { IEquipment } from "../models/models";
 
 export const stubEquipment: IEquipment = {
   name: 'generic',
