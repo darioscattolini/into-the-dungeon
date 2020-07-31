@@ -1,3 +1,3 @@
 export interface IRaidResult {
-  sucess: true;
+  sucess: boolean;
 }
