@@ -16,21 +16,12 @@ export class PlayersService {
   }
 
   public addPlayer(name: string): Player {
-    if (this.getAmountOfPlayers() === 4) {
-      throw new Error('There can only be four players in this game');
-    }
-
-    // tslint:disable-next-line: no-shadowed-variable
-    for (const player of this.players) {
-      if (player.name === name) throw new Error(`There can only be one player named ${name}`);
-    }
-
+    this.validateAmountOfPlayers();
+    this.validateNewPlayersName(name);
+    
     const player = new Player(name);
     
-    if (this.players.length > 0) {
-      this.players[this.players.length - 1].nextPlayer = player;
-      player.nextPlayer = this.players[0];
-    }
+    this.updatePlayersOrder(player);
     
     this.players.push(player);
     return player;
@@ -49,5 +40,27 @@ export class PlayersService {
     const randomIndex = Math.floor(Math.random() * this.players.length);
     const randomPlayer = this.players[randomIndex];
     return randomPlayer;
+  }
+
+  private validateAmountOfPlayers(): void {
+    if (this.getAmountOfPlayers() === 4) {
+      throw new Error('There can only be four players in this game');
+    }
+  }
+
+  private validateNewPlayersName(name: string): void {
+    for (const player of this.players) {
+      if (player.name === name) {
+        throw new Error(`There can only be one player named ${name}`);
+      }
+    }
+  }
+
+  private updatePlayersOrder(newPlayer: Player): void {
+    if (this.players.length > 0) {
+      const lastPlayer = this.players[this.players.length - 1];
+      lastPlayer.nextPlayer = newPlayer;
+      newPlayer.nextPlayer = this.players[0];
+    }
   }
 }
