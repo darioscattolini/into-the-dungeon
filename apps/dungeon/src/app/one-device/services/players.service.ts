@@ -52,6 +52,16 @@ export class PlayersService {
     return someoneHasTwoVictories || thereIsOnlyOneLeft;
   }
 
+  public getWinner(): Player {
+    if (!this.isThereAWinner()) throw new Error('There is no winner yet');
+
+    const winner = this.inGamePlayers.length === 1
+      ? this.inGamePlayers[0]
+      : this.inGamePlayers.find(player => player.victories === 2);
+      
+    return winner as Player;
+  }
+
   private validateAmountOfPlayers(): void {
     if (this.getAmountOfPlayers() === 4) {
       throw new Error('There can only be four players in this game');

@@ -242,20 +242,20 @@ describe('PlayersService', () => {
         anna: Player;
     
     beforeEach(() => {
-      john = new Player('John');
-      anna = new Player('Anna');
+      john = service.addPlayer('John');
+      anna = service.addPlayer('Anna');
+
     });
 
     it('should throw error if there are no winners', () => {
-      expect(service.getWinner()).toThrowError(
-        'There is no winner yet'
-      );
+      expect(() => { service.getWinner() })
+        .toThrowError('There is no winner yet');
     });
 
-    it('should return an instance of Player', () => {
+    it('should return a winning player', () => {
       anna.surviveDungeon();
       anna.surviveDungeon();
-      expect(service.getWinner()).toReturn(anna);
+      expect(service.getWinner()).toBe(anna);
     });
   });
 });
