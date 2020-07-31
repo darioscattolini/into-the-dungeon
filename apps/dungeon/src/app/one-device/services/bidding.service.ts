@@ -26,7 +26,7 @@ export class BiddingService {
     this._hero = await this.heroesService.chooseHero(startingPlayer.name);
     // ...
     return {
-      raider: 'SomePlayer',
+      raider: startingPlayer,
       hero: this._hero,
       enemies: []
     }

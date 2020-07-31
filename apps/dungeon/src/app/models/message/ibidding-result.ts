@@ -1,7 +1,7 @@
-import { Hero, Monster } from "../models";
+import { Hero, Monster, Player } from "../models";
 
 export interface IBiddingResult {
-  raider: string;
+  raider: Player;
   hero: Hero;
   enemies: Monster[];
 }
