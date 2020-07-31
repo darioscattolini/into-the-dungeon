@@ -10,7 +10,6 @@ import { HeroesService } from './heroes.service';
 export class BiddingService {
 
   private _hero: Hero | undefined;
-  private players: Player[] = [];
 
   constructor(
     private heroesService: HeroesService,
@@ -22,14 +21,9 @@ export class BiddingService {
   }
 
   public async getResult(
-    players: Player[], 
-    firstPlayerName: string
+    firstPlayer: Player
   ): Promise<IBiddingResult> {
-    if (!players.some(player => player.name === firstPlayerName)) {
-      throw new Error('Received players list has no player with received name');
-    }
-    players.forEach(player => this.players.push(player));
-    this._hero = await this.heroesService.chooseHero(firstPlayerName);
+    this._hero = await this.heroesService.chooseHero(firstPlayer.name);
     // ...
     return {
       raider: 'SomePlayer',

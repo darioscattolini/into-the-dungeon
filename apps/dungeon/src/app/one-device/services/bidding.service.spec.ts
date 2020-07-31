@@ -4,7 +4,8 @@ import { mocked } from 'ts-jest/utils';
 import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
 // import { UIControllerService } from './uicontroller.service';
-import { Player, Bard, Hero } from '../../models/models';
+import { Player, Hero } from '../../models/models';
+import { noEquipHeroStub } from '../../models/mocks';
 
 jest.mock('./heroes.service');
 const MockedHeroesService = mocked(HeroesService, true);
@@ -39,33 +40,27 @@ describe('BiddingServiceService', () => {
   });
 
   describe('startNewRound', () => {
-    let players: Player[];
+    let firstPlayer: Player;
 
     beforeEach(() => {
-      players = [new Player('John'), new Player('Julia')];
+      firstPlayer = new Player('John');
     });
 
-    it('should check that name received as firstPlayer belongs to one of players', async () => {
-      expect.assertions(1);
-      try {
-        await biddingService.getResult(players, 'Anna');
-      } catch (error) {
-        expect(error.message)
-          .toEqual('Received players list has no player with received name');
-      }
-    });
-
-    it('should call heroService.chooseHero with name of player passed as first', async () => {
-      await biddingService.getResult(players, 'Julia');
+    it('should call heroService.chooseHero once', async () => {
+      await biddingService.getResult(firstPlayer);
       expect(heroesService.chooseHero).toHaveBeenCalledTimes(1);
-      expect(heroesService.chooseHero).toHaveBeenCalledWith('Julia');
     });
 
-    it('should store return from heroService.chooseHero in getter hero field', async () => {
-      const hero = new Bard();
+    it('should call heroService.chooseHero with firstPlayer name', async () => {
+      await biddingService.getResult(firstPlayer);
+      expect(heroesService.chooseHero).toHaveBeenCalledWith(firstPlayer.name);
+    });
+
+    it('should store heroService.chooseHero return in hero field', async () => {
+      const hero = noEquipHeroStub;
       (heroesService.chooseHero as jest.Mock<Promise<Hero>, [string]>)
         .mockResolvedValue(hero);
-      await biddingService.getResult(players, 'Julia');
+      await biddingService.getResult(firstPlayer);
       expect(biddingService.hero).toBe(hero);
     });
   });
