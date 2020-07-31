@@ -10,10 +10,13 @@ export class RaidService {
   constructor() { }
 
   public async getResult(
-    player: Player,
+    raider: Player,
     hero: Hero,
     monsters: Monster[]
   ): Promise<IRaidResult> {
-    return { sucess: true };
+    return { 
+      raider: raider,
+      survived: true
+    };
   }
 }

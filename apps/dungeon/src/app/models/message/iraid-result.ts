@@ -1,3 +1,6 @@
+import { Player } from '../models';
+
 export interface IRaidResult {
-  sucess: boolean;
+  raider: Player,
+  survived: boolean;
 }
