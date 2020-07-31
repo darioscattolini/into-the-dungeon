@@ -4,6 +4,7 @@ import { GameService } from './game.service';
 import { PlayersService } from './players.service';
 import { BiddingService } from './bidding.service';
 import { RaidService } from './raid.service';
+import { UIControllerService } from './uicontroller.service';
 import { 
   Player, IBiddingResult, IRaidResult, Hero, Monster
 } from '../../models/models';
@@ -17,6 +18,9 @@ const MockedRaidService = mocked(RaidService, true);
 
 jest.mock('./players.service');
 const MockedPlayersService = mocked(PlayersService, true);
+
+jest.mock('./uicontroller.service');
+const MockedUiController = mocked(UIControllerService, true);
 
 function mockPlayersService(
   playersService: PlayersService, 
@@ -83,15 +87,23 @@ describe('GameService', () => {
   let biddingService: BiddingService;
   let raidService:    RaidService;
   let playersService: PlayersService;
+  let uiController:   UIControllerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ GameService, PlayersService, BiddingService, RaidService ]
+      providers: [
+        GameService, 
+        PlayersService, 
+        BiddingService, 
+        RaidService, 
+        UIControllerService
+      ]
     });
     gameService     = TestBed.inject(GameService);
     biddingService  = TestBed.inject(BiddingService);
     raidService     = TestBed.inject(RaidService);
     playersService  = TestBed.inject(PlayersService);
+    uiController    = TestBed.inject(UIControllerService);
   });
 
   afterEach(() => {
@@ -329,14 +341,14 @@ describe('GameService', () => {
       expect(playersService.getWinner).toHaveBeenCalledTimes(1);
     });
     
-    it('should make uiService send notification if someone won', async () => {
+    it('should make uiController send notification if someone won', async () => {
       const winner = new Player('John');
       (playersService.isThereAWinner as jest.Mock<boolean, []>)
         .mockReturnValue(true);
       (playersService.getWinner as jest.Mock<Player, []>)
         .mockReturnValue(winner);
       await gameService.play();
-      expect(uiService.notify).toHaveBeenCalledWith({ winner });
+      expect(uiController.sendNotification).toHaveBeenCalledWith({ winner });
     });
   });  
 });
