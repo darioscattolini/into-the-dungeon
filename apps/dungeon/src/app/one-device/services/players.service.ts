@@ -45,6 +45,7 @@ export class PlayersService {
   }
 
   public getRandomPlayer(): Player {
+    if (this.players.length === 0) throw new Error('There are no players');
     const randomIndex = Math.floor(Math.random() * this.players.length);
     const randomPlayer = this.players[randomIndex];
     return randomPlayer;
