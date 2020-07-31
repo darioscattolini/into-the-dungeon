@@ -2,11 +2,13 @@ import { TestBed } from '@angular/core/testing';
 
 import { RaidService } from './raid.service';
 
-describe('DungeonService', () => {
+describe('RaidService', () => {
   let service: RaidService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [RaidService]
+    });
     service = TestBed.inject(RaidService);
   });
 
