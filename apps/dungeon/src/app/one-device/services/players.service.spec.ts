@@ -205,7 +205,7 @@ describe('PlayersService', () => {
       expect(service.isThereAWinner()).toBe(false);
     });
 
-    it ('should return true with mixes of 1 defeat/1 victory', () => {
+    it ('should return false with mixes of 1 defeat/1 victory', () => {
       john.dieInDungeon();
       anna.surviveDungeon();
       chris.dieInDungeon();
@@ -234,6 +234,28 @@ describe('PlayersService', () => {
       expect(service.isThereAWinner()).toBe(false);
       teffy.dieInDungeon();
       expect(service.isThereAWinner()).toBe(true);
+    });
+  });
+
+  describe('getWinner', () => {
+    let john: Player,
+        anna: Player;
+    
+    beforeEach(() => {
+      john = new Player('John');
+      anna = new Player('Anna');
+    });
+
+    it('should throw error if there are no winners', () => {
+      expect(service.getWinner()).toThrowError(
+        'There is no winner yet'
+      );
+    });
+
+    it('should return an instance of Player', () => {
+      anna.surviveDungeon();
+      anna.surviveDungeon();
+      expect(service.getWinner()).toReturn(anna);
     });
   });
 });
