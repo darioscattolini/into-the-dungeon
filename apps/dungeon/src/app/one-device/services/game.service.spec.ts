@@ -321,5 +321,24 @@ describe('GameService', () => {
       await gameService.play();
       expect(biddingService.getResult).toHaveBeenCalledTimes(0);
     });
+
+    it('should call playersService.getWinner if someone won', async () => {
+      (playersService.isThereAWinner as jest.Mock<boolean, []>)
+        .mockReturnValue(true);
+      await gameService.play();
+      expect(playersService.getWinner).toHaveBeenCalledTimes(1);
+    });
+    
+    it('should make uiService send notification if someone won', async () => {
+      const winner = new Player('John');
+      (playersService.isThereAWinner as jest.Mock<boolean, []>)
+        .mockReturnValue(true);
+      (playersService.getWinner as jest.Mock<Player, []>)
+        .mockReturnValue(winner);
+      await gameService.play();
+      expect(uiService.notify).toHaveBeenCalledWith({ winner });
+    });
   });  
 });
+
+// it should have method for state clearing if players decide to keep on playing
