@@ -21,9 +21,9 @@ export class BiddingService {
   }
 
   public async getResult(
-    firstPlayer: Player
+    startingPlayer: Player
   ): Promise<IBiddingResult> {
-    this._hero = await this.heroesService.chooseHero(firstPlayer.name);
+    this._hero = await this.heroesService.chooseHero(startingPlayer.name);
     // ...
     return {
       raider: 'SomePlayer',
@@ -31,6 +31,4 @@ export class BiddingService {
       enemies: []
     }
   }
-
-  
 }

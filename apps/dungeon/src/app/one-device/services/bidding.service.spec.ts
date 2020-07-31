@@ -40,27 +40,27 @@ describe('BiddingServiceService', () => {
   });
 
   describe('startNewRound', () => {
-    let firstPlayer: Player;
+    let startingPlayer: Player;
 
     beforeEach(() => {
-      firstPlayer = new Player('John');
+      startingPlayer = new Player('John');
     });
 
     it('should call heroService.chooseHero once', async () => {
-      await biddingService.getResult(firstPlayer);
+      await biddingService.getResult(startingPlayer);
       expect(heroesService.chooseHero).toHaveBeenCalledTimes(1);
     });
 
-    it('should call heroService.chooseHero with firstPlayer name', async () => {
-      await biddingService.getResult(firstPlayer);
-      expect(heroesService.chooseHero).toHaveBeenCalledWith(firstPlayer.name);
+    it('should call heroService.chooseHero with startingPlayer name', async () => {
+      await biddingService.getResult(startingPlayer);
+      expect(heroesService.chooseHero).toHaveBeenCalledWith(startingPlayer.name);
     });
 
     it('should store heroService.chooseHero return in hero field', async () => {
       const hero = noEquipHeroStub;
       (heroesService.chooseHero as jest.Mock<Promise<Hero>, [string]>)
         .mockResolvedValue(hero);
-      await biddingService.getResult(firstPlayer);
+      await biddingService.getResult(startingPlayer);
       expect(biddingService.hero).toBe(hero);
     });
   });
