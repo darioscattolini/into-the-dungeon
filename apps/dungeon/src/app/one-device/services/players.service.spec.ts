@@ -80,13 +80,13 @@ describe('PlayersService', () => {
       expect(service.getAmountOfPlayers()).toStrictEqual(4);
 
       expect(() => { service.addPlayer('fifth'); })
-        .toThrow(new Error('There can only be four players in this game'));
+        .toThrowError('There can only be four players in this game');
     });
 
     it('should not allow players with the same name', () => {
       service.addPlayer('John');
       expect(() => { service.addPlayer('John'); })
-        .toThrow(new Error('There can only be one player named John'));
+        .toThrowError('There can only be one player named John');
     });
 
     it('should order players in round using player.nextPlayer field', () => {
@@ -123,19 +123,19 @@ describe('PlayersService', () => {
   });
 
   describe('getRandomPlayer', () => {
-    beforeEach(() => {
-      service.addPlayer('John');
-      service.addPlayer('Anna');
-      service.addPlayer('Chris');
-      service.addPlayer('Julia');
+    it('should throw error if called with no players', () => {
+      expect(() => service.getRandomPlayer())
+        .toThrowError('There are no players');
     });
 
-    it('should return a Player', () => {
+    it('should return an instance of Player', () => {
+      addPlayers(service, ['John', 'Anna', 'Chris', 'Julia']);
       const randomPlayer = service.getRandomPlayer();
       expect(randomPlayer instanceof Player).toBe(true);
     });
 
     it('should only return players from its list', () => {
+      addPlayers(service, ['John', 'Anna', 'Chris', 'Julia']);
       let unexpected = 0;
       for (let i = 0; i < 100; i++) {
         const randomPlayer = service.getRandomPlayer();
@@ -153,6 +153,7 @@ describe('PlayersService', () => {
     });
 
     it('should return all players given enough calls', () => {
+      addPlayers(service, ['John', 'Anna', 'Chris', 'Julia']);
       const count = {
         John: 0,
         Anna: 0,
