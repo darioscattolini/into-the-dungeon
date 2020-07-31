@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
-import { IChoiceRequest, IChoiceResponse } from '../../models/models';
+import { IChoiceRequest, IChoiceResponse, IGameResult } from '../../models/models';
+
+type INotification = IGameResult;
 
 @Injectable({
   providedIn: OneDeviceModule
@@ -17,5 +19,9 @@ export class UIControllerService {
     const mockResponse = 2;
 
     return { response: mockResponse };
+  }
+
+  public async sendNotification(notification: INotification): Promise<void> {
+
   }
 }

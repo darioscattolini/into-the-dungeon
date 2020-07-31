@@ -26,4 +26,8 @@ describe('UIControllerService', () => {
     // it should wait for user choice
     // it shoud return a ChoiceResponse
   });
+
+  describe('sendNotification', () => {
+    
+  });
 });
