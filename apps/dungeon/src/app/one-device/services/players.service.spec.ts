@@ -3,6 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { PlayersService } from './players.service';
 import { Player } from '../../models/models';
 
+function addPlayers(service: PlayersService, playersNames: string[]) {
+  for(const name of playersNames) {
+    service.addPlayer(name);
+  }
+}
+
 describe('PlayersService', () => {
   let service: PlayersService;
 
@@ -21,19 +27,49 @@ describe('PlayersService', () => {
     });
 
     it('should return 2 after 2 players are added', () => {
-      service.addPlayer('John');
-      service.addPlayer('Anna');
+      addPlayers(service, ['John', 'Anna']);
       expect(service.getAmountOfPlayers()).toStrictEqual(2);
     });
   });
 
   describe('addPlayer', () => {
-    it('should add player named "John"', () => {
+    it('should add something to the list"', () => {
+      const emptyList = service.getPlayersList();
+      expect(emptyList).toHaveLength(0);
+
       service.addPlayer('John');
-      const lastPlayerIndex = service.getAmountOfPlayers() - 1;
-      const lastPlayer = service.getPlayer(lastPlayerIndex);
-      expect(lastPlayer.name).toBe('John');
-      expect(lastPlayer).toBeInstanceOf(Player);
+      const listWithJohn = service.getPlayersList();
+      expect(listWithJohn).toHaveLength(1);
+    });
+
+    it('should add an instance of Player to the list"', () => {
+      service.addPlayer('John');
+      const listWithJohn = service.getPlayersList();
+      expect(listWithJohn[0]).toBeInstanceOf(Player);
+    });
+
+    it('should add a player named John to the list"', () => {
+      service.addPlayer('John');
+      const listWithJohn = service.getPlayersList();
+      expect(listWithJohn[0].name).toBe('John');
+    });
+
+    it('should return an instance of Player', () => {
+      const returnedPlayer = service.addPlayer('John');
+      expect(returnedPlayer).toBeInstanceOf(Player);
+    });
+
+    it('should return a player named John', () => {
+      const returnedPlayer = service.addPlayer('John');
+      expect(returnedPlayer.name).toStrictEqual('John');
+    });
+
+    it('should allow to add up to 4 players', () => {
+      const john = service.addPlayer('John');
+      const anna = service.addPlayer('Anna');
+      const chris = service.addPlayer('Chris');
+      const teffy = service.addPlayer('Teffy');
+      expect(service.getPlayersList()).toEqual([john, anna, chris, teffy]);
     });
 
     it('should add no more than 4 players', () => {
@@ -53,13 +89,7 @@ describe('PlayersService', () => {
         .toThrow(new Error('There can only be one player named John'));
     });
 
-    it('should return a Player named John', () => {
-      const returned = service.addPlayer('John');
-      expect(returned.name).toStrictEqual('John');
-      expect(returned).toBeInstanceOf(Player);
-    });
-
-    it('should order players in round while added using player.nextPlayer field', () => {
+    it('should order players in round using player.nextPlayer field', () => {
       const first = service.addPlayer('first');
       const second = service.addPlayer('second');
       expect(first.nextPlayer).toBe(second);
@@ -77,23 +107,18 @@ describe('PlayersService', () => {
 
   describe('getPlayersList', () => {
     it('should return a list of added players', () => {
-      service.addPlayer('John');
-      service.addPlayer('Anna');
-
-      expect(service.getPlayersList().length).toStrictEqual(2);
-      expect(service.getPlayersList().map(player => player.name))
-        .toContain('John');
-      expect(service.getPlayersList().map(player => player.name))
-        .toContain('Anna');
+      const john = service.addPlayer('John');
+      const anna = service.addPlayer('Anna');
+      expect(service.getPlayersList()).toEqual([john, anna]);
     });
 
     it('should return a copy of its private list of players', () => {
-      service.addPlayer('John');
+      const john = service.addPlayer('John');
       const returnedList = service.getPlayersList();
-      service.addPlayer('Anna');
+      const anna = service.addPlayer('Anna');
       
-      expect(returnedList.length).toStrictEqual(1);
-      expect(service.getPlayersList().length).toStrictEqual(2);
+      expect(returnedList).toEqual([john]);
+      expect(service.getPlayersList()).toEqual([john, anna]);
     });
   });
 
