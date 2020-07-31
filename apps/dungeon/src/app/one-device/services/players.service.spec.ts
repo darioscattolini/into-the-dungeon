@@ -23,12 +23,12 @@ describe('PlayersService', () => {
 
   describe('getAmountOfPlayers', () => {
     it('should return 0 when service is created', () => {
-      expect(service.getAmountOfPlayers()).toStrictEqual(0);
+      expect(service.getAmountOfPlayers()).toBe(0);
     });
 
     it('should return 2 after 2 players are added', () => {
       addPlayers(service, ['John', 'Anna']);
-      expect(service.getAmountOfPlayers()).toStrictEqual(2);
+      expect(service.getAmountOfPlayers()).toBe(2);
     });
   });
 
@@ -176,5 +176,64 @@ describe('PlayersService', () => {
 
     // It would be great to test that players are returned randomly,
     // following no pattern.
+  });
+
+  describe('isThereAWinner', () => {
+    let john: Player,
+        anna: Player,
+        chris: Player,
+        teffy: Player;
+
+    beforeEach(() => {
+      addPlayers(service, ['John', 'Anna', 'Chris', 'Teffy']);
+      [john, anna, chris, teffy] = service.getPlayersList();
+    });
+
+    it ('should return false with 0 victories and defeats', () => {
+      expect(service.isThereAWinner()).toBe(false);
+    });
+
+    it ('should return false with some players with 1 victory', () => {
+      john.surviveDungeon();
+      chris.surviveDungeon();
+      expect(service.isThereAWinner()).toBe(false);
+    });
+
+    it ('should return false with some players with 1 defeat', () => {
+      john.dieInDungeon();
+      chris.dieInDungeon();
+      expect(service.isThereAWinner()).toBe(false);
+    });
+
+    it ('should return true with mixes of 1 defeat/1 victory', () => {
+      john.dieInDungeon();
+      anna.surviveDungeon();
+      chris.dieInDungeon();
+      chris.surviveDungeon();
+      expect(service.isThereAWinner()).toBe(false);
+    });
+
+    it('should return true when 1 player gets 2 victories', () => {
+      john.dieInDungeon();
+      anna.surviveDungeon();
+      chris.dieInDungeon();
+      chris.surviveDungeon();
+      chris.surviveDungeon();
+      expect(service.isThereAWinner()).toBe(true);
+    });
+
+    it('should return true when all but 1 player are out of the game', () => {
+      john.dieInDungeon();
+      chris.surviveDungeon();
+      anna.dieInDungeon();
+      anna.surviveDungeon();
+      anna.dieInDungeon();
+      teffy.dieInDungeon();
+      chris.dieInDungeon();
+      john.dieInDungeon();
+      expect(service.isThereAWinner()).toBe(false);
+      teffy.dieInDungeon();
+      expect(service.isThereAWinner()).toBe(true);
+    });
   });
 });
