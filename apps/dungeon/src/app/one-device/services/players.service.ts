@@ -8,6 +8,7 @@ import { Player } from '../../models/player/player';
 export class PlayersService {
 
   private players: Player[] = [];
+  private inGamePlayers: Player[] = [];
 
   constructor() { }
     
@@ -24,6 +25,7 @@ export class PlayersService {
     this.updatePlayersOrder(player);
     
     this.players.push(player);
+    this.inGamePlayers.push(player);
     return player;
   }
 
@@ -40,6 +42,14 @@ export class PlayersService {
     const randomIndex = Math.floor(Math.random() * this.players.length);
     const randomPlayer = this.players[randomIndex];
     return randomPlayer;
+  }
+
+  public isThereAWinner(): boolean {
+    this.takeLosersOut();
+    const someoneHasTwoVictories = 
+      this.inGamePlayers.some(player => player.victories === 2);
+    const thereIsOnlyOneLeft = this.inGamePlayers.length === 1;
+    return someoneHasTwoVictories || thereIsOnlyOneLeft;
   }
 
   private validateAmountOfPlayers(): void {
@@ -61,6 +71,15 @@ export class PlayersService {
       const lastPlayer = this.players[this.players.length - 1];
       lastPlayer.nextPlayer = newPlayer;
       newPlayer.nextPlayer = this.players[0];
+    }
+  }
+
+  private takeLosersOut(): void {
+    for (let i = 0; i < this.inGamePlayers.length; i++) {
+      const player = this.inGamePlayers[i];
+      if (player.defeats === 2) {
+        this.inGamePlayers.splice(i, 1);
+      }
     }
   }
 }
