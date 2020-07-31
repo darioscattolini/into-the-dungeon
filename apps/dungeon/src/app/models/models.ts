@@ -63,6 +63,7 @@ export { CompanionType };
 import { IBiddingResult } from './message/ibidding-result';
 import { ICombatResult } from './message/icombat-result';
 import { IRaidResult } from './message/iraid-result';
+import { IGameResult } from './message/igame-result';
 import { 
   IMonsterEffect, 
   IDamageEffect, 
@@ -79,6 +80,7 @@ export {
   IBiddingResult,
   ICombatResult,
   IRaidResult,
+  IGameResult,
   IMonsterEffect, 
   IDamageEffect, 
   IAddCompanionEffect, 
