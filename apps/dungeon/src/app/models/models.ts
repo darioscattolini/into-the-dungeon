@@ -38,11 +38,11 @@ import { JellyCube } from './monster/monsters/jelly-cube';
 import { Dracula } from './monster/monsters/dracula';
 import { Metamorph } from './monster/monsters/metamorph';
 
-const CommonMonsterClasses: IDerivedMonsterStatic[] = [
+const CommonMonsterClasses: ReadonlyArray<IDerivedMonsterStatic> = [
   Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon
 ];
 
-const RareMonsterClasses: IDerivedMonsterStatic[] = [
+const RareMonsterClasses: ReadonlyArray<IDerivedMonsterStatic> = [
   Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
 ];
 
