@@ -93,5 +93,19 @@ describe('MonstersService', () => {
       });
       expect(rareCounter).toBe(2);
     });
+
+    it('should contain 2 instances of rare monsters of different kind', () => {
+      const rareMonsters = monstersMace.filter(monster => {
+        return (
+          monster instanceof Fairy ||
+          monster instanceof Ally ||
+          monster instanceof Mimic ||
+          monster instanceof JellyCube ||
+          monster instanceof Dracula ||
+          monster instanceof Metamorph
+        );
+      });
+      expect(rareMonsters[0].type !== rareMonsters[1].type).toBe(true);
+    });
   });
 });
