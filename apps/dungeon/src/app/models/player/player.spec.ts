@@ -77,6 +77,10 @@ describe('Player', () => {
     it('should create a player with undefined nextPlayer', () => {
       expect(player.nextPlayer).toBeUndefined();
     });
+
+    it('should create a player with active field set to true', () => {
+      expect(player.active).toBe(true);
+    });
   });
 
   describe('surviveDungeon', () => {
@@ -111,7 +115,18 @@ describe('Player', () => {
       player.dieInDungeon();
       player.dieInDungeon();
       expect(() => { player.dieInDungeon(); })
-        .toThrow(new Error('The game must end after a player reaches 2 defeats'));
+        .toThrowError('The game must end after a player reaches 2 defeats');
+    });
+
+    it('should not set active field to false after 1 defeat', () => {
+      player.dieInDungeon();
+      expect(player.active).toBe(true);
+    });
+
+    it('should set active field to false after 2 defeats', () => {
+      player.dieInDungeon();
+      player.dieInDungeon();
+      expect(player.active).toBe(false);
     });
   });
 
