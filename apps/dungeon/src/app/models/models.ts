@@ -101,7 +101,7 @@ import { mage } from './ui/hero/mage';
 import { ninja } from './ui/hero/ninja';
 import { princess } from './ui/hero/princess';
 
-const heroes: IHero[] = [
+const heroes: ReadonlyArray<IHero> = [
   bard,
   mage,
   ninja,
