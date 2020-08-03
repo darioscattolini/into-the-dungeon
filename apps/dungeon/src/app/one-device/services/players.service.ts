@@ -8,7 +8,6 @@ import { Player } from '../../models/player/player';
 export class PlayersService {
 
   private players: Player[] = [];
-  private inGamePlayers: Player[] = [];
 
   constructor() { }
     
@@ -25,7 +24,6 @@ export class PlayersService {
     this.updatePlayersOrder(player);
     
     this.players.push(player);
-    this.inGamePlayers.push(player);
     return player;
   }
 
@@ -37,27 +35,33 @@ export class PlayersService {
     return this.players.slice(0);
   }
 
+  public getActivePlayersList(): Player[] {
+    return this.players.slice(0).filter(player => player.active);
+  }
+
   public getRandomPlayer(): Player {
-    if (this.players.length === 0) throw new Error('There are no players');
-    const randomIndex = Math.floor(Math.random() * this.players.length);
-    const randomPlayer = this.players[randomIndex];
+    const activePlayers = this.getActivePlayersList();
+    if (activePlayers.length === 0) throw new Error('There are no players');
+    const randomIndex = Math.floor(Math.random() * activePlayers.length);
+    const randomPlayer = activePlayers[randomIndex];
     return randomPlayer;
   }
 
   public isThereAWinner(): boolean {
-    this.takeLosersOut();
+    const activePlayers = this.getActivePlayersList();
     const someoneHasTwoVictories = 
-      this.inGamePlayers.some(player => player.victories === 2);
-    const thereIsOnlyOneLeft = this.inGamePlayers.length === 1;
+      activePlayers.some(player => player.victories === 2);
+    const thereIsOnlyOneLeft = activePlayers.length === 1;
     return someoneHasTwoVictories || thereIsOnlyOneLeft;
   }
 
   public getWinner(): Player {
     if (!this.isThereAWinner()) throw new Error('There is no winner yet');
 
-    const winner = this.inGamePlayers.length === 1
-      ? this.inGamePlayers[0]
-      : this.inGamePlayers.find(player => player.victories === 2);
+    const activePlayers = this.getActivePlayersList();
+    const winner = activePlayers.length === 1
+      ? activePlayers[0]
+      : activePlayers.find(player => player.victories === 2);
       
     return winner as Player;
   }
@@ -81,15 +85,6 @@ export class PlayersService {
       const lastPlayer = this.players[this.players.length - 1];
       lastPlayer.nextPlayer = newPlayer;
       newPlayer.nextPlayer = this.players[0];
-    }
-  }
-
-  private takeLosersOut(): void {
-    for (let i = 0; i < this.inGamePlayers.length; i++) {
-      const player = this.inGamePlayers[i];
-      if (player.defeats === 2) {
-        this.inGamePlayers.splice(i, 1);
-      }
     }
   }
 }
