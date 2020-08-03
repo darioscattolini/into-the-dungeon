@@ -146,5 +146,25 @@ describe('MonstersService', () => {
 
       expect(condition.ready()).toBe(true);
     });
+
+    it('should be randomly ordered', () => {
+      const maces: string[][] = [];
+      for (let i = 0; i < 100; i++) {
+        const currentMace = 
+          service.getMonstersMace().map(monster => monster.type);
+        maces.push(currentMace);
+      }
+      const variations: number[] = [];
+      for (let position = 0; position < maces[0].length; position++) {
+        const unrepeatedTypes: string[] = [];
+        for (let mace = 0; mace < maces.length; mace++) {
+          if (!unrepeatedTypes.includes(maces[mace][position])) {
+            unrepeatedTypes.push(maces[mace][position]);
+          }
+        }
+        variations.push(unrepeatedTypes.length);
+      }
+      expect(variations.every(number => number >= 9)).toBe(true);
+    });
   });
 });
