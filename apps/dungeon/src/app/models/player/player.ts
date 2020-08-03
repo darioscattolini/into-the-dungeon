@@ -3,13 +3,17 @@ export class Player {
   private _name: string;
   private _victories: number;
   private _defeats: number;
+  private _active: boolean;
   private score: number;
 
   constructor(name: string) { 
-    if (name === '') throw new Error('Player\'s names should have at least one character');
+    if (name === '') {
+      throw new Error('Player\'s names should have at least one character');
+    }
     this._name = name;
     this._victories = 0;
     this._defeats = 0;
+    this._active = true;
     this.score = 0;
   }
 
@@ -18,14 +22,21 @@ export class Player {
 
     const classification: { [key: string]: Player[] } = {};
     for (const player of players) {
-      if (classification[player.score]) classification[player.score].push(player);
-      else classification[player.score] = [player];
+      if (classification[player.score]) {
+        classification[player.score].push(player);
+      } else {
+        classification[player.score] = [player];
+      }
     }
 
     for (let i = 2; i >= -2; i--) {
-      if (classification[i]) ranking.push(classification[i].sort(
-        (player1, player2) => player1.name.localeCompare(player2.name)
-      ));
+      if (classification[i]) {
+        ranking.push(
+          classification[i].sort(
+            (player1, player2) => player1.name.localeCompare(player2.name)
+          )
+        );
+      }
     }
 
     return ranking;
@@ -43,6 +54,10 @@ export class Player {
     return this._defeats;
   }
 
+  public get active(): boolean {
+    return this._active;
+  }
+
   public surviveDungeon(): void {
     if(this._victories === 2) {
       throw new Error('The game must end after a player reaches 2 victories');
@@ -57,6 +72,7 @@ export class Player {
     }
     this._defeats++;
     this.updateScore();
+    if (this._defeats === 2) this._active = false;
   }
 
   private updateScore() {
