@@ -7,6 +7,17 @@ import {
   Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
  } from '../../models/models';
 
+const rareMonstersFilter = (monster: Monster) => {
+  return (
+    monster instanceof Fairy ||
+    monster instanceof Ally ||
+    monster instanceof Mimic ||
+    monster instanceof JellyCube ||
+    monster instanceof Dracula ||
+    monster instanceof Metamorph
+  );
+};
+
 describe('MonstersService', () => {
   let service: MonstersService;
 
@@ -78,33 +89,12 @@ describe('MonstersService', () => {
     });
 
     it('should contain 2 instances of rare monsters', () => {
-      let rareCounter = 0;
-      monstersMace.forEach(monster => {
-        if (
-          monster instanceof Fairy ||
-          monster instanceof Ally ||
-          monster instanceof Mimic ||
-          monster instanceof JellyCube ||
-          monster instanceof Dracula ||
-          monster instanceof Metamorph
-        ) {
-          rareCounter++;
-        }
-      });
-      expect(rareCounter).toBe(2);
+      const rareMonsters = monstersMace.filter(rareMonstersFilter);
+      expect(rareMonsters).toHaveLength(2);
     });
 
     it('should contain 2 instances of rare monsters of different kind', () => {
-      const rareMonsters = monstersMace.filter(monster => {
-        return (
-          monster instanceof Fairy ||
-          monster instanceof Ally ||
-          monster instanceof Mimic ||
-          monster instanceof JellyCube ||
-          monster instanceof Dracula ||
-          monster instanceof Metamorph
-        );
-      });
+      const rareMonsters = monstersMace.filter(rareMonstersFilter);
       expect(rareMonsters[0].type !== rareMonsters[1].type).toBe(true);
     });
   });
