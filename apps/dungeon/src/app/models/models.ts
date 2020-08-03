@@ -48,10 +48,10 @@ const RareMonsterClasses: ReadonlyArray<IDerivedMonsterStatic> = [
 
 export { 
   Monster, 
-  CommonMonsterType, 
-  RareMonsterType, 
-  CommonMonsterClasses, 
-  RareMonsterClasses 
+  CommonMonsterType, RareMonsterType, 
+  CommonMonsterClasses, RareMonsterClasses,
+  Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon,
+  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph 
 };
 
 // COMPANION
