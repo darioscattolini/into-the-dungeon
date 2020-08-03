@@ -122,27 +122,6 @@ describe('PlayersService', () => {
     });
   });
 
-  describe('getActivePlayersList', () => {
-    it('should return a list of all players if no one was defeated', () => {
-      const john = service.addPlayer('John');
-      const anna = service.addPlayer('Anna');
-      const allPlayers = service.getPlayersList();
-      const activePlayers = service.getActivePlayersList();
-      expect(activePlayers.length).toEqual(allPlayers.length);
-      expect(activePlayers).toEqual(expect.arrayContaining(allPlayers));
-    });
-
-    it('should return a list of non-defeated players', () => {
-      const john = service.addPlayer('John');
-      const anna = service.addPlayer('Anna');
-      expect(service.getActivePlayersList()).toEqual([john, anna]);
-      
-      john.dieInDungeon();
-      john.dieInDungeon();
-      expect(service.getActivePlayersList()).toEqual([anna]);
-    });
-  });
-
   describe('getRandomPlayer', () => {
     it('should throw error if called with no players', () => {
       expect(() => service.getRandomPlayer())

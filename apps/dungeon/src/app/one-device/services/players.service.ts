@@ -35,10 +35,6 @@ export class PlayersService {
     return this.players.slice(0);
   }
 
-  public getActivePlayersList(): Player[] {
-    return this.players.slice(0).filter(player => player.active);
-  }
-
   public getRandomPlayer(): Player {
     const activePlayers = this.getActivePlayersList();
     if (activePlayers.length === 0) throw new Error('There are no players');
@@ -86,5 +82,9 @@ export class PlayersService {
       lastPlayer.nextPlayer = newPlayer;
       newPlayer.nextPlayer = this.players[0];
     }
+  }
+
+  private getActivePlayersList(): Player[] {
+    return this.players.slice(0).filter(player => player.active);
   }
 }
