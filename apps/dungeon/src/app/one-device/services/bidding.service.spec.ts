@@ -63,6 +63,11 @@ describe('BiddingServiceService', () => {
       await biddingService.getResult(startingPlayer);
       expect(biddingService.hero).toBe(hero);
     });
+
+    it('should call monsterService.getMonstersMace once', async () => {
+      await biddingService.getResult(startingPlayer);
+      expect(monsterService.getMonstersMace).toHaveBeenCalledTimes(1);
+    });
   });
 });
 
