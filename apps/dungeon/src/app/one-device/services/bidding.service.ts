@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
-import { Player, Hero, IBiddingResult } from '../../models/models';
+import { Player, Hero, Monster, IBiddingResult } from '../../models/models';
 import { HeroesService } from './heroes.service';
+import { MonstersService } from './monsters.service';
 // import { UIControllerService } from './uicontroller.service';
 
 @Injectable({
@@ -10,9 +11,11 @@ import { HeroesService } from './heroes.service';
 export class BiddingService {
 
   private _hero: Hero | undefined;
+  private monstersMace: Monster[] | undefined;
 
   constructor(
     private heroesService: HeroesService,
+    private monstersService: MonstersService
     // private uiController: UIControllerService,
   ) { }
 
@@ -24,6 +27,7 @@ export class BiddingService {
     startingPlayer: Player
   ): Promise<IBiddingResult> {
     this._hero = await this.heroesService.chooseHero(startingPlayer.name);
+    this.monstersMace = this.monstersService.getMonstersMace();
     // ...
     return {
       raider: startingPlayer,
