@@ -1,7 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MonstersService } from './monsters.service';
-import { Monster, Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon } from '../../models/models';
+import { 
+  Monster, 
+  Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon, 
+  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
+ } from '../../models/models';
 
 describe('MonstersService', () => {
   let service: MonstersService;
@@ -71,6 +75,23 @@ describe('MonstersService', () => {
     it('should contain 1 instance of Dragon', () => {
       expect(monstersMace.filter(monster => monster instanceof Dragon))
         .toHaveLength(1);
+    });
+
+    it('should contain 2 instances of rare monsters', () => {
+      let rareCounter = 0;
+      monstersMace.forEach(monster => {
+        if (
+          monster instanceof Fairy ||
+          monster instanceof Ally ||
+          monster instanceof Mimic ||
+          monster instanceof JellyCube ||
+          monster instanceof Dracula ||
+          monster instanceof Metamorph
+        ) {
+          rareCounter++;
+        }
+      });
+      expect(rareCounter).toBe(2);
     });
   });
 });
