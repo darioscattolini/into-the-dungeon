@@ -19,6 +19,7 @@ export class MonstersService {
     const mace: Monster[] = [];
     this.addCommonMonsters(mace);
     this.addRareMonsters(mace);
+    this.shuffleMace(mace);
     return mace;
   }
 
@@ -47,5 +48,14 @@ export class MonstersService {
     index2 = index2 < index1 ? index2 : index2 + 1;
     
     return [this.RareMonsters[index1], this.RareMonsters[index2]];
+  }
+
+  private shuffleMace(mace: Monster[]) {
+    for (let i = mace.length - 1; i >= 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      const stored = mace[randomIndex];
+      mace[randomIndex] = mace[i];
+      mace[i] = stored;
+    }
   }
 }
