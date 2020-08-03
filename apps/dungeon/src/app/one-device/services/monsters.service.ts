@@ -15,29 +15,29 @@ export class MonstersService {
 
   constructor() { }
 
-  public getMonstersMace() {
-    const mace: Monster[] = [];
-    this.addCommonMonsters(mace);
-    this.addRareMonsters(mace);
-    this.shuffleMace(mace);
-    return mace;
+  public getMonstersPack() {
+    const pack: Monster[] = [];
+    this.addCommonMonsters(pack);
+    this.addRareMonsters(pack);
+    this.shuffle(pack);
+    return pack;
   }
 
-  private addCommonMonsters(mace: Monster[]) {
+  private addCommonMonsters(pack: Monster[]) {
     for (const MonsterClass of this.CommonMonsters) {
       const amount = MonsterClass.maxAmount;
       for (let i = 0; i < amount; i++) {
         const monster = new MonsterClass();
-        mace.push(monster);
+        pack.push(monster);
       }
     }
   }
 
-  private addRareMonsters(mace: Monster[]) {
+  private addRareMonsters(pack: Monster[]) {
     const PickedClasses = this.pick2RandomRareMonsterClasses();
     for (const PickedClass of PickedClasses) {
       const monster = new PickedClass();
-      mace.push(monster);
+      pack.push(monster);
     }
   }
 
@@ -50,12 +50,12 @@ export class MonstersService {
     return [this.RareMonsters[index1], this.RareMonsters[index2]];
   }
 
-  private shuffleMace(mace: Monster[]) {
-    for (let i = mace.length - 1; i >= 0; i--) {
+  private shuffle(pack: Monster[]) {
+    for (let i = pack.length - 1; i >= 0; i--) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
-      const stored = mace[randomIndex];
-      mace[randomIndex] = mace[i];
-      mace[i] = stored;
+      const stored = pack[randomIndex];
+      pack[randomIndex] = pack[i];
+      pack[i] = stored;
     }
   }
 }

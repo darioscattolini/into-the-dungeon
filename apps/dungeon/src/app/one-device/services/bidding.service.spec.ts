@@ -5,7 +5,7 @@ import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
 import { MonstersService } from './monsters.service';
 // import { UIControllerService } from './uicontroller.service';
-import { Player, Hero, Monster } from '../../models/models';
+import { Player, Hero } from '../../models/models';
 import { noEquipHeroStub } from '../../mocks/hero.mocks';
 
 jest.mock('./heroes.service');
@@ -74,9 +74,9 @@ describe('BiddingServiceService', () => {
       expect(biddingService.hero).toBe(hero);
     });
 
-    it('should call monstersService.getMonstersMace once', async () => {
+    it('should call monstersService.getMonstersPack once', async () => {
       await biddingService.getResult(startingPlayer);
-      expect(monstersService.getMonstersMace).toHaveBeenCalledTimes(1);
+      expect(monstersService.getMonstersPack).toHaveBeenCalledTimes(1);
     });
   });
 });

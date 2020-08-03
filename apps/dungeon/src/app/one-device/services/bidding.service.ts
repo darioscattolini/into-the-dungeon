@@ -27,7 +27,7 @@ export class BiddingService {
     startingPlayer: Player
   ): Promise<IBiddingResult> {
     this._hero = await this.heroesService.chooseHero(startingPlayer.name);
-    this.monstersMace = this.monstersService.getMonstersMace();
+    this.monstersMace = this.monstersService.getMonstersPack();
     // ...
     return {
       raider: startingPlayer,
