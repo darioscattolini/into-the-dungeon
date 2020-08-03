@@ -3,34 +3,44 @@ import { mocked } from 'ts-jest/utils';
 
 import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
+import { MonstersService } from './monsters.service';
 // import { UIControllerService } from './uicontroller.service';
-import { Player, Hero } from '../../models/models';
+import { Player, Hero, Monster } from '../../models/models';
 import { noEquipHeroStub } from '../../mocks/hero.mocks';
 
 jest.mock('./heroes.service');
 const MockedHeroesService = mocked(HeroesService, true);
 
+jest.mock('./monsters.service');
+const MockedMonstersService = mocked(MonstersService, true);
+
 // jest.mock('./uicontroller.service');
 // const MockedUIControllerService = mocked(UIControllerService, true);
 
 describe('BiddingServiceService', () => {
-  let biddingService: BiddingService;
-  let heroesService: HeroesService;
+  let biddingService:  BiddingService;
+  let heroesService:   HeroesService;
+  let monstersService: MonstersService;
   // let uiController: UIControllerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BiddingService, HeroesService, /* UIControllerService */]
+      providers: [
+        BiddingService, HeroesService, MonstersService, /* UIControllerService */
+      ]
     });
-    biddingService = TestBed.inject(BiddingService);
-    heroesService = TestBed.inject(HeroesService);
+    biddingService  = TestBed.inject(BiddingService);
+    heroesService   = TestBed.inject(HeroesService);
+    monstersService = TestBed.inject(MonstersService);
     // uiController = TestBed.inject(UIControllerService);
   });
 
   afterEach(() => {
     MockedHeroesService.mockClear();
+    MockedMonstersService.mockClear();
     // MockedUIControllerService.mockClear();
   });
+  
   it('should be created', () => {
     expect(biddingService).toBeTruthy();
   });
@@ -64,9 +74,9 @@ describe('BiddingServiceService', () => {
       expect(biddingService.hero).toBe(hero);
     });
 
-    it('should call monsterService.getMonstersMace once', async () => {
+    it('should call monstersService.getMonstersMace once', async () => {
       await biddingService.getResult(startingPlayer);
-      expect(monsterService.getMonstersMace).toHaveBeenCalledTimes(1);
+      expect(monstersService.getMonstersMace).toHaveBeenCalledTimes(1);
     });
   });
 });
