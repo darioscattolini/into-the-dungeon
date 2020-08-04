@@ -100,6 +100,9 @@ import { bard } from './ui/hero/bard';
 import { mage } from './ui/hero/mage';
 import { ninja } from './ui/hero/ninja';
 import { princess } from './ui/hero/princess';
+import { IBidOrWithdraw } from './ui/bidding/IBidOrWithdraw';
+import { bid } from './ui/bidding/bid';
+import { withdraw } from './ui/bidding/withdraw';
 
 const heroes: ReadonlyArray<IHero> = [
   bard,
@@ -108,4 +111,9 @@ const heroes: ReadonlyArray<IHero> = [
   princess
 ];
 
-export { IHero, heroes }
+const bidOrWithdraw: IBidOrWithdraw[] = [ bid, withdraw ];
+
+export { 
+  IHero, heroes,
+  IBidOrWithdraw, bidOrWithdraw
+}
