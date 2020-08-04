@@ -25,9 +25,15 @@ function setUpPlayers(): Player[] {
   const first  = new Player('John');
   const second = new Player('Anna');
   const third  = new Player ('Julia');
+
+    // set order
   first.nextPlayer  = second;
   second.nextPlayer = third;
   third.nextPlayer  = first;
+
+    // make second inactive
+  second.dieInDungeon();
+  second.dieInDungeon();
   return [ first, second, third ];
 }
 
@@ -37,8 +43,6 @@ describe('BiddingServiceService', () => {
   let monstersService: MonstersService;
   let playersService:  PlayersService;
   // let uiController: UIControllerService;
-
-  let startingPlayers: Player[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -55,10 +59,6 @@ describe('BiddingServiceService', () => {
     monstersService = TestBed.inject(MonstersService);
     playersService  = TestBed.inject(PlayersService);
     // uiController = TestBed.inject(UIControllerService);
-
-    startingPlayers = setUpPlayers();
-    (playersService.getPlayersList as jest.Mock<Player[], []>)
-      .mockReturnValue(startingPlayers);
   });
 
   afterEach(() => {
@@ -77,10 +77,27 @@ describe('BiddingServiceService', () => {
   });
 
   describe('getResult', () => {
+    let activePlayers: Player[];
     let startingPlayer: Player;
 
     beforeEach(() => {
-      startingPlayer = new Player('John');
+      activePlayers = setUpPlayers();
+      startingPlayer = activePlayers[0];
+
+      (playersService.getPlayersList as jest.Mock<Player[], []>)
+        .mockReturnValue(activePlayers);
+    });
+
+    describe('players setup', () => {
+      it('should work like this', () => {
+        expect(activePlayers).toHaveLength(3);
+        expect(activePlayers[0].nextPlayer).toBe(activePlayers[1]);
+        expect(activePlayers[1].nextPlayer).toBe(activePlayers[2]);
+        expect(activePlayers[2].nextPlayer).toBe(activePlayers[0]);
+        expect(activePlayers[0].active).toBe(true);
+        expect(activePlayers[1].active).toBe(false);
+        expect(activePlayers[2].active).toBe(true);
+      });
     });
 
     it('should call heroService.chooseHero once', async () => {
