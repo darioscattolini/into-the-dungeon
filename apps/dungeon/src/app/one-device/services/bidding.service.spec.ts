@@ -4,6 +4,7 @@ import { mocked } from 'ts-jest/utils';
 import { BiddingService } from './bidding.service';
 import { HeroesService } from './heroes.service';
 import { MonstersService } from './monsters.service';
+import { PlayersService } from './players.service';
 // import { UIControllerService } from './uicontroller.service';
 import { Player, Hero } from '../../models/models';
 import { noEquipHeroStub } from '../../mocks/hero.mocks';
@@ -14,30 +15,54 @@ const MockedHeroesService = mocked(HeroesService, true);
 jest.mock('./monsters.service');
 const MockedMonstersService = mocked(MonstersService, true);
 
+jest.mock('./players.service');
+const MockedPlayersService = mocked(PlayersService, true);
+
 // jest.mock('./uicontroller.service');
 // const MockedUIControllerService = mocked(UIControllerService, true);
+
+function setUpPlayers(): Player[] {
+  const first  = new Player('John');
+  const second = new Player('Anna');
+  const third  = new Player ('Julia');
+  first.nextPlayer  = second;
+  second.nextPlayer = third;
+  third.nextPlayer  = first;
+  return [ first, second, third ];
+}
 
 describe('BiddingServiceService', () => {
   let biddingService:  BiddingService;
   let heroesService:   HeroesService;
   let monstersService: MonstersService;
+  let playersService:  PlayersService;
   // let uiController: UIControllerService;
+
+  let startingPlayers: Player[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        BiddingService, HeroesService, MonstersService, /* UIControllerService */
+        BiddingService, 
+        HeroesService, 
+        MonstersService, 
+        PlayersService
+        /* UIControllerService */
       ]
     });
     biddingService  = TestBed.inject(BiddingService);
     heroesService   = TestBed.inject(HeroesService);
     monstersService = TestBed.inject(MonstersService);
+    playersService  = TestBed.inject(PlayersService);
     // uiController = TestBed.inject(UIControllerService);
+
+    startingPlayers = setUpPlayers();
   });
 
   afterEach(() => {
     MockedHeroesService.mockClear();
     MockedMonstersService.mockClear();
+    MockedPlayersService.mockClear();
     // MockedUIControllerService.mockClear();
   });
   
@@ -49,7 +74,7 @@ describe('BiddingServiceService', () => {
     expect(biddingService.hero).toBeUndefined();
   });
 
-  describe('startNewRound', () => {
+  describe('getResult', () => {
     let startingPlayer: Player;
 
     beforeEach(() => {
@@ -72,6 +97,11 @@ describe('BiddingServiceService', () => {
         .mockResolvedValue(hero);
       await biddingService.getResult(startingPlayer);
       expect(biddingService.hero).toBe(hero);
+    });
+
+    it('should call playersService.getPlayersList once', async () => {
+      await biddingService.getResult(startingPlayer);
+      expect(playersService.getPlayersList).toHaveBeenCalledTimes(1);
     });
 
     it('should call monstersService.getMonstersPack once', async () => {
