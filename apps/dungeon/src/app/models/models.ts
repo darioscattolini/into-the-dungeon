@@ -111,7 +111,7 @@ const heroes: ReadonlyArray<IHero> = [
   princess
 ];
 
-const bidOrWithdraw: IBidOrWithdraw[] = [ bid, withdraw ];
+const bidOrWithdraw: ReadonlyArray<IBidOrWithdraw> = [ bid, withdraw ];
 
 export { 
   IHero, heroes,

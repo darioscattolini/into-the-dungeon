@@ -6,11 +6,11 @@ const description = `
   supernatural luck have proven otherwise.
 `;
 
-export const bard: IHero = {
+export const bard: Readonly<IHero> = Object.freeze({
   name: 'Bard',
   image: '...',
   description: description,
   features: {
     equipment: []
   }
-}
+});

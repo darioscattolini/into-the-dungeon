@@ -6,11 +6,11 @@ const description = `
   by bodyguards and equipped with useful items from his father's treasure.
 `;
 
-export const princess: IHero = {
+export const princess: Readonly<IHero> = Object.freeze({
   name: 'Princess',
   image: '...',
   description: description,
   features: {
     equipment: []
   }
-}
+});

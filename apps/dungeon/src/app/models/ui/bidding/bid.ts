@@ -5,8 +5,8 @@ const description = `
   monster to the dungeon or make hero drop one piece of equipment.
 `;
 
-export const bid: IBidOrWithdraw = {
+export const bid: Readonly<IBidOrWithdraw> = Object.freeze({
   name: 'Bid',
   image: '...',
   description: description
-}
+});

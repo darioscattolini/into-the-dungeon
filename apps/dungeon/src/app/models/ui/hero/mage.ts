@@ -6,11 +6,11 @@ const description = `
   and excercise of particularly evil magic.
 `;
 
-export const mage: IHero = {
+export const mage: Readonly<IHero> = Object.freeze({
   name: 'Mage',
   image: '...',
   description: description,
   features: {
     equipment: []
   }
-}
+});

@@ -6,11 +6,11 @@ const description = `
   herbs and potion making helps him stay alive.
 `;
 
-export const ninja: IHero = {
+export const ninja: Readonly<IHero> = Object.freeze({
   name: 'Ninja',
   image: '...',
   description: description,
   features: {
     equipment: []
   }
-}
+});

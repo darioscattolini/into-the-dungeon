@@ -5,8 +5,8 @@ const description = `
   other players take the risk. You'll play again in the next bidding phase.
 `;
 
-export const withdraw: IBidOrWithdraw = {
+export const withdraw: Readonly<IBidOrWithdraw> = Object.freeze({
   name: 'Withdraw',
   image: '...',
   description: description
-}
+});
