@@ -1,21 +1,7 @@
 import { AllyCompanion } from './ally-companion';
-import { Monster } from '../models';
-import { CommonMonsterType } from '../models';
 import { ICombatResult } from '../models';
 import { Subject } from 'rxjs';
-
-class MockMonster extends Monster {
-  protected _type: CommonMonsterType = 'Orc';
-  protected _baseDamage = 3;
-
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
-}
+import { MockMonster } from '../../mocks/monster.mocks';
 
 describe('AllyCompanion', () => {
   let ally: AllyCompanion;
