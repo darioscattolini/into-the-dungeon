@@ -5,13 +5,14 @@ export { Player };
 
 // HERO
 import { Hero } from './hero/hero';
+import { IDerivedHeroStatic } from './hero/derived-hero-static.interface';
+import { HeroType } from './hero/hero.type';
 import { Bard } from './hero/heroes/bard';
 import { Mage } from './hero/heroes/mage';
 import { Ninja } from './hero/heroes/ninja';
 import { Princess } from './hero/heroes/princess';
-import { IDerivedHeroStatic } from './hero/derived-hero-static.interface';
 
-export { Hero, Bard, Mage, Ninja, Princess, IDerivedHeroStatic };
+export { Hero, IDerivedHeroStatic, HeroType, Bard, Mage, Ninja, Princess };
 
 // EQUIPMENT
 import { IEquipment } from './equipment/equipment.interface';
@@ -104,14 +105,21 @@ import { IBidOrWithdraw } from './ui/bidding/IBidOrWithdraw';
 import { bid } from './ui/bidding/bid';
 import { withdraw } from './ui/bidding/withdraw';
 
-const heroes: ReadonlyArray<IHero> = [
-  bard,
-  mage,
-  ninja,
-  princess
-];
+type HeroesOptions = {
+  [key in HeroType]: IHero;
+}
 
-const bidOrWithdraw: ReadonlyArray<IBidOrWithdraw> = [ bid, withdraw ];
+const heroes: Readonly<HeroesOptions> = Object.freeze({
+  bard: bard,
+  mage: mage,
+  ninja: ninja,
+  princess: princess
+});
+
+const bidOrWithdraw = Object.freeze({
+  bid: bid,
+  withdraw: withdraw
+});
 
 export { 
   IHero, heroes,

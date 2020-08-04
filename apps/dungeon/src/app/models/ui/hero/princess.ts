@@ -7,7 +7,7 @@ const description = `
 `;
 
 export const princess: Readonly<IHero> = Object.freeze({
-  name: 'Princess',
+  name: 'princess',
   image: '...',
   description: description,
   features: {

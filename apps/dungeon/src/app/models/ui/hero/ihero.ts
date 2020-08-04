@@ -1,5 +1,7 @@
+import { HeroType } from '../../models';
+
 export interface IHero {
-  name: 'Bard' | 'Mage' | 'Ninja' | 'Princess';
+  name: HeroType;
   image: string;
   description: string;
   features: object;
