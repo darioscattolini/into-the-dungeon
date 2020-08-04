@@ -57,6 +57,8 @@ describe('BiddingServiceService', () => {
     // uiController = TestBed.inject(UIControllerService);
 
     startingPlayers = setUpPlayers();
+    (playersService.getPlayersList as jest.Mock<Player[], []>)
+      .mockReturnValue(startingPlayers);
   });
 
   afterEach(() => {
@@ -128,4 +130,14 @@ describe('BiddingServiceService', () => {
       // equipService or heroService process result
       // currentPlayer = currentPlayer.nextPlayer
     }
-  }*/
+  }
+  
+  private getNextBiddingPlayer(player: Player): Player {
+    let nextPlayer = player.nextPlayer as Player;
+    // tslint:disable-next-line: no-non-null-assertion
+    while (!this.players!.includes(nextPlayer)) {
+      nextPlayer = nextPlayer.nextPlayer as Player;
+    }
+    return nextPlayer;
+  }
+  */

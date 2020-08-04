@@ -3,6 +3,7 @@ import { OneDeviceModule } from '../one-device.module';
 import { Player, Hero, Monster, IBiddingResult } from '../../models/models';
 import { HeroesService } from './heroes.service';
 import { MonstersService } from './monsters.service';
+import { PlayersService } from './players.service';
 // import { UIControllerService } from './uicontroller.service';
 
 @Injectable({
@@ -11,11 +12,13 @@ import { MonstersService } from './monsters.service';
 export class BiddingService {
 
   private _hero: Hero | undefined;
-  private monstersMace: Monster[] | undefined;
+  private monstersPack: Monster[] | undefined;
+  private players: Player[] | undefined;
 
   constructor(
     private heroesService: HeroesService,
-    private monstersService: MonstersService
+    private monstersService: MonstersService,
+    private playersService: PlayersService
     // private uiController: UIControllerService,
   ) { }
 
@@ -27,12 +30,18 @@ export class BiddingService {
     startingPlayer: Player
   ): Promise<IBiddingResult> {
     this._hero = await this.heroesService.chooseHero(startingPlayer.name);
-    this.monstersMace = this.monstersService.getMonstersPack();
+    this.players = this.getPlayers();
+    this.monstersPack = this.monstersService.getMonstersPack();
     // ...
     return {
       raider: startingPlayer,
       hero: this._hero,
       enemies: []
     }
+  }
+
+  private getPlayers(): Player[] {
+    return this.playersService.getPlayersList()
+      .filter(player => player.active);
   }
 }
