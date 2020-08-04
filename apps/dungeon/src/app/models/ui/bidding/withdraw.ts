@@ -5,8 +5,8 @@ const description = `
   other players take the risk. You'll play again in the next bidding phase.
 `;
 
-export const bid: IBidOrWithdraw = {
+export const withdraw: IBidOrWithdraw = {
   name: 'Withdraw',
   image: '...',
-  description: ''
+  description: description
 }
