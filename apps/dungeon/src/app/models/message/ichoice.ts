@@ -1,5 +1,7 @@
+import { Player } from '../models';
+
 export interface IChoiceRequest<T> {
-  player: string;
+  player: Player;
   options: T[];
 }
 

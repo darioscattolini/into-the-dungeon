@@ -1,16 +1,17 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { mocked } from 'ts-jest/utils';
 
 import { 
   heroes, IHero, Bard, Mage, Ninja, Princess, 
-  IChoiceRequest, IChoiceResponse 
+  IChoiceRequest, IChoiceResponse, Player 
 } from '../../models/models';
 import { HeroesService } from './heroes.service';
 import { UIControllerService } from './uicontroller.service';
 
 jest.mock('./uicontroller.service');
 const MockedUIController = mocked(UIControllerService, true);
-type requestChoiceMock = jest.Mock<Promise<IChoiceResponse>, [IChoiceRequest<IHero>]>;
+type requestChoiceMock = 
+  jest.Mock<Promise<IChoiceResponse>, [IChoiceRequest<IHero>]>;
 
 describe('HeroesService', () => {
   let heroesService: HeroesService;
@@ -20,7 +21,8 @@ describe('HeroesService', () => {
     (uiController.requestChoice as requestChoiceMock)
       .mockImplementation(
         async request => {
-          const heroIndex = request.options.findIndex((hero) => hero.name === heroName);
+          const heroIndex = 
+            request.options.findIndex((hero) => hero.name === heroName);
           return { response: heroIndex };
         }
       );
@@ -41,25 +43,30 @@ describe('HeroesService', () => {
   });
 
   describe('chooseHero', () => {
-          
+    let sentPlayer: Player;
+
+    beforeEach(() => {
+      sentPlayer = new Player('john');
+    });
+
     afterEach(() => {
       MockedUIController.mockClear();
     });
 
-    it('should make a uiController.requestChoice to player received as parameter', () => {
-      let receivedName: string | undefined;
+    it('should make a requestChoice to player received as parameter', () => {
+      let receivedPlayer: Player | undefined;
       (uiController.requestChoice as requestChoiceMock)
         .mockImplementation(async request => {
-          receivedName = request.player;
+          receivedPlayer = request.player;
           return { response: 0 };
         });
 
-      heroesService.chooseHero('John Smith');
-      expect(receivedName).toBe('John Smith');
+      heroesService.chooseHero(sentPlayer);
+      expect(receivedPlayer).toBe(sentPlayer);
     });
 
-    it('should make a uiController.requestChoice passing hero ui data as options', () => {
-      const expectedHeroes = heroes;
+    it('should make a requestChoice passing hero ui data as options', () => {
+      const expectedHeroes = heroes.slice(0);
       let receivedHeroes: IHero[] | undefined;
       (uiController.requestChoice as requestChoiceMock)
         .mockImplementation(async request => {
@@ -67,33 +74,33 @@ describe('HeroesService', () => {
           return { response: 0 };
         });
       
-      heroesService.chooseHero('John Smith');
+      heroesService.chooseHero(sentPlayer);
       expect(receivedHeroes).toHaveLength(expectedHeroes.length);
       expect(receivedHeroes)
         .toEqual(expect.arrayContaining(expectedHeroes));
     });
 
-    it('should return an instance of Bard if player chooses Bard', async () => {
+    it('should return a Bard if player chooses Bard', async () => {
       makeUserChoose('Bard');
-      const hero = await heroesService.chooseHero('John Smith');
+      const hero = await heroesService.chooseHero(sentPlayer);
       expect(hero instanceof Bard).toBe(true);
     });
 
-    it('should return an instance of Mage if player chooses Mage', async () => {
+    it('should return a Mage if player chooses Mage', async () => {
       makeUserChoose('Mage');
-      const hero = await heroesService.chooseHero('John Smith');
+      const hero = await heroesService.chooseHero(sentPlayer);
       expect(hero instanceof Mage).toBe(true);
     });
 
-    it('should return an instance of Ninja if player chooses Ninja', async () => {
+    it('should return a Ninja if player chooses Ninja', async () => {
       makeUserChoose('Ninja');
-      const hero = await heroesService.chooseHero('John Smith');
+      const hero = await heroesService.chooseHero(sentPlayer);
       expect(hero instanceof Ninja).toBe(true);
     });
 
-    it('should return an instance of Princess if player chooses Princess', async () => {
+    it('should return a Princess if player chooses Princess', async () => {
       makeUserChoose('Princess');
-      const hero = await heroesService.chooseHero('John Smith');
+      const hero = await heroesService.chooseHero(sentPlayer);
       expect(hero instanceof Princess).toBe(true);
     });
   });

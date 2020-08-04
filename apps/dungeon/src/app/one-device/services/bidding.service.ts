@@ -29,7 +29,7 @@ export class BiddingService {
   public async getResult(
     startingPlayer: Player
   ): Promise<IBiddingResult> {
-    this._hero = await this.heroesService.chooseHero(startingPlayer.name);
+    this._hero = await this.heroesService.chooseHero(startingPlayer);
     this.players = this.getPlayers();
     this.monstersPack = this.monstersService.getMonstersPack();
     // ...

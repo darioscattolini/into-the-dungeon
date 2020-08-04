@@ -105,14 +105,14 @@ describe('BiddingServiceService', () => {
       expect(heroesService.chooseHero).toHaveBeenCalledTimes(1);
     });
 
-    it('should call heroService.chooseHero with startingPlayer name', async () => {
+    it('should call heroService.chooseHero with startingPlayer', async () => {
       await biddingService.getResult(startingPlayer);
-      expect(heroesService.chooseHero).toHaveBeenCalledWith(startingPlayer.name);
+      expect(heroesService.chooseHero).toHaveBeenCalledWith(startingPlayer);
     });
 
     it('should store heroService.chooseHero return in hero field', async () => {
       const hero = noEquipHeroStub;
-      (heroesService.chooseHero as jest.Mock<Promise<Hero>, [string]>)
+      (heroesService.chooseHero as jest.Mock<Promise<Hero>, [Player]>)
         .mockResolvedValue(hero);
       await biddingService.getResult(startingPlayer);
       expect(biddingService.hero).toBe(hero);

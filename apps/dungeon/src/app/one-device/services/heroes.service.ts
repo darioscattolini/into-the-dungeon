@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { OneDeviceModule } from '../one-device.module';
-import { Bard, Mage, Ninja, Princess, heroes, Hero, IChoiceRequest, IHero } from '../../models/models';
+import { 
+  Bard, Mage, Ninja, Princess, heroes, Hero, IChoiceRequest, IHero, Player
+} from '../../models/models';
 import { UIControllerService } from './uicontroller.service';
 
 @Injectable({
@@ -20,9 +22,9 @@ export class HeroesService {
     private uiController: UIControllerService
   ) { }
 
-  public async chooseHero(playerName: string): Promise<Hero> {
+  public async chooseHero(player: Player): Promise<Hero> {
     const request: IChoiceRequest<IHero> = {
-      player: playerName,
+      player: player,
       options: this.heroesUIData.slice(0)
     };
     const choice = await this.uiController.requestChoice(request);
