@@ -1,4 +1,7 @@
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import "jest-extended";
+import { 
+  async, ComponentFixture, TestBed, fakeAsync, flush
+} from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -13,14 +16,28 @@ import { HomeComponent } from './home.component';
 class TargetStubComponent {}
 
 class Page {
-  get heading()      { return this.query<HTMLElement>('h1'); }
-  get description()  { return this.query<HTMLElement>('#description'); }
-  get buttons()      { return Array.from(this.queryAll<HTMLButtonElement>('button')); }
-  get oneDeviceBtn() { 
-    return this.buttons.find(button => (<string>button.textContent).includes('One Device'));
+  get heading() { 
+    return this.query<HTMLElement>('h1');
   }
+
+  get description() {
+    return this.query<HTMLElement>('#description');
+  }
+
+  get buttons() { 
+    return Array.from(this.queryAll<HTMLButtonElement>('button')); 
+  }
+
+  get oneDeviceBtn() { 
+    return this.buttons
+      .find(button => (<string>button.textContent)
+      .includes('One Device'));
+  }
+
   get onlineBtn()    { 
-    return this.buttons.find(button => (<string>button.textContent).includes('Online'));
+    return this.buttons
+      .find(button => (<string>button.textContent)
+      .includes('Online'));
   }
   
   constructor(private fixture: ComponentFixture<HomeComponent>) { }
@@ -31,6 +48,15 @@ class Page {
 
   private queryAll<T>(selector: string): T[] {
     return this.fixture.nativeElement.querySelectorAll(selector);
+  }
+}
+
+function runInNgZone(fixture: ComponentFixture<any>, callback: () => void) {
+  if (fixture.ngZone) {
+    fixture.ngZone.run(callback);
+    flush();
+  } else {
+    throw new Error('Cannot run test because fixture.ngZone is null');
   }
 }
 
@@ -64,81 +90,71 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create HomeComponent', () => {
+  test('component creation', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display "Into the Dungeon" heading', () => {
+  test('"Into the Dungeon" heading', () => {
     expect(page.heading.textContent).toContain('Into the Dungeon');
   });
 
-  it('should contain a #description element', () => {
+  test('existence of #description element', () => {
     expect(page.description).toBeTruthy();
   });
 
-  it('should contain a #description element with certain keywords', () => {
-    const descriptionContent = <string>page.description.textContent?.toLowerCase();
-    expect(descriptionContent).toContain('hero');
-    expect(descriptionContent).toContain('dungeon');
-    expect(descriptionContent).toContain('monster');
-    expect(descriptionContent).toContain('equipment');
-    expect(descriptionContent).toContain('survive');
-    expect(descriptionContent).toContain('online');
-    expect(descriptionContent).toContain('single device');
-    expect(descriptionContent).toContain('multi-player');
+  test('content of #description element', () => {
+    const descriptionContent = 
+      (page.description.textContent as string).toLowerCase();
+
+    expect(descriptionContent).toIncludeMultiple([
+      'hero', 'dungeon', 'monster', 'equipment', 'survive', 'online',
+      'single device', 'multi-player'
+    ]);
   });
 
-  it('should contain two buttons', () => {
-    expect(page.buttons.length).toStrictEqual(2);
+  test('if it contains two buttons', () => {
+    expect(page.buttons).toHaveLength(2);
+    expect(page.buttons).toSatisfyAll(
+      button => button instanceof HTMLButtonElement
+    );
   });
 
-  it('should display one-device button', () => {
-    expect(page.oneDeviceBtn).toBeTruthy();
+  test('that it contains a one-device button', () => {
+    const oneDeviceBtn = page.oneDeviceBtn as HTMLButtonElement;
+    const buttonContent = oneDeviceBtn.textContent as string;
+    expect(oneDeviceBtn).toBeTruthy();
+    expect(buttonContent.toLowerCase()).toInclude('one device');
   });
 
-  it('should display online button', () => {
-    expect(page.onlineBtn).toBeTruthy();
+  test('that it contains an online button', () => {
+    const onlineBtn = page.onlineBtn as HTMLButtonElement;
+    const buttonContent = onlineBtn.textContent as string;
+    expect(onlineBtn).toBeTruthy();
+    expect(buttonContent.toLowerCase()).toInclude('online');
   });
 
-  it ('should navigate to /one-device when one-device button clicked', fakeAsync(() => {
-    if (fixture.ngZone) {
-
-      fixture.ngZone.run(() => { 
-
+  test('navigation to /one-device if one-device button clicked', fakeAsync(
+    () => {
+      runInNgZone(fixture, () => {
         if (page.oneDeviceBtn) {
           page.oneDeviceBtn.click();
         } else {
           throw new Error('Cannot run test because page.oneDeviceBtn is undefined');
         }
-
       });
-
-      flush();
-
+      
       expect(location.path()).toBe('/' + paths.oneDevice);
-
-    } else {
-      throw new Error('Cannot run test because fixture.ngZone is null');
-    }
   }));
 
-  it ('should navigate to /online when online button clicked', fakeAsync(() => {
-    if (fixture.ngZone) {
-
-      fixture.ngZone.run(() => { 
-        if (page.onlineBtn) {
-          page.onlineBtn.click();
-        } else {
-          throw new Error('Cannot run test because page.onlineBtn is undefined');
-        }
-      });
-
-      flush();
-
-      expect(location.path()).toBe('/' + paths.online);
-
-    } else {
-      throw new Error('Cannot run test because fixture.ngZone is null');
-    }
+  test('navigation to /online if online button clicked', fakeAsync(() => {
+    runInNgZone(fixture, () => {
+      if (page.onlineBtn) {
+        page.onlineBtn.click();
+      } else {
+        throw new Error('Cannot run test because page.onlineBtn is undefined');
+      }
+    });
+    
+    expect(location.path()).toBe('/' + paths.online);
   }));
 });
