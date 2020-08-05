@@ -1,50 +1,5 @@
 import { Player } from './player';
 
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toDeepEqual(matchingArray: Player[][]): R
-    }
-  }
-}
-
-expect.extend({
-  toDeepEqual(receivedArray: Player[][], matchingArray: Player[][]) {
-    let pass = true;
-    if (receivedArray.length !== matchingArray.length) {
-      pass = false;
-    } else {
-      for (let i = 0; i < receivedArray.length; i++) {
-        if (receivedArray[i].length !== matchingArray[i].length) {
-          pass = false;
-          break;
-        } else {
-          for (let j = 0; j < receivedArray[i].length; j++) {
-            if (receivedArray[i][j] !== matchingArray[i][j]) {
-              pass = false;
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    if (pass) {
-      return {
-        message: () =>
-          `expected ${receivedArray} not to be deep equal to ${matchingArray}`,
-        pass: true,
-      };
-    } else {
-      return {
-        message: () =>
-          `expected ${receivedArray} to be deep equal to ${matchingArray}`,
-        pass: false,
-      };
-    }
-  }
-});
-
 describe('Player', () => {
   let player: Player;
 
@@ -53,77 +8,77 @@ describe('Player', () => {
   });
 
   describe('constructor', () => {
-    it('should create instance', () => {
+    test('instance is created', () => {
       expect(player).toBeTruthy();
     });
   
-    it('should create instance named "John" for that constructor parameter', () => {
+    test('it is named after constructor parameter', () => {
       expect(player.name).toBe('John');
     });
   
-    it('should not create a player with empty name', () => {
+    test('it cannot be created with empty name', () => {
       expect(() => { const unnamedPlayer = new Player(''); })
-        .toThrow(new Error('Player\'s names should have at least one character'));
+        .toThrowError('Player\'s names should have at least one character');
     });
     
-    it('should create a player with 0 victories', () => {
-      expect(player.victories).toStrictEqual(0);
+    test('it is created with 0 victories', () => {
+      expect(player.victories).toBe(0);
     });
   
-    it('should create a player with 0 defeats', () => {
-      expect(player.defeats).toStrictEqual(0);
+    test('it is created with 0 defeats', () => {
+      expect(player.defeats).toBe(0);
     });
 
-    it('should create a player with undefined nextPlayer', () => {
+    test('it is created with undefined nextPlayer', () => {
       expect(player.nextPlayer).toBeUndefined();
     });
 
-    it('should create a player with active field set to true', () => {
+    test('it is created with active field set to true', () => {
       expect(player.active).toBe(true);
     });
   });
 
   describe('surviveDungeon', () => {
-    it('should increase victories by one', () => {
-      player.surviveDungeon();
-      const afterOneVictory = player.victories;
-      player.surviveDungeon();
-      const afterTwoVictories = player.victories;
-      expect(afterOneVictory).toStrictEqual(1);
-      expect(afterTwoVictories).toStrictEqual(2);
+    test('it increases victories by one', () => {
+      for (let i = 0; i < 2; i++) {
+        const startingVictories = player.victories;
+        player.surviveDungeon();
+        expect(player.victories).toBe(startingVictories + 1);
+      }
     });
 
-    it('should not allow a third victory', () => {
+    test('it cannot be called three times', () => {
       player.surviveDungeon();
       player.surviveDungeon();
       expect(() => { player.surviveDungeon(); })
-        .toThrow(new Error('The game must end after a player reaches 2 victories'));
+        .toThrowError('The game must end after a player reaches 2 victories');
     });
   });
 
   describe('dieInDungeon', () => {
-    it('should increase defeats by one', () => {
-      player.dieInDungeon();
-      const afterOneDefeat = player.defeats;
-      player.dieInDungeon();
-      const afterTwoDefeats = player.defeats;
-      expect(afterOneDefeat).toStrictEqual(1);
-      expect(afterTwoDefeats).toStrictEqual(2);
+    test('it increases defeats by one', () => {
+      for (let i = 0; i < 2; i++) {
+        const startingDefeats = player.defeats;
+        player.dieInDungeon();
+        expect(player.defeats).toBe(startingDefeats + 1);
+      }
     });
 
-    it('should not allow a third defeat', () => {
+    test('it cannot be called three times', () => {
       player.dieInDungeon();
       player.dieInDungeon();
       expect(() => { player.dieInDungeon(); })
         .toThrowError('The game must end after a player reaches 2 defeats');
     });
 
-    it('should not set active field to false after 1 defeat', () => {
+    test('active field stays true after 1 defeat', () => {
+      expect(player.defeats).toBe(0);
       player.dieInDungeon();
       expect(player.active).toBe(true);
     });
 
-    it('should set active field to false after 2 defeats', () => {
+    test('active fields becames false after 2 defeats', () => {
+      expect(player.defeats).toBe(0);
       player.dieInDungeon();
       player.dieInDungeon();
       expect(player.active).toBe(false);
@@ -137,7 +92,7 @@ describe('Player', () => {
       Possible scores: 2 (only one player), 1, 0, -1, -2 (only one player)
       Ranking is an array where 0 is top score
     */
-    it('should build rankings following the above rules', () => {
+    test('ranking is built following the above rules', () => {
       const players = [
         new Player('John'),
         new Player('Anna'),
@@ -146,62 +101,48 @@ describe('Player', () => {
       ];
       const [ john, anna, mark, julia ] = players;
 
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [anna, john, julia, mark]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([anna, john, julia, mark])    
+      ]);
 
       john.surviveDungeon();
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [john],
-          [anna, julia, mark]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([john]),
+        expect.toIncludeSameMembers([anna, julia, mark])
+      ]);
 
       john.dieInDungeon();
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [anna, john, julia, mark]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([anna, john, julia, mark])    
+      ]);
 
       anna.surviveDungeon();
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [anna],
-          [john, julia, mark]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([anna]),
+        expect.toIncludeSameMembers([john, julia, mark])
+      ]);
 
       julia.dieInDungeon();
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [anna],
-          [john, mark],
-          [julia]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([anna]),
+        expect.toIncludeSameMembers([john, mark]),
+        expect.toIncludeSameMembers([julia])
+      ]);
 
       mark.surviveDungeon();
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [anna, mark],
-          [john],
-          [julia]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([anna, mark]),
+        expect.toIncludeSameMembers([john]),
+        expect.toIncludeSameMembers([julia])
+      ]);
 
       mark.surviveDungeon();
-      expect(Player.buildRanking(players)).toDeepEqual(
-        [
-          [mark],
-          [anna],
-          [john],
-          [julia]
-        ]
-      );
+      expect(Player.buildRanking(players)).toEqual([
+        expect.toIncludeSameMembers([mark]),
+        expect.toIncludeSameMembers([anna]),
+        expect.toIncludeSameMembers([john]),
+        expect.toIncludeSameMembers([julia])
+      ]);
     });
   });
 });
