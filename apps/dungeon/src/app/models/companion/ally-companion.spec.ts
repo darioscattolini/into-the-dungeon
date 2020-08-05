@@ -14,56 +14,56 @@ describe('AllyCompanion', () => {
     ally = new AllyCompanion(targetsPosition, combatResult$);
   });
   
-  it('should create an instance', () => {
+  test('instance creation', () => {
     expect(ally).toBeTruthy();
   });
 
-  it('should create an instance of AllyCompanion', () => {
-    expect(ally).toBeTruthy();
+  test('it is AllyCompanion', () => {
+    expect(ally).toBeInstanceOf(AllyCompanion);
   });
 
-  it('should create an instance with type "Ally"', () => {
-    expect(ally.type).toBe('Ally');
+  test('it has type "ally"', () => {
+    expect(ally.type).toEqualCaseInsensitive('ally');
   });
 
-  it('should create an instance with field available with value true', () => {
-    expect(ally.available).toBe(true);
+  test('it has available field with value true', () => {
+    expect(ally.available).toBeTrue();
   });
 
-  it('should not apply in round not corresponding to targetsPosition', () => {
-    const monster = new MockMonster();
-    monster.addToDungeonInPosition(targetsPosition - 1);
-    expect(ally.appliesThisRound(monster)).toBe(false);
+  test('it does not apply in round different to targetsPosition', () => {
+    const target = new MockMonster();
+    target.addToDungeonInPosition(targetsPosition - 1);
+    expect(ally.appliesThisRound(target)).toBeFalse();
   });
 
-  it('should apply in round corresponding to targetsPosition', () => {
-    const monster = new MockMonster();
-    monster.addToDungeonInPosition(targetsPosition);
-    expect(ally.appliesThisRound(monster)).toBe(true);
+  test('it applies in round corresponding to targetsPosition', () => {
+    const target = new MockMonster();
+    target.addToDungeonInPosition(targetsPosition);
+    expect(ally.appliesThisRound(target)).toBeTrue();
   });
 
-  it('should produce a monsterDefeated effect when used', () => {
+  test('it produces a monsterDefeated effect when used', () => {
     expect(ally.produceEffect()).toEqual({ monsterDefeated: true });
   });
 
-  it('should not be discarded in round when it appears', () => {
-    const monster = new MockMonster();
-    monster.addToDungeonInPosition(targetsPosition - 1);
+  test('it is not discarded in the round ally appears', () => {
+    const allyMonster = new MockMonster();
+    allyMonster.addToDungeonInPosition(targetsPosition - 1);
     
     combatResult$.next({
-      monster: monster,
+      monster: allyMonster,
       defeated: true
     });
 
     expect(ally.available).toBe(true);
   });
 
-  it('should be discarded in round immediately after it', () => {
-    const monster = new MockMonster();
-    monster.addToDungeonInPosition(targetsPosition);
+  test('it is discarded in the round against following monster', () => {
+    const followingMonster = new MockMonster();
+    followingMonster.addToDungeonInPosition(targetsPosition);
     
     combatResult$.next({
-      monster: monster,
+      monster: followingMonster,
       defeated: true
     });
 
