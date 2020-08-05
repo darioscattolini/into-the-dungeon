@@ -8,38 +8,38 @@ describe('JellyCube', () => {
     jellyCube = new JellyCube();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(JellyCube.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(jellyCube).toBeTruthy();
   });
 
-  it('should create an instance of JellyCube', () => {
-    expect(jellyCube instanceof JellyCube).toBe(true);
+  test('it is instance of JellyCube', () => {
+    expect(jellyCube).toBeInstanceOf(JellyCube);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(jellyCube instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(jellyCube).toBeInstanceOf(Monster);
   });
   
-  it('should create an instance with type "Jelly Cube"', () => {
+  test('it has type "Jelly Cube"', () => {
     expect(jellyCube.type).toBe('Jelly Cube');
   });
 
-  it('should create an instance with baseDamage of null', () => {
+  test('it has baseDamage of null', () => {
     expect(jellyCube.baseDamage).toBe(null);
   });
 
-  it('should produce a lose equipment effect', () => {
+  test('it produces a lose equipment effect', () => {
     expect(jellyCube.produceEffect()).toEqual({
       type: 'equipment',
       lose: 'any'
     });
   });
 
-  it('should have a null startingAction', () => {
+  test('it has a null startingAction', () => {
     expect(jellyCube.startingAction()).toBeNull();
   });
 });

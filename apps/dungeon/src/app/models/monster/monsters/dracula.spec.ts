@@ -9,31 +9,31 @@ describe('Dracula', () => {
     dracula = new Dracula();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Dracula.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(dracula).toBeTruthy();
   });
 
-  it('should create an instance of Dracula', () => {
-    expect(dracula instanceof Dracula).toBe(true);
+  test('it is instance of Dracula', () => {
+    expect(dracula).toBeInstanceOf(Dracula);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(dracula instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(dracula).toBeInstanceOf(Monster);
   });
 
-  it('should create an instance with type "Vampire"', () => {
+  test('it has type "Vampire" when created', () => {
     expect(dracula.type).toBe('Vampire');
   });
 
-  it('should create an instance with baseDamage of 4 at first', () => {
+  test('it has baseDamage of 4 when created', () => {
     expect(dracula.baseDamage).toBe(4);
   });
 
-  it('should throw error if trying to produceEffect before checking form', () => {
+  test('it throws error at produceEffect call before checking form', () => {
     expect(() => { dracula.produceEffect(); })
       .toThrowError('Dracula must check its form before attacking');
   });
@@ -45,20 +45,20 @@ describe('Dracula', () => {
       startingAction = dracula.startingAction();
     });
     
-    it('should be nonnull', () => {
+    test('it is nonnull', () => {
       expect(startingAction).not.toBeNull();
     });
   
-    it('should be of transformation type', () => {
+    test('it is of transformation type', () => {
       expect(startingAction.type).toBe('transformation');
     });
 
-    it('should specify playersVictories as parameter for transformer function', () => {
+    test('it specifies playersVictories as parameter', () => {
       expect(startingAction.parameter).toBe('playersVictories');
     });
 
-    it('should specify a transformer function', () => {
-      expect(typeof startingAction.transformer).toBe('function');
+    test('it specifies a transformer function', () => {
+      expect(startingAction.transformer).toBeFunction();
     });
 
     describe('transformer function', () => {
@@ -68,27 +68,44 @@ describe('Dracula', () => {
         transform = startingAction.transformer;
       });
 
-      it('should return something', () => {
+      test('it throws error for parameter < 0', () => {
+        expect(() => transform(-1)).toThrowError(
+          'Players can have only 0 or 1 victories'
+        )
+      });
+
+      test('it throws error for parameter > 1', () => {
+        expect(() => transform(2)).toThrowError(
+          'Players can have only 0 or 1 victories'
+        )
+      });
+
+      test('it returns something', () => {
         expect(transform(1)).toBeTruthy();
       });
+
+      test('it returns a monster', () => {
+        expect(transform(0)).toBeInstanceOf(Monster);
+        expect(transform(1)).toBeInstanceOf(Monster);
+      });
       
-      it('should stay as Vampire for players with no victories', () => {
+      test('it stays as Vampire for players with no victories', () => {
         expect(transform(0).type).toBe('Vampire');
       });
 
-      it('should stay with baseDamage 4 for players with no victories', () => {
+      test('it keeps baseDamage 4 for players with no victories', () => {
         expect(transform(0).baseDamage).toBe(4);
       });
 
-      it('should return a Dracula for players with one victory', () => {
+      test('it turns into Dracula for players with one victory', () => {
         expect(transform(1).type).toBe('Dracula');
       });
 
-      it('should return a Dracula of baseDamage 8 for players with one victory', () => {
+      test('it gets baseDamage 8 for players with one victory', () => {
         expect(transform(1).baseDamage).toBe(8);
       });
 
-      it('should produce damage effect after checking form', () => {
+      test('it can produce damage effect after checking form', () => {
         expect(transform(0).produceEffect()).toEqual({
           type: 'damage',
           amount: 4

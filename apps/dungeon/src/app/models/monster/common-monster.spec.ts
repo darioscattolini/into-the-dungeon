@@ -14,54 +14,54 @@ describe('Monster', () => {
     monster = new MockOrc();
   });
 
-  it('should create monster (through MockOrc extension)', () => {
+  test('its extension creates instance', () => {
     expect(monster).toBeTruthy();
   });
 
-  it('should create instances of CommonMonster', () => {
-    expect(monster instanceof CommonMonster).toBe(true);
+  test('it is instance of CommonMonster', () => {
+    expect(monster).toBeInstanceOf(CommonMonster);
   });
 
-  it('should create instances of Monster', () => {
-    expect(monster instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(monster).toBeInstanceOf(Monster);
   });
 
-  it('should create instances with definite type', () => {
-    expect(monster.type).toBeDefined();
+  test('it has a non-nil type', () => {
+    expect(monster.type).not.toBeNil();
   });
 
-  it('should create instances with definite baseDamage', () => {
-    expect(monster.baseDamage).toBeDefined();
+  test('it has a numeric baseDamage', () => {
+    expect(monster.baseDamage).toBeNumber();
   });
 
-  it('should create instances with numeric baseDamage', () => {
-    expect(typeof monster.baseDamage).toBe('number');
+  test('it has a numeric actualDamage', () => {
+    expect(monster.actualDamage).toBeNumber();
   });
 
-  it('should create instances with definite actualDamage', () => {
-    expect(monster.actualDamage).toBeDefined();
-  });
-
-  it('should create instances with actualDamage == baseDamage by default', () => {
+  test('its actualDamage equals baseDamage by default', () => {
     expect(monster.actualDamage).toBe(monster.baseDamage);
   });
 
-  it('should allow to set actualDamage to different value', () => {
-    monster.actualDamage = 1;
-    expect(monster.actualDamage).toBe(1);
+  test('its actualDamage can be set to a different value', () => {
+    const oldDamageValue = monster.actualDamage;
+    const newDamageValue = oldDamageValue * 2;
+    monster.actualDamage = newDamageValue;
+    expect(monster.actualDamage).not.toBe(oldDamageValue);
   });
 
-  it('should produceEffect of type damage', () => {
-    expect(monster.produceEffect().type).toBe('damage');
+  test('its has a damage effect', () => {
+    expect(monster.produceEffect().type).toEqual('damage');
   });
 
-  it('should produceEffect of amount equal to actualDamage', () => {
-    expect(monster.produceEffect().amount).toBe(3);
-    monster.actualDamage = 7;
-    expect(monster.produceEffect().amount).toBe(7);
+  test('its damage effect has amount equal to actualDamage', () => {
+    const oldDamageValue = monster.actualDamage;
+    expect(monster.produceEffect().amount).toEqual(oldDamageValue);
+    const newDamageValue = oldDamageValue * 2;
+    monster.actualDamage = newDamageValue;
+    expect(monster.produceEffect().amount).toBe(newDamageValue);
   });
 
-  it('should return a startingAction of null value', () => {
+  test('it has a null startingAction', () => {
     expect(monster.startingAction()).toBeNull();
   });
 });

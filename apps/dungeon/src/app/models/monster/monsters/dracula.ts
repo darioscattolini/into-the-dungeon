@@ -35,6 +35,9 @@ export class Dracula extends Monster {
       type: 'transformation',
       parameter: 'playersVictories',
       transformer: (playersVictories: number) => {
+        if (playersVictories < 0 || playersVictories > 1) {
+          throw new Error('Players can have only 0 or 1 victories');
+        }
         if (playersVictories === 1) {
           this._type = 'Dracula';
           this._baseDamage = 8;

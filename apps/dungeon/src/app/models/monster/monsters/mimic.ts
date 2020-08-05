@@ -19,7 +19,9 @@ export class Mimic extends Monster {
   }
 
   public produceEffect(): IDamageEffect {
-    if (this.baseDamage === null) throw new Error('Mimic must transform before attacking');
+    if (this.baseDamage === null) {
+      throw new Error('Mimic must transform before attacking');
+    }
     return {
       type: 'damage',
       amount: this.baseDamage
@@ -31,6 +33,14 @@ export class Mimic extends Monster {
       type: 'transformation',
       parameter: 'equipmentSize',
       transformer: (equipmentSize: number) => {
+        if (equipmentSize < 0) {
+          throw new Error('Players cannot have less than 0 pieces of equipment');
+        }
+
+        if (equipmentSize > 6) {
+          throw new Error('Players cannot have more than 6 pieces of equipment');
+        }
+
         this._baseDamage = equipmentSize;
         return this;
       }

@@ -8,38 +8,38 @@ describe('Ally', () => {
     ally = new Ally();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Ally.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(ally).toBeTruthy();
   });
 
-  it('should create an instance of Ally', () => {
-    expect(ally instanceof Ally).toBe(true);
+  test('it is instance of Ally', () => {
+    expect(ally).toBeInstanceOf(Ally);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(ally instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(ally).toBeInstanceOf(Monster);
   });
   
-  it('should create an instance with type "Ally"', () => {
+  test('it has type "Ally"', () => {
     expect(ally.type).toBe('Ally');
   });
 
-  it('should create an instance with baseDamage of null', () => {
+  test('it has baseDamage of null', () => {
     expect(ally.baseDamage).toBe(null);
   });
 
-  it('should produce a companion: ally effect', () => {
+  test('it produces a companion: ally effect', () => {
     expect(ally.produceEffect()).toEqual({
       type: 'companion',
       companion: 'Ally'
     });
   });
 
-  it('should have a null startingAction', () => {
+  test('it has a null startingAction', () => {
     expect(ally.startingAction()).toBeNull();
   });
 });

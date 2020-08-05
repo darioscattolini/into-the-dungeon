@@ -8,27 +8,27 @@ describe('Demon', () => {
     demon = new Demon();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Demon.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(demon).toBeTruthy();
   });
 
-  it('should create an instance of Demon', () => {
-    expect(demon instanceof Demon).toBe(true);
+  test('it is instance of Demon', () => {
+    expect(demon).toBeInstanceOf(Demon);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(demon instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(demon).toBeInstanceOf(Monster);
   });
   
-  it('should create an instance with type "Demon"', () => {
+  test('it has type "Demon"', () => {
     expect(demon.type).toBe('Demon');
   });
 
-  it('should create an instance with baseDamage of 7', () => {
+  test('it has baseDamage of 7', () => {
     expect(demon.baseDamage).toBe(7);
   });
 });

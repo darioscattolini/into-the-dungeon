@@ -18,31 +18,31 @@ describe('Metamorph', () => {
     metamorph = new Metamorph();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Metamorph.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(metamorph).toBeTruthy();
   });
 
-  it('should create an instance of Metamorph', () => {
-    expect(metamorph instanceof Metamorph).toBe(true);
+  test('it is instance of Metamorph', () => {
+    expect(metamorph).toBeInstanceOf(Metamorph);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(metamorph instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(metamorph).toBeInstanceOf(Monster);
   });
 
-  it('should create an instance with type "Metamorph"', () => {
+  test('it has type "Metamorph"', () => {
     expect(metamorph.type).toBe('Metamorph');
   });
 
-  it('should create an instance with baseDamage of null at first', () => {
-    expect(metamorph.baseDamage).toBe(null);
+  test('it has baseDamage of null at first', () => {
+    expect(metamorph.baseDamage).toBeNull();
   });
 
-  it('should throw error if trying to produceEffect before adopting form', () => {
+  test('it throws error at produceEffect call before adopting form', () => {
     expect(() => { metamorph.produceEffect(); })
       .toThrowError('Metamorph must adopt a new form before attacking');
   });
@@ -54,20 +54,20 @@ describe('Metamorph', () => {
       startingAction = metamorph.startingAction();
     });
     
-    it('should be nonnull', () => {
+    test('is nonnull', () => {
       expect(startingAction).not.toBeNull();
     });
   
-    it('should be of transformation type', () => {
+    test('is of transformation type', () => {
       expect(startingAction.type).toBe('transformation');
     });
 
-    it('should specify positionInDungeon as parameter for transformer function', () => {
+    test('it specifies positionInDungeon as parameter', () => {
       expect(startingAction.parameter).toBe('positionInDungeon');
     });
 
-    it('should specify a transformer function', () => {
-      expect(typeof startingAction.transformer).toBe('function');
+    test('it specifies a transformer function', () => {
+      expect(startingAction.transformer).toBeFunction();
     });
 
     describe('transformer function', () => {
@@ -77,60 +77,74 @@ describe('Metamorph', () => {
         transform = startingAction.transformer;
       });
 
-      it('should return something', () => {
-        expect(transform(2)).toBeTruthy();
+      test('it throws error for parameter < 1', () => {
+        expect(() => transform(0)).toThrowError(
+          'Metamorph cannot have a position under 1'
+        )
+      });
+
+      test('it returns something', () => {
+        for (let i = 1; i < 20; i++) {
+          expect(transform(i)).toBeTruthy();
+        }
+      });
+
+      test('it returns an instance of Monster', () => {
+        for (let i = 1; i < 20; i++) {
+          expect(transform(i)).toBeInstanceOf(Monster);
+        }
       });
       
-      it('should return a Goblin for position 1', () => {
-        expect(transform(1) instanceof Goblin).toBe(true);
+      test('it returns a Goblin for position 1', () => {
+        expect(transform(1)).toBeInstanceOf(Goblin);
       });
 
-      it('should return a Skeleton for position 2', () => {
-        expect(transform(2) instanceof Skeleton).toBe(true);
+      test('it returns a Skeleton for position 2', () => {
+        expect(transform(2)).toBeInstanceOf(Skeleton);
       });
 
-      it('should return an Orc for position 3', () => {
-        expect(transform(3) instanceof Orc).toBe(true);
+      test('it returns an Orc for position 3', () => {
+        expect(transform(3)).toBeInstanceOf(Orc);
       });
 
-      it('should return a Vampire for position 4', () => {
-        expect(transform(4) instanceof Vampire).toBe(true);
+      test('it returns a Vampire for position 4', () => {
+        expect(transform(4)).toBeInstanceOf(Vampire);
       });
 
-      it('should return a Golem for position 5', () => {
-        expect(transform(5) instanceof Golem).toBe(true);
+      test('it returns a Golem for position 5', () => {
+        expect(transform(5)).toBeInstanceOf(Golem);
       });
 
-      it('should return a Litch for position 6', () => {
-        expect(transform(6) instanceof Litch).toBe(true);
+      test('it returns a Litch for position 6', () => {
+        expect(transform(6)).toBeInstanceOf(Litch);
       });
 
-      it('should return a Demon for position 7', () => {
-        expect(transform(7) instanceof Demon).toBe(true);
+      test('it returns a Demon for position 7', () => {
+        expect(transform(7)).toBeInstanceOf(Demon);
       });
 
-      it('should return a Dracula for position 8', () => {
-        expect(transform(8) instanceof Dracula).toBe(true);
+      test('it returns a Dracula for position 8', () => {
+        expect(transform(8)).toBeInstanceOf(Dracula);
       });
 
-      it('should return a Dragon for position 9', () => {
-        expect(transform(9) instanceof Dragon).toBe(true);
+      test('it returns a Dragon for position 9', () => {
+        expect(transform(9)).toBeInstanceOf(Dragon);
       });
 
-      it('should return a Metamorph for positions over 9', () => {
-        expect(transform(10) instanceof Metamorph).toBe(true);
-        expect(transform(13) instanceof Metamorph).toBe(true);
+      test('it returns a Metamorph for positions over 9', () => {
+        expect(transform(10)).toBeInstanceOf(Metamorph);
+        expect(transform(13)).toBeInstanceOf(Metamorph);
       });
 
-      it('should return a Metamorph of baseDamage 10 for position 10', () => {
+      test('it returns a Metamorph of baseDamage 10 for position 10', () => {
         expect(transform(10).baseDamage).toBe(10);
       });
 
-      it('should return a Metamorph of baseDamage 13 for position 13', () => {
+      test('it returns a Metamorph of baseDamage 13 for position 13', () => {
         expect(transform(13).baseDamage).toBe(13);
       });
 
-      it('should produce damage effect if stays as metamorph', () => {
+      test('should produce damage effect if stays as metamorph', () => {
         expect(transform(10).produceEffect()).toEqual({
           type: 'damage',
           amount: 10

@@ -8,36 +8,36 @@ describe('Fairy', () => {
     fairy = new Fairy();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Fairy.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(fairy).toBeTruthy();
   });
 
-  it('should create an instance of Fairy', () => {
-    expect(fairy instanceof Fairy).toBe(true);
+  test('it is instance of Fairy', () => {
+    expect(fairy).toBeInstanceOf(Fairy);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(fairy instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(fairy).toBeInstanceOf(Monster);
   });
   
-  it('should create an instance with type "Fairy"', () => {
+  test('it has type "Fairy"', () => {
     expect(fairy.type).toBe('Fairy');
   });
 
-  it('should create an instance with baseDamage of 0', () => {
+  test('it has baseDamage of 0', () => {
     expect(fairy.baseDamage).toBe(0);
   });
 
-  it('should have actualDamage of 0 even if attempting to set it to different value', () => {
+  test('it keeps actualDamage of 0 after attempt to change it', () => {
     fairy.actualDamage = 4;
     expect(fairy.actualDamage).toBe(0);
   });
 
-  it('should have a null startingAction', () => {
+  test('it has a null startingAction', () => {
     expect(fairy.startingAction()).toBeNull();
   });
 });

@@ -8,27 +8,27 @@ describe('Litch', () => {
     litch = new Litch();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Litch.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(litch).toBeTruthy();
   });
 
-  it('should create an instance of Litch', () => {
-    expect(litch instanceof Litch).toBe(true);
+  test('it is instance of Litch', () => {
+    expect(litch).toBeInstanceOf(Litch);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(litch instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(litch).toBeInstanceOf(Monster);
   });
   
-  it('should create an instance with type "Litch"', () => {
+  test('it has type "Litch"', () => {
     expect(litch.type).toBe('Litch');
   });
 
-  it('should create an instance with baseDamage of 6', () => {
+  test('it has baseDamage of 6', () => {
     expect(litch.baseDamage).toBe(6);
   });
 });

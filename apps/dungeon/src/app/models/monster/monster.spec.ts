@@ -64,55 +64,50 @@ describe('Monster', () => {
     jellyCube = new MockJellyCube();
   });
 
-  it('should create orc (through MockOrc extension)', () => {
+  test('its extensions create instances', () => {
     expect(orc).toBeTruthy();
+    expect(jellyCube).toBeTruthy();
   });
 
-  it('should create instances of Monster', () => {
-    expect(orc instanceof Monster).toBe(true);
-    expect(jellyCube instanceof Monster).toBe(true);
+  test('its extensions create instances of Monster', () => {
+    expect(orc).toBeInstanceOf(Monster);
+    expect(jellyCube).toBeInstanceOf(Monster);
   });
 
-  it('should create instances with definite type', () => {
-    expect(orc.type).toBeDefined();
-    expect(jellyCube.type).toBeDefined();
+  test('they have a non-nil type', () => {
+    expect(orc.type).not.toBeNil();
+    expect(jellyCube.type).not.toBeNil();
   });
 
-  it('should create instances with definite baseDamage', () => {
+  test('they have a definite baseDamage', () => {
     expect(orc.baseDamage).toBeDefined();
     expect(jellyCube.baseDamage).toBeDefined();
   });
 
-  it('should allow monsters with null baseDamage', () => {
+  test('that some monsters can have null baseDamage', () => {
     expect(jellyCube.baseDamage).toBe(null);
   });
 
-  it('should create instances with positionInDungeon undefined by default', () => {
+  test('that their positionInDungeon is undefined by default', () => {
     expect(orc.positionInDungeon).toBeUndefined();
     expect(jellyCube.positionInDungeon).toBeUndefined();
   });
 
-  it('should change positionInDungeon to 2 for monster added to dungeon in position 2', () => {
+  test('that positionInDungeon is specified when added to dungeon', () => {
     orc.addToDungeonInPosition(2);
     expect(orc.positionInDungeon).toBe(2);
   });
 
-  it('should create instances with definite effect', () => {
-    expect(orc.produceEffect()).toBeDefined();
-    expect(jellyCube.produceEffect()).toBeDefined();
+  test('they have a non-nil effect', () => {
+    expect(orc.produceEffect()).not.toBeNil();
+    expect(jellyCube.produceEffect()).not.toBeNil();
   });
 
-  it('should allow extensions returning null startingAction', () => {
+  test('that some monsters can have null startingAction', () => {
     expect(orc.startingAction()).toBeNull();
   });
 
-  it('should allow extensions returning definite startingAction', () => {
-    const jellyStartingAction = jellyCube.startingAction();
-    expect(jellyCube.startingAction).toBeTruthy();
-  });
-
-  it('should require startingAction implementation', () => {
-    const startingActionEffect = 
-    expect(jellyCube.startingAction()).toBeDefined();
+  test('that some monsters can have a non-nil startingAction', () => {
+    expect(jellyCube.startingAction()).not.toBeNil();
   });
 });

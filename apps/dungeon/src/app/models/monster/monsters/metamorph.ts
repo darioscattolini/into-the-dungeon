@@ -41,6 +41,9 @@ export class Metamorph extends Monster {
       type: 'transformation',
       parameter: 'positionInDungeon',
       transformer: (positionInDungeon: number) => {
+        if (positionInDungeon < 1) {
+          throw new Error('Metamorph cannot have a position under 1');
+        }
         const MonsterClasses: IDerivedMonsterStatic[] = [
           Fairy,
           Goblin,

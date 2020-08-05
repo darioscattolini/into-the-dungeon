@@ -9,31 +9,31 @@ describe('Mimic', () => {
     mimic = new Mimic();
   });
 
-  it('should have static property maxAmount with value 1', () => {
+  test('class has static property maxAmount with value 1', () => {
     expect(Mimic.maxAmount).toBe(1);
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(mimic).toBeTruthy();
   });
 
-  it('should create an instance of Mimic', () => {
-    expect(mimic instanceof Mimic).toBe(true);
+  test('it is instance of Mimic', () => {
+    expect(mimic).toBeInstanceOf(Mimic);
   });
 
-  it('should create an instance of Monster', () => {
-    expect(mimic instanceof Monster).toBe(true);
+  test('it is instance of Monster', () => {
+    expect(mimic).toBeInstanceOf(Monster);
   });
   
-  it('should create an instance with type "Mimic"', () => {
+  test('it has type "Mimic"', () => {
     expect(mimic.type).toBe('Mimic');
   });
 
-  it('should create an instance with baseDamage of null at first', () => {
-    expect(mimic.baseDamage).toBe(null);
+  test('it has baseDamage of null at first', () => {
+    expect(mimic.baseDamage).toBeNull();
   });
 
-  it('should throw error if trying to produceEffect before mimicking', () => {
+  test('it throws error at attempt to produceEffect before mimicking', () => {
     expect(() => { mimic.produceEffect() })
       .toThrowError('Mimic must transform before attacking');
   });
@@ -45,20 +45,20 @@ describe('Mimic', () => {
       startingAction = mimic.startingAction();
     });
     
-    it('should be nonnull', () => {
+    test('it is nonnull', () => {
       expect(startingAction).not.toBeNull();
     });
   
-    it('should be of transformation type', () => {
+    test('it is of transformation type', () => {
       expect(startingAction.type).toBe('transformation');
     });
 
-    it('should specify equipmentSize as parameter for transformer function', () => {
+    test('it specifies equipmentSize as parameter', () => {
       expect(startingAction.parameter).toBe('equipmentSize');
     });
 
-    it('should specify a transformer function', () => {
-      expect(typeof startingAction.transformer).toBe('function');
+    test('it specifies a transformer function', () => {
+      expect(startingAction.transformer).toBeFunction();
     });
 
     describe('transformer function', () => {
@@ -67,24 +67,34 @@ describe('Mimic', () => {
       beforeEach(() => {
         transform = startingAction.transformer;
       });
-      
-      it('should return something', () => {
+
+      test('it throws error for parameter < 0', () => {
+        expect(() => transform(-1)).toThrowError(
+          'Players cannot have less than 0 pieces of equipment'
+        )
+      });
+
+      test('it throws error for parameter > 6', () => {
+        expect(() => transform(7)).toThrowError(
+          'Players cannot have more than 6 pieces of equipment'
+        )
+      });
+
+      test('it returns something', () => {
         expect(transform(0)).toBeTruthy();
       });
 
-      it('should return a Mimic', () => {
-        expect(transform(0) instanceof Mimic).toBe(true);
+      test('it returns a Mimic', () => {
+        expect(transform(0)).toBeInstanceOf(Mimic);
       });
 
-      it('should return a Mimic of baseDamage 0 for hero with no equipment', () => {
-        expect(transform(0).baseDamage).toBe(0);
+      test('it gets damage equal to parameter value', () => {
+        for (let i = 1; i <= 6; i++) {
+          expect(transform(i).baseDamage).toBe(i);
+        }
       });
 
-      it('should return a Mimic of baseDamage 1 for hero with 1 equipment', () => {
-        expect(transform(1).baseDamage).toBe(1);
-      });
-
-      it('should return a Mimic that produces a damage effect', () => {
+      test('it returns a Mimic that produces a damage effect', () => {
         expect(transform(0).produceEffect()).toEqual({
           type: 'damage',
           amount: 0
