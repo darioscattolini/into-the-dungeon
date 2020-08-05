@@ -8,15 +8,15 @@ describe('Mage', () => {
     mage = new Mage();
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(mage).toBeTruthy();
   });
 
-  it('should create an instance of Mage', () => {
-    expect(mage instanceof Mage).toBe(true);
+  test('it is instance of Mage', () => {
+    expect(mage).toBeInstanceOf(Mage);
   });
 
-  it('should create an instance of Hero', () => {
-    expect(mage instanceof Hero).toBe(true);
+  test('it is instance of Hero', () => {
+    expect(mage).toBeInstanceOf(Hero);
   });
 });

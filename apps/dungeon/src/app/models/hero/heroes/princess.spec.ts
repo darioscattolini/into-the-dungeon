@@ -8,15 +8,15 @@ describe('Princess', () => {
     princess = new Princess();
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(princess).toBeTruthy();
   });
 
-  it('should create an instance of Princess', () => {
-    expect(princess instanceof Princess).toBe(true);
+  test('it is instance of Princess', () => {
+    expect(princess).toBeInstanceOf(Princess);
   });
 
-  it('should create an instance of Hero', () => {
-    expect(princess instanceof Hero).toBe(true);
+  test('it is instance of Hero', () => {
+    expect(princess).toBeInstanceOf(Hero);
   });
 });

@@ -15,15 +15,15 @@ describe('Hero', () => {
   });
 
   describe('Hero', () => {
-    it('should be created as instance of Concrete extension', () => {
+    test('that its extension creates instance', () => {
       expect(hero).toBeTruthy();
     });
 
-    it('should be an instance of Hero', () => {
-      expect(hero instanceof Hero).toStrictEqual(true);
+    test('it is an instance of Hero', () => {
+      expect(hero).toBeInstanceOf(Hero);
     });
 
-    it('should return its equipmentSize', () => {
+    test('it has an equipmentSize', () => {
       expect(hero.equipmentSize).toBeDefined();
     });
   });

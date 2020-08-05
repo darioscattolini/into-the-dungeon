@@ -8,15 +8,15 @@ describe('Ninja', () => {
     ninja = new Ninja();
   });
 
-  it('should create an instance', () => {
+  test('instance is created', () => {
     expect(ninja).toBeTruthy();
   });
 
-  it('should create an instance of Ninja', () => {
-    expect(ninja instanceof Ninja).toBe(true);
+  test('it is instance of Ninja', () => {
+    expect(ninja).toBeInstanceOf(Ninja);
   });
 
-  it('should create an instance of Hero', () => {
-    expect(ninja instanceof Hero).toBe(true);
+  test('it is instance of Hero', () => {
+    expect(ninja).toBeInstanceOf(Hero);
   });
 });
