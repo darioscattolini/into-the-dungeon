@@ -1,4 +1,3 @@
-import "jest-extended";
 import { 
   async, ComponentFixture, TestBed, fakeAsync, flush
 } from '@angular/core/testing';
