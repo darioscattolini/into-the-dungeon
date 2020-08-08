@@ -68,28 +68,35 @@ describe('BiddingServiceService', () => {
     // MockedUIControllerService.mockClear();
   });
   
-  it('should be created', () => {
+  test('it is created', () => {
     expect(biddingService).toBeTruthy();
   });
 
-  it('should have no hero at first', () => {
+  test('it has no hero at first', () => {
     expect(biddingService.hero).toBeUndefined();
   });
 
   describe('getResult', () => {
     let activePlayers: Player[];
     let startingPlayer: Player;
+    let heroStub: Hero;
 
     beforeEach(() => {
       activePlayers = setUpPlayers();
-      startingPlayer = activePlayers[0];
+      heroStub = Object.assign(noEquipHeroStub);
+      
+      const randomIndex = Math.floor(Math.random() * activePlayers.length);
+      startingPlayer = activePlayers[randomIndex];
 
       (playersService.getPlayersList as jest.Mock<Player[], []>)
         .mockReturnValue(activePlayers);
+
+      (heroesService.chooseHero as jest.Mock<Promise<Hero>, [Player]>)
+        .mockResolvedValue(heroStub);
     });
 
     describe('players setup', () => {
-      it('should work like this', () => {
+      test('it works as expected', () => {
         expect(activePlayers).toHaveLength(3);
         expect(activePlayers[0].nextPlayer).toBe(activePlayers[1]);
         expect(activePlayers[1].nextPlayer).toBe(activePlayers[2]);
@@ -100,30 +107,38 @@ describe('BiddingServiceService', () => {
       });
     });
 
-    it('should call heroService.chooseHero once', async () => {
+    test('it calls heroService.chooseHero once', async () => {
+      expect.assertions(1);
+
       await biddingService.getResult(startingPlayer);
+
       expect(heroesService.chooseHero).toHaveBeenCalledTimes(1);
     });
 
-    it('should call heroService.chooseHero with startingPlayer', async () => {
+    test('it calls heroService.chooseHero with startingPlayer', async () => {
+      expect.assertions(1);
+
       await biddingService.getResult(startingPlayer);
+
       expect(heroesService.chooseHero).toHaveBeenCalledWith(startingPlayer);
     });
 
-    it('should store heroService.chooseHero return in hero field', async () => {
-      const hero = noEquipHeroStub;
-      (heroesService.chooseHero as jest.Mock<Promise<Hero>, [Player]>)
-        .mockResolvedValue(hero);
+    test('it stores chosenHero in readable field', async () => {
+      expect.assertions(1);
+
       await biddingService.getResult(startingPlayer);
-      expect(biddingService.hero).toBe(hero);
+
+      expect(biddingService.hero).toBe(heroStub);
     });
 
-    it('should call playersService.getPlayersList once', async () => {
+    test('it calls playersService.getPlayersList once', async () => {
+      expect.assertions(1);
       await biddingService.getResult(startingPlayer);
       expect(playersService.getPlayersList).toHaveBeenCalledTimes(1);
     });
 
-    it('should call monstersService.getMonstersPack once', async () => {
+    test('it calls monstersService.getMonstersPack once', async () => {
+      expect.assertions(1);
       await biddingService.getResult(startingPlayer);
       expect(monstersService.getMonstersPack).toHaveBeenCalledTimes(1);
     });
