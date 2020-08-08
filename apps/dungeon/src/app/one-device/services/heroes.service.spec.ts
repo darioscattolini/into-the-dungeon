@@ -36,10 +36,8 @@ describe('HeroesService', () => {
     uiController = TestBed.inject(UIControllerService);
   });
   
-  describe('constructor', () => {
-    it('should create service', () => {
-      expect(heroesService).toBeTruthy();
-    });
+  test('it is created', () => {
+    expect(heroesService).toBeTruthy();
   });
 
   describe('chooseHero', () => {
@@ -47,63 +45,70 @@ describe('HeroesService', () => {
 
     beforeEach(() => {
       sentPlayer = new Player('john');
+      (uiController.requestChoice as requestChoiceMock)
+        .mockResolvedValue({ response: 0 });
     });
 
     afterEach(() => {
       MockedUIController.mockClear();
     });
 
-    it('should make a requestChoice to player received as parameter', () => {
-      let receivedPlayer: Player | undefined;
-      (uiController.requestChoice as requestChoiceMock)
-        .mockImplementation(async request => {
-          receivedPlayer = request.player;
-          return { response: 0 };
-        });
+    test('it requests choice from player received as parameter', async () => {
+      expect.assertions(1);
+      await heroesService.chooseHero(sentPlayer);
 
-      heroesService.chooseHero(sentPlayer);
-      expect(receivedPlayer).toBe(sentPlayer);
+      expect(uiController.requestChoice)
+        .toHaveBeenCalledWith(expect.objectContaining({player: sentPlayer}));
     });
 
-    it('should make a requestChoice passing hero ui data as options', () => {
-      const expectedHeroes = [
-        heroes.bard, heroes.mage, heroes.ninja, heroes.princess
+    test('it requests choice with hero ui data as options', async () => {
+      const expectedOptions = [
+        heroes.bard, heroes.mage, heroes.ninja, heroes.princess,
       ];
-      let receivedHeroes: IHero[] | undefined;
-      (uiController.requestChoice as requestChoiceMock)
-        .mockImplementation(async request => {
-          receivedHeroes = request.options;
-          return { response: 0 };
-        });
-      
-      heroesService.chooseHero(sentPlayer);
-      expect(receivedHeroes).toHaveLength(expectedHeroes.length);
-      expect(receivedHeroes)
-        .toEqual(expect.arrayContaining(expectedHeroes));
+
+      expect.assertions(1);
+      await heroesService.chooseHero(sentPlayer);
+
+      expect(uiController.requestChoice)
+        .toHaveBeenCalledWith(expect.objectContaining({
+          options: expect.toIncludeSameMembers(expectedOptions)
+        }));
     });
 
-    it('should return a Bard if player chooses Bard', async () => {
+    test('it returns a Bard if player chooses Bard', async () => {
       makeUserChoose('bard');
+
+      expect.assertions(1);
       const hero = await heroesService.chooseHero(sentPlayer);
-      expect(hero instanceof Bard).toBe(true);
+
+      expect(hero).toBeInstanceOf(Bard);
     });
 
-    it('should return a Mage if player chooses Mage', async () => {
+    test('it returns a Mage if player chooses Mage', async () => {
       makeUserChoose('mage');
+      
+      expect.assertions(1);
       const hero = await heroesService.chooseHero(sentPlayer);
-      expect(hero instanceof Mage).toBe(true);
+
+      expect(hero).toBeInstanceOf(Mage);
     });
 
-    it('should return a Ninja if player chooses Ninja', async () => {
+    test('it returns a Ninja if player chooses Ninja', async () => {
       makeUserChoose('ninja');
+
+      expect.assertions(1);
       const hero = await heroesService.chooseHero(sentPlayer);
-      expect(hero instanceof Ninja).toBe(true);
+
+      expect(hero).toBeInstanceOf(Ninja);
     });
 
-    it('should return a Princess if player chooses Princess', async () => {
+    test('it returns a Princess if player chooses Princess', async () => {
       makeUserChoose('princess');
+
+      expect.assertions(1);
       const hero = await heroesService.chooseHero(sentPlayer);
-      expect(hero instanceof Princess).toBe(true);
+
+      expect(hero).toBeInstanceOf(Princess);
     });
   });
 });
