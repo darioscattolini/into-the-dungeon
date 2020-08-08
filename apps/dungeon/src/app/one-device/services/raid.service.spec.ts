@@ -12,7 +12,7 @@ describe('RaidService', () => {
     service = TestBed.inject(RaidService);
   });
 
-  it('should be created', () => {
+  test('it is created', () => {
     expect(service).toBeTruthy();
   });
 });
