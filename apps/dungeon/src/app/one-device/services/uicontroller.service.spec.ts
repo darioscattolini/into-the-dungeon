@@ -15,15 +15,20 @@ describe('UIControllerService', () => {
     player = new Player('John');
   });
 
-  it('should be created', () => {
+  test('it is created', () => {
     expect(service).toBeTruthy();
   });
 
   describe('requestChoice', () => {
-    it('shoud throw error with only one option', async () => {
-      await expect(service.requestChoice({player: player, options: ['one']}))
-        .rejects
-        .toThrow('requestChoice must be called with at least two options');
+    test('it throws error with only one option', async () => {
+      expect.assertions(1);
+      
+      try { await service.requestChoice({player: player, options: ['one']}); }
+      catch(error) { 
+        expect(error.message).toEqualCaseInsensitive(
+          'requestChoice must be called with at least two options'
+        );
+      }
     });
 
     // it should wait for user choice
