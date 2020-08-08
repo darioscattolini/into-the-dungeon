@@ -22,65 +22,7 @@ const MockedPlayersService = mocked(PlayersService, true);
 jest.mock('./uicontroller.service');
 const MockedUiController = mocked(UIControllerService, true);
 
-function mockPlayersService(
-  playersService: PlayersService, 
-  playersAmount: number,
-  randomPlayer?: Player
-) {
-  MockedPlayersService.mockClear();
-  (playersService.getAmountOfPlayers as jest.Mock<number, []>)
-    .mockReturnValue(playersAmount);
-  if (randomPlayer) {
-    (playersService.getRandomPlayer as jest.Mock<Player, []>)
-      .mockReturnValue(randomPlayer);
-  }
-  return {
-    playersService,
-  };
-}
-
-const heroStub: Hero = noEquipHeroStub;
-const monsterPileStub: Monster[] = [];
-function mockBiddingService(
-  biddingService: BiddingService, 
-  returnedRaiders: Player[]
-): BiddingService {
-  MockedBiddingService.mockClear();
-  
-  for (const raider of returnedRaiders) {
-    (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
-      .mockResolvedValueOnce({
-        raider: raider,
-        hero: heroStub,
-        enemies: monsterPileStub
-      });
-  }
-  
-  return biddingService;
-}
-
-function mockRaidService(
-  raidService: RaidService,
-  outcomes: boolean[]
-): RaidService {
-  MockedRaidService.mockClear();  
-  
-  for (const outcome of outcomes)
-  {
-    (raidService
-      .getResult as jest.Mock<Promise<IRaidResult>, [Player, Hero, Monster[]]>)
-      .mockImplementationOnce(
-        async (raider: Player, hero: Hero, monsters: Monster[]) => {
-          return {
-            raider: raider,
-            survived: outcome
-          }
-        }
-      );
-  }
-  
-  return raidService;
-}
+jest.mock('../../models/player/player.ts');
 
 describe('GameService', () => {
   let gameService:    GameService;
@@ -110,245 +52,301 @@ describe('GameService', () => {
     MockedPlayersService.mockClear();
     MockedBiddingService.mockClear();
     MockedRaidService.mockClear();
+    MockedUiController.mockClear();
   });
   
-  it('should be created', () => {
+  test('it is created', () => {
     expect(gameService).toBeTruthy();
   });
 
-  describe('play', () => {    
-    it('should verify the amount of players once', async () => {
-      expect.assertions(1);
-      try { await gameService.play(); }
-      catch { }
-      finally {
-        expect(playersService.getAmountOfPlayers).toHaveBeenCalledTimes(1);
-      }
-    });
+  describe.each([
+    [0, 'There must be at least two players to start the game'],
+    [1, 'There must be at least two players to start the game'],
+    [5, 'There cannot be more than 5 players'],
+    [Math.floor(Math.random() * 95) + 6, 'There cannot be more than 5 players']
+  ])(
+    'behaviour with wrong number of players (<2 or >4)', 
+    (numberOfPlayers, errorMessage) => {
 
-    it('should throw error if there are 0 players', async () => {
-      mockPlayersService(playersService, 0);
-      expect.assertions(1);
-      try {
-        await gameService.play()
-      } catch(error) {
-        const message = (error as Error).message;
-        expect(message)
-          .toBe('There must be at least two players to start the game')
-      }
-    });
+      beforeEach(() => {
+        (playersService.getAmountOfPlayers as jest.Mock<number, []>)
+          .mockReturnValue(numberOfPlayers);
+      })
 
-    it('should not call biddingService if there are 0 players', async () => {
-      mockPlayersService(playersService, 0);
-      expect.assertions(1);
-      try { await gameService.play(); }
-      catch { }
-      finally { 
-        expect(biddingService.getResult).toHaveBeenCalledTimes(0);
-      }
-    });
+      test(`it throws error with ${numberOfPlayers} players`, async () => {
+        expect.assertions(1);
 
-    it('should throw error if there is only 1 player', async () => {
-      mockPlayersService(playersService, 1);
-      expect.assertions(1);
-      try {
-        await gameService.play()
-      } catch(error) {
-        const message = (error as Error).message;
-        expect(message)
-          .toBe('There must be at least two players to start the game')
-      }
-    });
+        try { await gameService.play(); } 
+        catch(error) {
+          const catchedMessage = (error as Error).message;
+          expect(catchedMessage)
+            .toBe(errorMessage);
+        }
+      });
 
-    it('should not call biddingService if there is only 1 player', async () => {
-      mockPlayersService(playersService, 1);
-      expect.assertions(1);
-      try { await gameService.play(); }
-      catch { }
-      finally { 
-        expect(biddingService.getResult).toHaveBeenCalledTimes(0);
-      }
-    });
+      test(
+        `it does not advance to bidding phase with ${numberOfPlayers} players`, 
+        async () => {
+          expect.assertions(1);
 
-    it('should throw error if players > 4', async () => {
-      mockPlayersService(playersService, 5);
-      expect.assertions(1);
-      try {
-        await gameService.play()
-      } catch(error) {
-        const message = (error as Error).message;
-        expect(message)
-          .toBe('There cannot be more than 5 players')
-      }
-    });
+          try { await gameService.play(); }
+          catch { }
+          finally {
+            expect(biddingService.getResult).not.toHaveBeenCalled();
+          }
+        }
+      );
+  });
 
-    it('should not call biddingService if players > 4', async () => {
-      mockPlayersService(playersService, 5);
-      expect.assertions(1);
-      try { await gameService.play(); }
-      catch { }
-      finally { 
-        expect(biddingService.getResult).toHaveBeenCalledTimes(0);
-      }
-    });
+  describe('functional behaviour', () => {
+    const heroStub: Hero = noEquipHeroStub;
+    const monsterPileStub: Monster[] = [];
 
-    it('should call playersService.getRandomPlayer once', async () => {
-      mockPlayersService(playersService, 4);
-      expect.assertions(1);
-      try { await gameService.play(); }
-      catch { }
-      finally {
-        expect(playersService.getRandomPlayer).toHaveBeenCalledTimes(1);
-      }
-    });
-
-    it('should call playersService.isThereAWinner at least once', async () => {
-      mockPlayersService(playersService, 4);
-      expect.assertions(1);
-      try { await gameService.play(); }
-      catch { }
-      finally {
-        expect(playersService.isThereAWinner).toHaveBeenCalledTimes(1);
-      }
-    });
-
-    it('should call isThereAWinner n+1 times if false n times', async () => {
-      const john = new Player('John');
-      const anna = new Player('Anna');
-      mockBiddingService(biddingService, [john, anna, anna]);
-      mockRaidService(raidService, [false, true, true]);
-
-      (playersService.isThereAWinner as jest.Mock<boolean, []>)
-        .mockReturnValueOnce(false)
-        .mockReturnValueOnce(false)
-        .mockReturnValueOnce(false)
-        .mockReturnValueOnce(true);
-
-      await gameService.play();
-    
-      expect(playersService.isThereAWinner).toHaveBeenCalledTimes(4);
-    });
-
-    it('should 1st call biddingService.getResult w/ randomPlayer', async () => {
-      const randomPlayer = new Player('John');
-      mockPlayersService(playersService, 4, randomPlayer);
+    describe.each([
+      [0], [1], [2], [3]
+    ])('loop condition', loopRuns => {
+      let playerStub: Player; 
       
-      try { await gameService.play() } 
-      catch { }
-      finally {
-        expect(biddingService.getResult).toHaveBeenCalledWith(randomPlayer);
-      }
+      beforeEach(() => {
+        playerStub = new Player('Stub');
+
+        // bidding service mock
+        (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
+          .mockResolvedValue({
+            raider: playerStub, hero: heroStub, enemies: monsterPileStub
+          });
+        
+        // raid service mock
+        (raidService.getResult as 
+          jest.Mock<Promise<IRaidResult>, [Player, Hero, Monster[]]>)
+          .mockResolvedValue({ raider: playerStub, survived: true });
+        
+        // isThereAWinner mock
+        let isThereAWinner = 
+          (playersService.isThereAWinner as jest.Mock<boolean, []>)
+        for (let i = 0; i < loopRuns; i++) {
+          isThereAWinner = isThereAWinner.mockReturnValueOnce(false);
+        }
+        isThereAWinner.mockReturnValueOnce(true);
+      });
+
+      test(`it runs ${loopRuns} times until isThereAWinner false`, async () => {
+        expect.assertions(1);
+
+        await gameService.play();
+
+        expect(biddingService.getResult).toHaveBeenCalledTimes(loopRuns);
+      });
     });
 
-    it('should then call biddingService.getResult w/ last rider', async () => {
-      const randomPlayer = new Player('John');
-      const firstRaider = new Player('Anna');
-      const secondRaider = new Player('Chris');
-      mockPlayersService(playersService, 4, randomPlayer);
-      mockBiddingService(biddingService, [firstRaider, secondRaider]);
-      mockRaidService(raidService, [true, true]);
-      
-      expect.assertions(3);
-      try { await gameService.play() }
-      catch { }
-      finally {
-        expect(biddingService.getResult).toHaveBeenNthCalledWith(1, randomPlayer);
-        expect(biddingService.getResult).toHaveBeenNthCalledWith(2, firstRaider);
-        expect(biddingService.getResult).toHaveBeenNthCalledWith(3, secondRaider);
-      }
-    });
+    describe('biddingService and raidService calls', () => {
+      let randomPlayer: Player;
+      let firstRaider: Player;
+      let secondRaider: Player;
+      let thirdRaider: Player;
+      let firstHeroStub: Hero;
+      let secondHeroStub: Hero;
+      let thirdHeroStub: Hero;
+      let firstMonsterPileStub: Monster[];
+      let secondMonsterPileStub: Monster[];
+      let thirdMonsterPileStub: Monster[];
 
-    it('should call raidService.getResult w/ bidding return', async () => {
-      const raider = new Player('John');
-      mockBiddingService(biddingService, [raider]);
+      beforeEach(() => {
+        randomPlayer = new Player('random');
+        firstRaider = new Player('first');
+        secondRaider = new Player('second');
+        thirdRaider = new Player('third');
+        firstHeroStub = Object.assign(noEquipHeroStub);
+        secondHeroStub = Object.assign(noEquipHeroStub);
+        thirdHeroStub = Object.assign(noEquipHeroStub);
+        firstMonsterPileStub = [];
+        secondMonsterPileStub = [];
+        thirdMonsterPileStub = [];
+
+        // loop condition setup: runs three times
+        (playersService.isThereAWinner as jest.Mock<boolean, []>)
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(true);
+
+        // random player mock
+        (playersService.getRandomPlayer as jest.Mock<Player, []>)
+          .mockReturnValue(randomPlayer);
       
-      expect.assertions(1);
-      try { await gameService.play() }
-      catch { }
-      finally {
+        // bidding service mock
+        (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
+          .mockResolvedValueOnce({
+            raider: firstRaider, 
+            hero: firstHeroStub, 
+            enemies: firstMonsterPileStub
+          }).mockResolvedValueOnce({
+            raider: secondRaider, 
+            hero: secondHeroStub, 
+            enemies: secondMonsterPileStub
+          }).mockResolvedValueOnce({
+            raider: thirdRaider, 
+            hero: thirdHeroStub, 
+            enemies: thirdMonsterPileStub
+          });
+
+        // raid service mock
+        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+          .mockResolvedValue({ raider: firstRaider, survived: true });
+      });
+
+      test('1st bid is called with playersService.randomPlayer', async () => {
+        expect.assertions(1);
+
+        await gameService.play();
+
+        expect(biddingService.getResult)
+          .toHaveBeenNthCalledWith(1, randomPlayer);
+      });
+
+      test('1st raid is called with 1st bid returned values', async () => {
+        expect.assertions(1);
+
+        await gameService.play();
+
         expect(raidService.getResult)
-          .toHaveBeenCalledWith(raider, heroStub, monsterPileStub);
-      }
-    });
-  
-    it('should add one victory to successful raider', async () => {
-      const raider = new Player('John');
-      mockBiddingService(biddingService, [raider]);
-      mockRaidService(raidService, [true]);
-      
-      expect.assertions(2);
-      expect(raider.victories).toBe(0);
-      try { await gameService.play() }
-      catch { }
-      finally {
-        expect(raider.victories).toBe(1);
-      }
-    });
-  
-    it('should not add a defeat to successful raider', async () => {
-      const raider = new Player('John');
-      mockBiddingService(biddingService, [raider]);
-      mockRaidService(raidService, [true]);
-      
-      expect.assertions(2);
-      expect(raider.defeats).toBe(0);
-      try { await gameService.play() }
-      catch { }
-      finally {
-        expect(raider.defeats).toBe(0);
-      }
-    });
-  
-    it('should add one defeat to unsuccessful raider', async () => {
-      const raider = new Player('John');
-      mockBiddingService(biddingService, [raider]);
-      mockRaidService(raidService, [false]);
-      
-      expect.assertions(2);
-      expect(raider.defeats).toBe(0);
-      try { await gameService.play() }
-      catch { }
-      finally {
-        expect(raider.defeats).toBe(1);
-      }
-    });
-  
-    it('should not add a victory to unsuccessful raider', async () => {
-      const raider = new Player('John');
-      mockBiddingService(biddingService, [raider]);
-      mockRaidService(raidService, [false]);
-      
-      expect.assertions(2);
-      expect(raider.victories).toBe(0);
-      try { await gameService.play() }
-      catch { }
-      finally {
-        expect(raider.victories).toBe(0);
-      }
+          .toHaveBeenNthCalledWith(
+            1, firstRaider, firstHeroStub, firstMonsterPileStub
+          );
+      });
+
+      test('2nd bid is called with raider returned by 1st bid', async () => {
+        expect.assertions(1);
+        
+        await gameService.play();
+
+        expect(biddingService.getResult)
+          .toHaveBeenNthCalledWith(2, firstRaider);
+      });
+
+      test('2nd raid is called with 2nd bid returned values', async () => {
+        expect.assertions(1);
+        
+        await gameService.play();
+
+        expect(raidService.getResult)
+          .toHaveBeenNthCalledWith(
+            2, secondRaider, secondHeroStub, secondMonsterPileStub
+          );
+      });
+
+      test('3rd raid is called with raider returned by 2nd bid', async () => {
+        expect.assertions(1);
+        
+        await gameService.play();
+
+        expect(biddingService.getResult)
+          .toHaveBeenNthCalledWith(3, secondRaider);
+      });
+
+      test('3rd raid is called with 3rd bird returned values', async () => {
+        expect.assertions(1);
+
+        await gameService.play();
+
+        expect(raidService.getResult)
+          .toHaveBeenNthCalledWith(
+            3, thirdRaider, thirdHeroStub, thirdMonsterPileStub
+          );
+      });
     });
 
-    it('should not start new bidding phase if someone won', async () => {
-      (playersService.isThereAWinner as jest.Mock<boolean, []>)
-        .mockReturnValue(true);
-      await gameService.play();
-      expect(biddingService.getResult).toHaveBeenCalledTimes(0);
+    describe('raidService output consequences', () => {
+      let randomPlayer: Player;
+      let raider: Player;
+
+      beforeEach(() => {
+        randomPlayer = new Player('random');
+        raider = new Player('raider');
+
+        // loop condition setup: runs once
+        (playersService.isThereAWinner as jest.Mock<boolean, []>)
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(true);
+
+        // random player mock
+        (playersService.getRandomPlayer as jest.Mock<Player, []>)
+          .mockReturnValue(randomPlayer);
+      
+        // bidding service mock
+        (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
+          .mockResolvedValue({
+            raider: raider, hero: heroStub, enemies: monsterPileStub
+          });
+      });
+
+      test('it calls surviveDungeon for succesful raider', async () => {
+        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+          .mockResolvedValue({ raider, survived: true });
+        expect.assertions(2);
+        expect(raider.surviveDungeon).not.toHaveBeenCalled();
+
+        await gameService.play();
+
+        expect(raider.surviveDungeon).toHaveBeenCalledTimes(1);
+      });
+
+      test('it calls not dieInDungeon for succesful raider', async () => {
+        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+          .mockResolvedValue({ raider, survived: true });
+        expect.assertions(1);
+
+        await gameService.play();
+
+        expect(raider.dieInDungeon).not.toHaveBeenCalled();
+      });
+
+      test('it calls dieInDungeon for unsuccesful raider', async () => {
+        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+          .mockResolvedValue({ raider, survived: false });
+        expect.assertions(2);
+        expect(raider.dieInDungeon).not.toHaveBeenCalled();
+
+        await gameService.play();
+
+        expect(raider.dieInDungeon).toHaveBeenCalledTimes(1);
+      });
+
+      test('it calls not surviveInDungeon for unsuccesful raider', async () => {
+        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+          .mockResolvedValue({ raider, survived: false });
+        expect.assertions(1);
+
+        await gameService.play();
+
+        expect(raider.surviveDungeon).not.toHaveBeenCalled();
+      });
     });
 
-    it('should call playersService.getWinner if someone won', async () => {
-      (playersService.isThereAWinner as jest.Mock<boolean, []>)
-        .mockReturnValue(true);
-      await gameService.play();
-      expect(playersService.getWinner).toHaveBeenCalledTimes(1);
-    });
-    
-    it('should make uiController send notification if someone won', async () => {
-      const winner = new Player('John');
-      (playersService.isThereAWinner as jest.Mock<boolean, []>)
-        .mockReturnValue(true);
-      (playersService.getWinner as jest.Mock<Player, []>)
-        .mockReturnValue(winner);
-      await gameService.play();
-      expect(uiController.sendNotification).toHaveBeenCalledWith({ winner });
+    describe('end of game handling', () => {
+      let winner: Player;
+
+      beforeEach(() => {
+        winner = new Player('winner');
+
+        // loop condition setup: never runs
+        (playersService.isThereAWinner as jest.Mock<boolean, []>)
+          .mockReturnValueOnce(true);
+        
+        // getWinner mock
+        (playersService.getWinner as jest.Mock<Player, []>)
+          .mockReturnValue(winner);
+      });
+
+      test('bidding phase is not started', async () => {
+        await gameService.play();
+        expect(biddingService.getResult).not.toHaveBeenCalled();
+      });
+
+      test('uiController is notified with playersService winner', async () => {
+        await gameService.play();
+        expect(uiController.sendNotification).toHaveBeenCalledWith({ winner });
+      });
     });
   });  
 });
