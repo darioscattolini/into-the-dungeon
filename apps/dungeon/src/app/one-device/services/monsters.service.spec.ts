@@ -2,12 +2,12 @@ import { TestBed } from '@angular/core/testing';
 
 import { MonstersService } from './monsters.service';
 import { 
-  Monster, 
-  Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon, 
-  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph, RareMonsterClasses,
+  Monster, CommonMonsterClasses, RareMonsterClasses,
+  Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon,
+  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
  } from '../../models/models';
 
-const rareMonstersFilter = (monster: Monster) => {
+const rareMonstersFilter = (monster: Monster): boolean => {
   return (
     monster instanceof Fairy ||
     monster instanceof Ally ||
@@ -17,6 +17,26 @@ const rareMonstersFilter = (monster: Monster) => {
     monster instanceof Metamorph
   );
 };
+
+describe('rareMonstersFilter', () => {
+  let monsters: Monster[];
+  let commonMonsters: Monster[];
+  let rareMonsters: Monster[];
+
+  beforeEach(() => {
+    commonMonsters = CommonMonsterClasses.map(Class => new Class());
+
+    rareMonsters = RareMonsterClasses.map(Class => new Class());
+
+    monsters = [...commonMonsters, ...rareMonsters];
+  });
+
+  test('it filters rare monsters', () => {
+    const filteredMonsters = monsters.filter(rareMonstersFilter);
+
+    expect(filteredMonsters).toEqual(expect.toIncludeSameMembers(rareMonsters));
+  });
+});
 
 describe('MonstersService', () => {
   let service: MonstersService;
@@ -28,86 +48,97 @@ describe('MonstersService', () => {
     service = TestBed.inject(MonstersService);
   });
 
-  it('should be created', () => {
+  test('it is created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getMonstersPack return', () => {
+  describe('getMonstersPack', () => {
     let monstersPack: Monster[];
     
     beforeEach(() => {
       monstersPack = service.getMonstersPack();
     });
 
-    it('should contain 15 members', () => {
+    test('it returns 15 members', () => {
       expect(monstersPack).toHaveLength(15);
     });
 
-    it('should contain monsters', () => {
-      expect(monstersPack.every(monster => monster instanceof Monster))
-        .toBe(true);
+    test('it contains Monsters', () => {
+      expect(monstersPack).toSatisfyAll(monster => monster instanceof Monster);
     });
 
-    it('should contain 2 instances of Goblin', () => {
-      expect(monstersPack.filter(monster => monster instanceof Goblin))
-        .toHaveLength(2);
+    test('it contains 2 instances of Goblin', () => {
+      const goblins = monstersPack
+        .filter(monster => monster instanceof Goblin);
+      
+      expect(goblins).toHaveLength(2);
     });
 
-    it('should contain 2 instances of Skeleton', () => {
-      expect(monstersPack.filter(monster => monster instanceof Skeleton))
-        .toHaveLength(2);
+    test('it contains 2 instances of Skeleton', () => {
+      const skeletons = monstersPack
+        .filter(monster => monster instanceof Skeleton);
+
+      expect(skeletons).toHaveLength(2);
     });
 
-    it('should contain 2 instances of Orc', () => {
-      expect(monstersPack.filter(monster => monster instanceof Orc))
-        .toHaveLength(2);
+    test('it contains 2 instances of Orc', () => {
+      const orcs = monstersPack.filter(monster => monster instanceof Orc);
+
+      expect(orcs).toHaveLength(2);
     });
 
-    it('should contain 2 instances of Vampire', () => {
-      expect(monstersPack.filter(monster => monster instanceof Vampire))
-        .toHaveLength(2);
+    test('it contains 2 instances of Vampire', () => {
+      const vampires = monstersPack
+        .filter(monster => monster instanceof Vampire);
+
+      expect(vampires).toHaveLength(2);
     });
 
-    it('should contain 2 instances of Golem', () => {
-      expect(monstersPack.filter(monster => monster instanceof Golem))
-        .toHaveLength(2);
+    test('it contains 2 instances of Golem', () => {
+      const golems = monstersPack.filter(monster => monster instanceof Golem);
+
+      expect(golems).toHaveLength(2);
     });
 
-    it('should contain 1 instance of Litch', () => {
-      expect(monstersPack.filter(monster => monster instanceof Litch))
-        .toHaveLength(1);
+    test('it contains 1 instance of Litch', () => {
+      const litches = monstersPack.filter(monster => monster instanceof Litch);
+
+      expect(litches).toHaveLength(1);
     });
 
-    it('should contain 1 instance of Demon', () => {
-      expect(monstersPack.filter(monster => monster instanceof Demon))
-        .toHaveLength(1);
+    test('it contains 1 instance of Demon', () => {
+      const demons = monstersPack.filter(monster => monster instanceof Demon);
+
+      expect(demons).toHaveLength(1);
     });
 
-    it('should contain 1 instance of Dragon', () => {
-      expect(monstersPack.filter(monster => monster instanceof Dragon))
-        .toHaveLength(1);
+    test('it contains 1 instance of Dragon', () => {
+      const dragons = monstersPack.filter(monster => monster instanceof Dragon);
+
+      expect(dragons).toHaveLength(1);
     });
 
-    it('should contain 2 instances of rare monsters', () => {
+    test('it contains 2 instances of rare monsters', () => {
       const rareMonsters = monstersPack.filter(rareMonstersFilter);
+
       expect(rareMonsters).toHaveLength(2);
     });
 
-    it('should contain 2 instances of rare monsters of different kind', () => {
+    test('it contains 2 instances of rare monsters of different kind', () => {
       const rareMonsters = monstersPack.filter(rareMonstersFilter);
-      expect(rareMonsters[0].type !== rareMonsters[1].type).toBe(true);
+
+      expect(rareMonsters[0].type).not.toEqual(rareMonsters[1].type);
     });
 
-    it('should contain 2 random types of rare monsters', () => {
+    test('it contains 2 random types of rare monsters', () => {
       const rareCouples: string[] = [];
       
       for (let i = 0; i < 10; i++) {
-        const couple = 
-          service.getMonstersPack()
-            .filter(rareMonstersFilter)
-            .map(monster => monster.type)
-            .sort()
-            .toString();
+        const couple = service.getMonstersPack()
+          .filter(rareMonstersFilter)
+          .map(monster => monster.type)
+          .sort()
+          .toString();
         rareCouples.push(couple);
       }
 
@@ -121,7 +152,7 @@ describe('MonstersService', () => {
       expect(changes).toBeGreaterThan(5);
     });
 
-    it('should eventually output all rare monster types', () => {
+    test('it eventually outputs all rare monster types', () => {
       const condition = {
         expecting: RareMonsterClasses.slice(0),
         ready() {
@@ -147,13 +178,14 @@ describe('MonstersService', () => {
       expect(condition.ready()).toBe(true);
     });
 
-    it('should be randomly ordered', () => {
+    test('it is randomly ordered', () => {
       const packs: string[][] = [];
       for (let i = 0; i < 100; i++) {
         const currentPack = 
           service.getMonstersPack().map(monster => monster.type);
         packs.push(currentPack);
       }
+
       const variations: number[] = [];
       for (let position = 0; position < packs[0].length; position++) {
         const unrepeatedTypes: string[] = [];
@@ -164,7 +196,8 @@ describe('MonstersService', () => {
         }
         variations.push(unrepeatedTypes.length);
       }
-      expect(variations.every(number => number >= 9)).toBe(true);
+      
+      expect(variations).toSatisfyAll(number => number >= 9);
     });
   });
 });
