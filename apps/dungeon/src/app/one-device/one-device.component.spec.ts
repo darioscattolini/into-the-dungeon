@@ -19,7 +19,7 @@ describe('OneDeviceComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  test('it is created', () => {
     expect(component).toBeTruthy();
   });
 });
