@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
 import { 
-  CommonMonsterClasses, RareMonsterClasses, Monster
+  Monster, CommonMonsterClasses, RareMonsterClasses, 
+  CommonMonsterType, RareMonsterType,
+  MonsterView, MonsterViewMap
 } from '../../models/models';
-
 
 @Injectable({
   providedIn: OneDeviceModule
@@ -12,6 +13,7 @@ export class MonstersService {
 
   private readonly CommonMonsters = CommonMonsterClasses;
   private readonly RareMonsters   = RareMonsterClasses;
+  private readonly ViewMap        = MonsterViewMap;
 
   constructor() { }
 
@@ -21,6 +23,12 @@ export class MonstersService {
     this.addRareMonsters(pack);
     this.shuffle(pack);
     return pack;
+  }
+
+  public getViewDataFor(
+    monsterType: CommonMonsterType | RareMonsterType
+  ): MonsterView {
+    return this.ViewMap[monsterType];
   }
 
   private addCommonMonsters(pack: Monster[]) {

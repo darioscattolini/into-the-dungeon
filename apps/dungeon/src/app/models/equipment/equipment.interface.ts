@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { Monster } from '../models';
-import { Hero, ICombatResult } from '../models';
+import { Hero, CombatResult } from '../models';
 
 export interface IEquipment {
   name: string;
@@ -12,7 +12,7 @@ export interface IEquipment {
   appliesThisRound(opponent?: Monster): boolean;
   apply(opponent?: Monster): Function[];
   discard(): void;
-  subscribeToCombatResult?(combatResult$: Subject<ICombatResult>): void;
+  subscribeToCombatResult?(combatResult$: Subject<CombatResult>): void;
   // unsuscribeToCombatResult?(): void; private, after discard
 }
 

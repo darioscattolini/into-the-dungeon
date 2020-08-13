@@ -1,7 +1,7 @@
 import { Subject, PartialObserver, Subscription } from 'rxjs';
 import { Monster } from '../models';
-import { ICombatResult } from '../models';
-import { ICompanionEffect } from '../models';
+import { CombatResult } from '../models';
+import { CompanionEffect } from '../models';
 import { ICompanion } from './companion.interface';
 
   // still not sure if it should be equipment
@@ -10,10 +10,10 @@ export class AllyCompanion implements ICompanion {
   
   private _available = true;
   private readonly targetPosition: number;
-  private readonly combatResultObserver: PartialObserver<ICombatResult>;
+  private readonly combatResultObserver: PartialObserver<CombatResult>;
   private subscription: Subscription;
 
-  constructor(targetPosition: number, combatResult$: Subject<ICombatResult>) {
+  constructor(targetPosition: number, combatResult$: Subject<CombatResult>) {
     this.targetPosition = targetPosition;
     this.combatResultObserver = this.getCombatResultObserver();
     this.subscription = combatResult$.subscribe(this.combatResultObserver);
@@ -27,7 +27,7 @@ export class AllyCompanion implements ICompanion {
     return this.targetPosition === monster.positionInDungeon;
   }
     // what happens with incorrect turns?
-  public produceEffect(): ICompanionEffect {
+  public produceEffect(): CompanionEffect {
     return {
       monsterDefeated: true
     }
@@ -38,9 +38,9 @@ export class AllyCompanion implements ICompanion {
     this._available = false;
   }
 
-  private getCombatResultObserver(): PartialObserver<ICombatResult> {
+  private getCombatResultObserver(): PartialObserver<CombatResult> {
     return {
-      next: (combatResult: ICombatResult) => {
+      next: (combatResult: CombatResult) => {
         if (combatResult.monster.positionInDungeon === this.targetPosition) {
           this.discard();
         }

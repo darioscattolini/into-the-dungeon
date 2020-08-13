@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { mocked } from 'ts-jest/utils';
 
 import { 
-  heroes, IHero, Bard, Mage, Ninja, Princess, 
-  IChoiceRequest, IChoiceResponse, Player, HeroType 
+  Bard, Mage, Ninja, Princess, HeroView, HeroViewMap,
+  ChoiceRequest, ChoiceResponse, Player, HeroType 
 } from '../../models/models';
 import { HeroesService } from './heroes.service';
 import { UIControllerService } from './uicontroller.service';
@@ -11,7 +11,7 @@ import { UIControllerService } from './uicontroller.service';
 jest.mock('./uicontroller.service');
 const MockedUIController = mocked(UIControllerService, true);
 type requestChoiceMock = 
-  jest.Mock<Promise<IChoiceResponse>, [IChoiceRequest<IHero>]>;
+  jest.Mock<Promise<ChoiceResponse>, [ChoiceRequest<HeroView>]>;
 
 describe('HeroesService', () => {
   let heroesService: HeroesService;
@@ -63,7 +63,10 @@ describe('HeroesService', () => {
 
     test('it requests choice with hero ui data as options', async () => {
       const expectedOptions = [
-        heroes.bard, heroes.mage, heroes.ninja, heroes.princess,
+        HeroViewMap.bard, 
+        HeroViewMap.mage, 
+        HeroViewMap.ninja, 
+        HeroViewMap.princess,
       ];
 
       expect.assertions(1);

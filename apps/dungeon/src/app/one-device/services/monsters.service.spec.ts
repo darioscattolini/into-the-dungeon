@@ -4,7 +4,7 @@ import { MonstersService } from './monsters.service';
 import { 
   Monster, CommonMonsterClasses, RareMonsterClasses,
   Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon,
-  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
+  Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph, MonsterViewMap, CommonMonsterType, RareMonsterType
  } from '../../models/models';
 
 const rareMonstersFilter = (monster: Monster): boolean => {
@@ -199,5 +199,23 @@ describe('MonstersService', () => {
       
       expect(variations).toSatisfyAll(number => number >= 9);
     });
+  });
+
+  describe('getViewDataFor', () => {
+    const DataMap = MonsterViewMap;
+    const monsterTypes: (CommonMonsterType | RareMonsterType)[][] = [
+      ['Goblin'], ['Skeleton'], ['Orc'], ['Vampire'], ['Golem'], ['Litch'], 
+      ['Demon'], ['Dragon'], ['Ally'], ['Fairy'], ['Mimic'], ['Jelly Cube'], 
+      ['Dracula'], ['Metamorph']
+    ];
+
+    test.each(monsterTypes)(
+      'it returns view data for each monster type', 
+      (monsterType) => {
+        const expectedData = MonsterViewMap[monsterType];
+
+        expect(service.getViewDataFor(monsterType)).toEqual(expectedData);
+      }
+    );
   });
 });

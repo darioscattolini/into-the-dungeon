@@ -1,4 +1,4 @@
-import { IHero } from './ihero';
+import { HeroView } from './../hero-view';
 
 const description = `
   Blabbermouth, boastful and stylish, he looks like the most unsuitable adventurer. 
@@ -6,7 +6,7 @@ const description = `
   supernatural luck have proven otherwise.
 `;
 
-export const bard: Readonly<IHero> = Object.freeze({
+export const bard: Readonly<HeroView> = Object.freeze({
   name: 'bard',
   image: '...',
   description: description,

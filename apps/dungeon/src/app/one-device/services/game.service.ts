@@ -4,7 +4,7 @@ import { PlayersService } from './players.service';
 import { BiddingService } from './bidding.service';
 import { RaidService } from './raid.service';
 import { UIControllerService } from './uicontroller.service';
-import { Player, IRaidResult, IGameResult } from '../../models/models';
+import { Player, RaidResult, PublicNotificationRequest } from '../../models/models';
 
 @Injectable({
   providedIn: OneDeviceModule
@@ -24,7 +24,7 @@ export class GameService {
     
     while(this.goesOn()) {
       const { raider, hero, enemies } = 
-        await this.biddingService.getResult(startingPlayer);
+        await this.biddingService.playBidding(startingPlayer);
             
       const raidResult = 
         await this.raidService.getResult(raider, hero, enemies);
@@ -52,14 +52,16 @@ export class GameService {
     return !thereIsAWinner;
   }
 
-  private computeRaidResult(raidResult: IRaidResult): void {
+  private computeRaidResult(raidResult: RaidResult): void {
     if (raidResult.survived) raidResult.raider.surviveDungeon();
       else raidResult.raider.dieInDungeon();
   }
 
   private declareWinner() {
     const winner = this.playersService.getWinner();
-    const notification: IGameResult = { winner };
-    this.uiController.sendNotification(notification);
+    const notification: PublicNotificationRequest = { 
+      content: `${winner.name} has won.`
+     };
+    this.uiController.sendPublicNotification(notification);
   }
 }

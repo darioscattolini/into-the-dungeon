@@ -1,8 +1,8 @@
 import { Hero } from '../hero';
 import { staticImplements } from '../../../utilities';
-import { IDerivedHeroStatic } from '../derived-hero-static.interface';
+import { DerivedHeroStatic } from '../derived-hero-static';
 
-@staticImplements<IDerivedHeroStatic>()
+@staticImplements<DerivedHeroStatic>()
 export class Mage extends Hero {
-  protected equipment = [];
+  protected _equipment = [];
 }

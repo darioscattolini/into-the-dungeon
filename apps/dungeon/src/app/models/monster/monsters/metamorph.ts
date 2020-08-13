@@ -1,7 +1,7 @@
-import { Monster, ITransformationEffect, IDamageEffect } from '../../models';
+import { Monster, TransformationEffect, DamageEffect } from '../../models';
 import { RareMonsterType } from '../rare-monster-type';
 import { staticImplements } from '../../../utilities';
-import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
+import { DerivedMonsterStatic } from '../derived-monster-static';
 import { Fairy } from './fairy';
 import { Goblin } from './goblin';
 import { Skeleton } from './skeleton';
@@ -13,7 +13,7 @@ import { Demon } from './demon';
 import { Dracula } from './dracula';
 import { Dragon } from './dragon';
 
-@staticImplements<IDerivedMonsterStatic>()
+@staticImplements<DerivedMonsterStatic>()
 export class Metamorph extends Monster {
   public static readonly maxAmount = 1;
   
@@ -28,7 +28,7 @@ export class Metamorph extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): IDamageEffect {
+  public produceEffect(): DamageEffect {
     if (!this._baseDamage) throw new Error('Metamorph must adopt a new form before attacking');
     return {
       type: 'damage',
@@ -36,7 +36,7 @@ export class Metamorph extends Monster {
     }
   }
 
-  public startingAction(): ITransformationEffect {
+  public startingAction(): TransformationEffect {
     return {
       type: 'transformation',
       parameter: 'positionInDungeon',
@@ -44,7 +44,7 @@ export class Metamorph extends Monster {
         if (positionInDungeon < 1) {
           throw new Error('Metamorph cannot have a position under 1');
         }
-        const MonsterClasses: IDerivedMonsterStatic[] = [
+        const MonsterClasses: DerivedMonsterStatic[] = [
           Fairy,
           Goblin,
           Skeleton,

@@ -1,6 +1,6 @@
 import { Mimic } from './mimic';
 import { Monster } from '../monster';
-import { ITransformationEffect, TransformerFunction } from '../../models';
+import { TransformationEffect, TransformerFunction } from '../../models';
 
 describe('Mimic', () => {
   let mimic: Mimic;
@@ -39,7 +39,7 @@ describe('Mimic', () => {
   });
 
   describe('startingAction', () => {
-    let startingAction: ITransformationEffect;
+    let startingAction: TransformationEffect;
     
     beforeEach(() => {
       startingAction = mimic.startingAction();

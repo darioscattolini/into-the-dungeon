@@ -1,5 +1,5 @@
 import { Player } from '../models';
 
-export interface IGameResult {
+export interface GameResult {
   winner: Player
 }

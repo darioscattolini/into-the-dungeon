@@ -1,16 +1,16 @@
 import { AllyCompanion } from './ally-companion';
-import { ICombatResult } from '../models';
+import { CombatResult } from '../models';
 import { Subject } from 'rxjs';
 import { MockMonster } from '../../mocks/monster.mocks';
 
 describe('AllyCompanion', () => {
   let ally: AllyCompanion;
   let targetsPosition: number;
-  let combatResult$: Subject<ICombatResult>
+  let combatResult$: Subject<CombatResult>
 
   beforeEach(() => {
     targetsPosition = 2;
-    combatResult$ = new Subject<ICombatResult>();
+    combatResult$ = new Subject<CombatResult>();
     ally = new AllyCompanion(targetsPosition, combatResult$);
   });
   

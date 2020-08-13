@@ -1,8 +1,8 @@
 import { Hero } from '../hero';
-import { IDerivedHeroStatic } from '../derived-hero-static.interface';
+import { DerivedHeroStatic } from '../derived-hero-static';
 import { staticImplements } from '../../../utilities';
 
-@staticImplements<IDerivedHeroStatic>()
+@staticImplements<DerivedHeroStatic>()
 export class Bard extends Hero {
-  protected equipment = [];
+  protected _equipment = [];
 }

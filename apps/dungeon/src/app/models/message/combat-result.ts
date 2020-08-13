@@ -1,6 +1,6 @@
 import { Monster } from '../models';
 
-export interface ICombatResult {
+export interface CombatResult {
   monster: Monster;
   defeated: boolean;
 }

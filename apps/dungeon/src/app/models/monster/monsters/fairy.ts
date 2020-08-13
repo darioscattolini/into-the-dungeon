@@ -1,10 +1,10 @@
 import { Monster } from '../monster';
-import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
+import { DerivedMonsterStatic } from '../derived-monster-static';
 import { staticImplements } from '../../../utilities';
 import { RareMonsterType } from '../rare-monster-type';
-import { IDamageEffect } from '../../models';
+import { DamageEffect } from '../../models';
 
-@staticImplements<IDerivedMonsterStatic>()
+@staticImplements<DerivedMonsterStatic>()
 export class Fairy extends Monster {
   public static readonly maxAmount = 1;
 
@@ -25,7 +25,7 @@ export class Fairy extends Monster {
 
   set actualDamage(newDamageValue: number) { }
 
-  public produceEffect(): IDamageEffect {
+  public produceEffect(): DamageEffect {
     return {
       type: 'damage',
       amount: this.actualDamage

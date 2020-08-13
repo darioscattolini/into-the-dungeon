@@ -1,6 +1,6 @@
 import { CommonMonsterType } from './common-monster-type';
 import { Monster } from './monster';
-import { IDamageEffect } from '../models';
+import { DamageEffect } from '../models';
 
 export abstract class CommonMonster extends Monster {
   protected readonly _type: CommonMonsterType;
@@ -34,7 +34,7 @@ export abstract class CommonMonster extends Monster {
     this._actualDamage = newDamageValue;
   }
 
-  public produceEffect(): IDamageEffect {
+  public produceEffect(): DamageEffect {
     return {
       type: 'damage',
       amount: this._actualDamage

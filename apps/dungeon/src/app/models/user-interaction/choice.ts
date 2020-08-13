@@ -1,10 +1,10 @@
 import { Player } from '../models';
 
-export interface IChoiceRequest<T> {
+export interface ChoiceRequest<T> {
   player: Player;
   options: T[];
 }
 
-export interface IChoiceResponse {
+export interface ChoiceResponse {
   response: number;
 }

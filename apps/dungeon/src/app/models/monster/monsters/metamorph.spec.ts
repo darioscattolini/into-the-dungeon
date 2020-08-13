@@ -1,6 +1,6 @@
 import { Metamorph } from './metamorph';
 import { Monster } from '../monster';
-import { ITransformationEffect, TransformerFunction } from '../../models';
+import { TransformationEffect, TransformerFunction } from '../../models';
 import { Goblin } from './goblin';
 import { Skeleton } from './skeleton';
 import { Orc } from './orc';
@@ -48,7 +48,7 @@ describe('Metamorph', () => {
   });
 
   describe('startingAction', () => {
-    let startingAction: ITransformationEffect;
+    let startingAction: TransformationEffect;
     
     beforeEach(() => {
       startingAction = metamorph.startingAction();

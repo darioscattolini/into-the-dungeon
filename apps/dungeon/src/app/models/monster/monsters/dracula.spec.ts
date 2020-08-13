@@ -1,6 +1,6 @@
 import { Dracula } from './dracula';
 import { Monster } from '../monster';
-import { ITransformationEffect, TransformerFunction } from '../../models';
+import { TransformationEffect, TransformerFunction } from '../../models';
 
 describe('Dracula', () => {
   let dracula: Dracula;
@@ -25,12 +25,12 @@ describe('Dracula', () => {
     expect(dracula).toBeInstanceOf(Monster);
   });
 
-  test('it has type "Vampire" when created', () => {
-    expect(dracula.type).toBe('Vampire');
+  test('it has type "Dracula" when created', () => {
+    expect(dracula.type).toBe('Dracula');
   });
 
-  test('it has baseDamage of 4 when created', () => {
-    expect(dracula.baseDamage).toBe(4);
+  test('it has baseDamage of 8 when created', () => {
+    expect(dracula.baseDamage).toBe(8);
   });
 
   test('it throws error at produceEffect call before checking form', () => {
@@ -39,7 +39,7 @@ describe('Dracula', () => {
   });
 
   describe('startingAction', () => {
-    let startingAction: ITransformationEffect;
+    let startingAction: TransformationEffect;
     
     beforeEach(() => {
       startingAction = dracula.startingAction();
@@ -89,28 +89,30 @@ describe('Dracula', () => {
         expect(transform(1)).toBeInstanceOf(Monster);
       });
       
-      test('it stays as Vampire for players with no victories', () => {
+      test('it turns into Vampire for players with no victories', () => {
         expect(transform(0).type).toBe('Vampire');
       });
 
-      test('it keeps baseDamage 4 for players with no victories', () => {
+      test('it gets baseDamage 8 for players with no victories', () => {
         expect(transform(0).baseDamage).toBe(4);
       });
 
-      test('it turns into Dracula for players with one victory', () => {
+      test('it stays as Dracula for players with one victory', () => {
         expect(transform(1).type).toBe('Dracula');
       });
 
-      test('it gets baseDamage 8 for players with one victory', () => {
+      test('it keeps baseDamage 8 for players with one victory', () => {
         expect(transform(1).baseDamage).toBe(8);
       });
 
-      test('it can produce damage effect after checking form', () => {
+      test('it can produce Vampire damage effect after checking form', () => {
         expect(transform(0).produceEffect()).toEqual({
           type: 'damage',
           amount: 4
         });
+      });
 
+      test('it can produce Dracula damage effect after checking form', () => {
         expect(transform(1).produceEffect()).toEqual({
           type: 'damage',
           amount: 8

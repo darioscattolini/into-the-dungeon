@@ -5,25 +5,26 @@ export { Player };
 
 // HERO
 import { Hero } from './hero/hero';
-import { IDerivedHeroStatic } from './hero/derived-hero-static.interface';
+import { DerivedHeroStatic } from './hero/derived-hero-static';
 import { HeroType } from './hero/hero.type';
 import { Bard } from './hero/heroes/bard';
 import { Mage } from './hero/heroes/mage';
 import { Ninja } from './hero/heroes/ninja';
 import { Princess } from './hero/heroes/princess';
 
-export { Hero, IDerivedHeroStatic, HeroType, Bard, Mage, Ninja, Princess };
+export { Hero, DerivedHeroStatic, HeroType, Bard, Mage, Ninja, Princess };
 
 // EQUIPMENT
 import { IEquipment } from './equipment/equipment.interface';
+import { Equipment } from './equipment/equipment';
 
-export { IEquipment };
+export { IEquipment, Equipment };
 
 // MONSTER
 import { Monster } from './monster/monster';
 import { CommonMonsterType } from './monster/common-monster-type';
 import { RareMonsterType } from './monster/rare-monster-type';
-import { IDerivedMonsterStatic } from './monster/derived-monster-static.interface';
+import { DerivedMonsterStatic } from './monster/derived-monster-static';
 import { Goblin } from './monster/monsters/goblin';
 import { Skeleton } from './monster/monsters/skeleton';
 import { Orc } from './monster/monsters/orc';
@@ -39,16 +40,16 @@ import { JellyCube } from './monster/monsters/jelly-cube';
 import { Dracula } from './monster/monsters/dracula';
 import { Metamorph } from './monster/monsters/metamorph';
 
-const CommonMonsterClasses: ReadonlyArray<IDerivedMonsterStatic> = [
+const CommonMonsterClasses: ReadonlyArray<DerivedMonsterStatic> = [
   Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon
 ];
 
-const RareMonsterClasses: ReadonlyArray<IDerivedMonsterStatic> = [
+const RareMonsterClasses: ReadonlyArray<DerivedMonsterStatic> = [
   Fairy, Ally, Mimic, JellyCube, Dracula, Metamorph
 ];
 
 export { 
-  Monster, IDerivedMonsterStatic,
+  Monster, DerivedMonsterStatic,
   CommonMonsterType, RareMonsterType, 
   CommonMonsterClasses, RareMonsterClasses,
   Goblin, Skeleton, Orc, Vampire, Golem, Litch, Demon, Dragon,
@@ -61,67 +62,67 @@ import { CompanionType } from './companion/companion-type';
 export { CompanionType };
 
 // MESSAGE
-import { IBiddingResult } from './message/ibidding-result';
-import { ICombatResult } from './message/icombat-result';
-import { IRaidResult } from './message/iraid-result';
-import { IGameResult } from './message/igame-result';
+import { CombatResult } from './message/combat-result';
+import { RaidResult } from './message/raid-result';
+import { GameResult } from './message/game-result';
 import { 
-  IMonsterEffect, 
-  IDamageEffect, 
-  IAddCompanionEffect, 
-  ILoseEquipmentEffect,
-  ITransformationEffect,
-  TransformerFunction,
-} from './message/imonster-effect';
-import { ICompanionEffect } from './message/icompanion-effect';
-import { IChoiceRequest, IChoiceResponse } from './message/ichoice';
-import { IAcceptanceRequest, IAcceptanceResponse } from './message/iacceptance';
+  MonsterEffect, 
+  DamageEffect, 
+  AddCompanionEffect, 
+  LoseEquipmentEffect,
+  TransformationEffect, TransformerFunction,
+} from './message/monster-effect';
+import { CompanionEffect } from './message/companion-effect';
 
 export { 
-  IBiddingResult,
-  ICombatResult,
-  IRaidResult,
-  IGameResult,
-  IMonsterEffect, 
-  IDamageEffect, 
-  IAddCompanionEffect, 
-  ILoseEquipmentEffect,
-  ITransformationEffect,
-  TransformerFunction,
-  ICompanionEffect,
-  IAcceptanceResponse,
-  IAcceptanceRequest,
-  IChoiceRequest,
-  IChoiceResponse
+  CombatResult,
+  RaidResult,
+  GameResult,
+  MonsterEffect, 
+  DamageEffect, 
+  AddCompanionEffect, 
+  LoseEquipmentEffect,
+  TransformationEffect, TransformerFunction,
+  CompanionEffect,
 };
 
-// UI
-import { IHero } from './ui/hero/ihero';
-import { bard } from './ui/hero/bard';
-import { mage } from './ui/hero/mage';
-import { ninja } from './ui/hero/ninja';
-import { princess } from './ui/hero/princess';
-import { IBidOrWithdraw } from './ui/bidding/IBidOrWithdraw';
-import { bid } from './ui/bidding/bid';
-import { withdraw } from './ui/bidding/withdraw';
-
-type HeroesOptions = {
-  [key in HeroType]: IHero;
-}
-
-const heroes: Readonly<HeroesOptions> = Object.freeze({
-  bard: bard,
-  mage: mage,
-  ninja: ninja,
-  princess: princess
-});
-
-const bidOrWithdraw = Object.freeze({
-  bid: bid,
-  withdraw: withdraw
-});
+// BIDDING
+import { Bidding } from './bidding/bidding';
+import { BiddingResult } from './bidding/bidding-result';
+import { 
+  BiddingActionType, 
+  BiddingActionRequest, BidRequest, MonsterAdditionRequest, EquipmentRemovalRequest, 
+  BiddingActionResponse, BidResponse, MonsterAdditionResponse, EquipmentRemovalResponse 
+} from './bidding/bidding-actions';
 
 export { 
-  IHero, heroes,
-  IBidOrWithdraw, bidOrWithdraw
+  Bidding, BiddingResult, BiddingActionType, 
+  BiddingActionRequest, BidRequest, MonsterAdditionRequest, EquipmentRemovalRequest,
+  BiddingActionResponse, BidResponse, MonsterAdditionResponse, EquipmentRemovalResponse 
+};
+
+// USER INTERACTION
+import { DecisionRequest, DecisionResponse } from './user-interaction/decision';
+import { ChoiceRequest, ChoiceResponse } from './user-interaction/choice';
+import { 
+  NotificationRequest, NotificationResponse, Notification, PublicNotificationRequest
+} from './user-interaction/notification';
+import { Request } from './user-interaction/request';
+
+export {
+  DecisionRequest, DecisionResponse,
+  ChoiceRequest, ChoiceResponse,
+  NotificationRequest, NotificationResponse, Notification, PublicNotificationRequest,
+  Request
+};
+
+// VIEW
+import { HeroView } from './view/hero/hero-view';
+import { HeroViewMap } from './view/hero/hero-view-map';
+import { MonsterView } from './view/monster/monster-view';
+import { MonsterViewMap } from './view/monster/monster-view-map';
+
+export { 
+  HeroView, HeroViewMap,
+  MonsterView, MonsterViewMap
 }

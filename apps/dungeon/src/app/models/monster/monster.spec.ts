@@ -1,7 +1,7 @@
 import { Monster } from './monster';
 import { CommonMonsterType } from './common-monster-type';
 import { RareMonsterType } from './rare-monster-type';
-import { IMonsterEffect } from '../models';
+import { MonsterEffect } from '../models';
 
 const MockOrc = class extends Monster {
   protected readonly _type: CommonMonsterType = 'Orc';
@@ -19,7 +19,7 @@ const MockOrc = class extends Monster {
     return null;
   }
 
-  public produceEffect(): IMonsterEffect {
+  public produceEffect(): MonsterEffect {
     return {
       type: 'damage',
       amount: this._baseDamage
@@ -40,14 +40,14 @@ const MockJellyCube = class extends Monster {
     return this._baseDamage;
   }
 
-  public startingAction(): IMonsterEffect {
+  public startingAction(): MonsterEffect {
     return {
       type: 'damage',
       amount: 1
     }
   }
 
-  public produceEffect(): IMonsterEffect {
+  public produceEffect(): MonsterEffect {
     return {
       type: 'equipment',
       lose: 'any'

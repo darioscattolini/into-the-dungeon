@@ -1,15 +1,15 @@
-import { Monster, ITransformationEffect, IDamageEffect } from '../../models';
+import { Monster, TransformationEffect, DamageEffect } from '../../models';
 import { RareMonsterType } from '../rare-monster-type';
 import { CommonMonsterType } from '../common-monster-type';
 import { staticImplements } from '../../../utilities';
-import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
+import { DerivedMonsterStatic } from '../derived-monster-static';
 
-@staticImplements<IDerivedMonsterStatic>()
+@staticImplements<DerivedMonsterStatic>()
 export class Dracula extends Monster {
   public static readonly maxAmount = 1;
   
-  protected _type: CommonMonsterType | RareMonsterType = 'Vampire';
-  protected _baseDamage = 4;
+  protected _type: CommonMonsterType | RareMonsterType = 'Dracula';
+  protected _baseDamage = 8;
 
   private formChecked = false;
 
@@ -21,7 +21,7 @@ export class Dracula extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): IDamageEffect {
+  public produceEffect(): DamageEffect {
     if (!this.formChecked) throw new Error('Dracula must check its form before attacking');
     return {
       type: 'damage',
@@ -29,7 +29,7 @@ export class Dracula extends Monster {
     }
   }
 
-  public startingAction(): ITransformationEffect {
+  public startingAction(): TransformationEffect {
     this.formChecked = true;
     return {
       type: 'transformation',
@@ -38,9 +38,9 @@ export class Dracula extends Monster {
         if (playersVictories < 0 || playersVictories > 1) {
           throw new Error('Players can have only 0 or 1 victories');
         }
-        if (playersVictories === 1) {
-          this._type = 'Dracula';
-          this._baseDamage = 8;
+        if (playersVictories === 0) {
+          this._type = 'Vampire';
+          this._baseDamage = 4;
         }
         return this;
       }

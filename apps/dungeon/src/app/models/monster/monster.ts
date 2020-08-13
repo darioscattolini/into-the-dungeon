@@ -1,6 +1,6 @@
 import { CommonMonsterType } from './common-monster-type';
 import { RareMonsterType } from './rare-monster-type';
-import { IMonsterEffect } from '../models';
+import { MonsterEffect } from '../models';
 
 export abstract class Monster {
   protected abstract _type: CommonMonsterType | RareMonsterType;
@@ -12,9 +12,9 @@ export abstract class Monster {
 
   public abstract get baseDamage(): number | null;
 
-  public abstract produceEffect(): IMonsterEffect;
+  public abstract produceEffect(): MonsterEffect;
 
-  public abstract startingAction(): IMonsterEffect | null;
+  public abstract startingAction(): MonsterEffect | null;
 
   public get positionInDungeon() {
     return this._positionInDungeon

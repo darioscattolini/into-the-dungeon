@@ -1,10 +1,10 @@
 import { Monster } from '../monster';
-import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
+import { DerivedMonsterStatic } from '../derived-monster-static';
 import { staticImplements } from '../../../utilities';
 import { RareMonsterType } from '../rare-monster-type';
-import { ILoseEquipmentEffect } from '../../models';
+import { LoseEquipmentEffect } from '../../models';
 
-@staticImplements<IDerivedMonsterStatic>()
+@staticImplements<DerivedMonsterStatic>()
 export class JellyCube extends Monster {
   public static readonly maxAmount = 1;
   
@@ -19,7 +19,7 @@ export class JellyCube extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): ILoseEquipmentEffect {
+  public produceEffect(): LoseEquipmentEffect {
     return {
       type: 'equipment',
       lose: 'any'

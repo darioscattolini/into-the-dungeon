@@ -1,4 +1,4 @@
-import { IHero } from './ihero';
+import { HeroView } from './../hero-view';
 
 const description = `
   When she disappears for weeks from his father's court, everybody believes she's 
@@ -6,7 +6,7 @@ const description = `
   by bodyguards and equipped with useful items from his father's treasure.
 `;
 
-export const princess: Readonly<IHero> = Object.freeze({
+export const princess: Readonly<HeroView> = Object.freeze({
   name: 'princess',
   image: '...',
   description: description,

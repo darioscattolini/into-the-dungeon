@@ -1,6 +1,6 @@
 import { HeroType } from '../../models';
 
-export interface IHero {
+export interface HeroView {
   name: HeroType;
   image: string;
   description: string;

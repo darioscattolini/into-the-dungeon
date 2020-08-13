@@ -1,9 +1,9 @@
-import { Monster, ITransformationEffect, IDamageEffect } from '../../models';
+import { Monster, TransformationEffect, DamageEffect } from '../../models';
 import { RareMonsterType } from '../rare-monster-type';
 import { staticImplements } from '../../../utilities';
-import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
+import { DerivedMonsterStatic } from '../derived-monster-static';
 
-@staticImplements<IDerivedMonsterStatic>()
+@staticImplements<DerivedMonsterStatic>()
 export class Mimic extends Monster {
   public static readonly maxAmount = 1;
   
@@ -18,7 +18,7 @@ export class Mimic extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): IDamageEffect {
+  public produceEffect(): DamageEffect {
     if (this.baseDamage === null) {
       throw new Error('Mimic must transform before attacking');
     }
@@ -28,7 +28,7 @@ export class Mimic extends Monster {
     }
   }
 
-  public startingAction(): ITransformationEffect {
+  public startingAction(): TransformationEffect {
     return {
       type: 'transformation',
       parameter: 'equipmentSize',

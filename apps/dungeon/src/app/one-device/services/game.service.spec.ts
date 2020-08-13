@@ -6,7 +6,7 @@ import { BiddingService } from './bidding.service';
 import { RaidService } from './raid.service';
 import { UIControllerService } from './uicontroller.service';
 import { 
-  Player, IBiddingResult, IRaidResult, Hero, Monster
+  Player, BiddingResult, RaidResult, Hero, Monster
 } from '../../models/models';
 import { noEquipHeroStub } from '../../mocks/hero.mocks';
 
@@ -92,7 +92,7 @@ describe('GameService', () => {
           try { await gameService.play(); }
           catch { }
           finally {
-            expect(biddingService.getResult).not.toHaveBeenCalled();
+            expect(biddingService.playBidding).not.toHaveBeenCalled();
           }
         }
       );
@@ -101,6 +101,12 @@ describe('GameService', () => {
   describe('functional behaviour', () => {
     const heroStub: Hero = noEquipHeroStub;
     const monsterPileStub: Monster[] = [];
+
+    beforeEach(() => {
+      // getWinner irrelevant mock (just to avoid errors)
+      (playersService.getWinner as jest.Mock<Player, []>)
+        .mockReturnValue(new Player('winner'));
+    });
 
     describe.each([
       [0], [1], [2], [3]
@@ -111,14 +117,14 @@ describe('GameService', () => {
         playerStub = new Player('Stub');
 
         // bidding service mock
-        (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
+        (biddingService.playBidding as jest.Mock<Promise<BiddingResult>, [Player]>)
           .mockResolvedValue({
             raider: playerStub, hero: heroStub, enemies: monsterPileStub
           });
         
         // raid service mock
         (raidService.getResult as 
-          jest.Mock<Promise<IRaidResult>, [Player, Hero, Monster[]]>)
+          jest.Mock<Promise<RaidResult>, [Player, Hero, Monster[]]>)
           .mockResolvedValue({ raider: playerStub, survived: true });
         
         // isThereAWinner mock
@@ -127,7 +133,7 @@ describe('GameService', () => {
         for (let i = 0; i < loopRuns; i++) {
           isThereAWinner = isThereAWinner.mockReturnValueOnce(false);
         }
-        isThereAWinner.mockReturnValueOnce(true);
+        isThereAWinner.mockReturnValueOnce(true); 
       });
 
       test(`it runs ${loopRuns} times until isThereAWinner false`, async () => {
@@ -135,7 +141,7 @@ describe('GameService', () => {
 
         await gameService.play();
 
-        expect(biddingService.getResult).toHaveBeenCalledTimes(loopRuns);
+        expect(biddingService.playBidding).toHaveBeenCalledTimes(loopRuns);
       });
     });
 
@@ -175,7 +181,7 @@ describe('GameService', () => {
           .mockReturnValue(randomPlayer);
       
         // bidding service mock
-        (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
+        (biddingService.playBidding as jest.Mock<Promise<BiddingResult>, [Player]>)
           .mockResolvedValueOnce({
             raider: firstRaider, 
             hero: firstHeroStub, 
@@ -191,7 +197,7 @@ describe('GameService', () => {
           });
 
         // raid service mock
-        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+        (raidService.getResult as jest.Mock<Promise<RaidResult>, [Player]>)
           .mockResolvedValue({ raider: firstRaider, survived: true });
       });
 
@@ -200,7 +206,7 @@ describe('GameService', () => {
 
         await gameService.play();
 
-        expect(biddingService.getResult)
+        expect(biddingService.playBidding)
           .toHaveBeenNthCalledWith(1, randomPlayer);
       });
 
@@ -220,7 +226,7 @@ describe('GameService', () => {
         
         await gameService.play();
 
-        expect(biddingService.getResult)
+        expect(biddingService.playBidding)
           .toHaveBeenNthCalledWith(2, firstRaider);
       });
 
@@ -240,7 +246,7 @@ describe('GameService', () => {
         
         await gameService.play();
 
-        expect(biddingService.getResult)
+        expect(biddingService.playBidding)
           .toHaveBeenNthCalledWith(3, secondRaider);
       });
 
@@ -274,14 +280,14 @@ describe('GameService', () => {
           .mockReturnValue(randomPlayer);
       
         // bidding service mock
-        (biddingService.getResult as jest.Mock<Promise<IBiddingResult>, [Player]>)
+        (biddingService.playBidding as jest.Mock<Promise<BiddingResult>, [Player]>)
           .mockResolvedValue({
             raider: raider, hero: heroStub, enemies: monsterPileStub
           });
       });
 
       test('it calls surviveDungeon for succesful raider', async () => {
-        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+        (raidService.getResult as jest.Mock<Promise<RaidResult>, [Player]>)
           .mockResolvedValue({ raider, survived: true });
         expect.assertions(2);
         expect(raider.surviveDungeon).not.toHaveBeenCalled();
@@ -292,7 +298,7 @@ describe('GameService', () => {
       });
 
       test('it calls not dieInDungeon for succesful raider', async () => {
-        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+        (raidService.getResult as jest.Mock<Promise<RaidResult>, [Player]>)
           .mockResolvedValue({ raider, survived: true });
         expect.assertions(1);
 
@@ -302,7 +308,7 @@ describe('GameService', () => {
       });
 
       test('it calls dieInDungeon for unsuccesful raider', async () => {
-        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+        (raidService.getResult as jest.Mock<Promise<RaidResult>, [Player]>)
           .mockResolvedValue({ raider, survived: false });
         expect.assertions(2);
         expect(raider.dieInDungeon).not.toHaveBeenCalled();
@@ -313,7 +319,7 @@ describe('GameService', () => {
       });
 
       test('it calls not surviveInDungeon for unsuccesful raider', async () => {
-        (raidService.getResult as jest.Mock<Promise<IRaidResult>, [Player]>)
+        (raidService.getResult as jest.Mock<Promise<RaidResult>, [Player]>)
           .mockResolvedValue({ raider, survived: false });
         expect.assertions(1);
 
@@ -324,6 +330,8 @@ describe('GameService', () => {
     });
 
     describe('end of game handling', () => {
+      // tslint:disable-next-line: no-shadowed-variable
+      const { Player } = jest.requireActual('../../models/player/player.ts');
       let winner: Player;
 
       beforeEach(() => {
@@ -339,13 +347,22 @@ describe('GameService', () => {
       });
 
       test('bidding phase is not started', async () => {
+        expect.assertions(1);
+
         await gameService.play();
-        expect(biddingService.getResult).not.toHaveBeenCalled();
+
+        expect(biddingService.playBidding).not.toHaveBeenCalled();
       });
 
       test('uiController is notified with playersService winner', async () => {
+        expect.assertions(1);
+
         await gameService.play();
-        expect(uiController.sendNotification).toHaveBeenCalledWith({ winner });
+
+        expect(uiController.sendPublicNotification)
+          .toHaveBeenCalledWith({
+            content: expect.toEqualCaseInsensitive(winner.name + ' has won.')
+          });
       });
     });
   });  

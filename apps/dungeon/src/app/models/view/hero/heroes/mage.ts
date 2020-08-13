@@ -1,4 +1,4 @@
-import { IHero } from './ihero';
+import { HeroView } from './../hero-view';
 
 const description = `
   He is smart, powerful and cold-blooded. Since he discovered his ability to 
@@ -6,7 +6,7 @@ const description = `
   and excercise of particularly evil magic.
 `;
 
-export const mage: Readonly<IHero> = Object.freeze({
+export const mage: Readonly<HeroView> = Object.freeze({
   name: 'mage',
   image: '...',
   description: description,

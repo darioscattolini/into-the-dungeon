@@ -1,10 +1,10 @@
 import { Monster } from '../monster';
-import { IDerivedMonsterStatic } from '../derived-monster-static.interface';
+import { DerivedMonsterStatic } from '../derived-monster-static';
 import { staticImplements } from '../../../utilities';
 import { RareMonsterType } from '../rare-monster-type';
-import { IAddCompanionEffect } from '../../models';
+import { AddCompanionEffect } from '../../models';
 
-@staticImplements<IDerivedMonsterStatic>()
+@staticImplements<DerivedMonsterStatic>()
 export class Ally extends Monster {
   public static readonly maxAmount = 1;
   
@@ -19,7 +19,7 @@ export class Ally extends Monster {
     return this._baseDamage;
   }
 
-  public produceEffect(): IAddCompanionEffect {
+  public produceEffect(): AddCompanionEffect {
     return {
       type: 'companion',
       companion: 'Ally'

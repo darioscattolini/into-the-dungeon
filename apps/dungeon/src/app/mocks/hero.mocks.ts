@@ -2,11 +2,11 @@ import { Hero } from '../models/models';
 import { stubEquipment } from './equipment.mocks';
 
 class NoEquipHero extends Hero {
-  protected equipment = [];
+  protected _equipment = [];
 }
 
 class OneEquipHero extends Hero {
-  protected equipment = [ stubEquipment ];
+  protected _equipment = [ stubEquipment ];
 }
 
 export const noEquipHeroStub: Hero = new NoEquipHero();
