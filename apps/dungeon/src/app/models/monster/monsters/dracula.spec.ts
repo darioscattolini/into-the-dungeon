@@ -25,8 +25,8 @@ describe('Dracula', () => {
     expect(dracula).toBeInstanceOf(Monster);
   });
 
-  test('it has type "Dracula" when created', () => {
-    expect(dracula.type).toBe('Dracula');
+  test('it has type "dracula" when created', () => {
+    expect(dracula.type).toEqualCaseInsensitive('dracula');
   });
 
   test('it has baseDamage of 8 when created', () => {
@@ -90,7 +90,7 @@ describe('Dracula', () => {
       });
       
       test('it turns into Vampire for players with no victories', () => {
-        expect(transform(0).type).toBe('Vampire');
+        expect(transform(0).type).toEqualCaseInsensitive('vampire');
       });
 
       test('it gets baseDamage 8 for players with no victories', () => {
@@ -98,7 +98,7 @@ describe('Dracula', () => {
       });
 
       test('it stays as Dracula for players with one victory', () => {
-        expect(transform(1).type).toBe('Dracula');
+        expect(transform(1).type).toEqualCaseInsensitive('dracula');
       });
 
       test('it keeps baseDamage 8 for players with one victory', () => {

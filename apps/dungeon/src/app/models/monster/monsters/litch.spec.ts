@@ -24,8 +24,8 @@ describe('Litch', () => {
     expect(litch).toBeInstanceOf(Monster);
   });
   
-  test('it has type "Litch"', () => {
-    expect(litch.type).toBe('Litch');
+  test('it has type "litch"', () => {
+    expect(litch.type).toEqualCaseInsensitive('litch');
   });
 
   test('it has baseDamage of 6', () => {

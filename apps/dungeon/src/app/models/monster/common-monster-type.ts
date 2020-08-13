@@ -1,9 +1,9 @@
 export type CommonMonsterType = 
-  'Goblin' |
-  'Skeleton' |
-  'Orc' |
-  'Vampire' |
-  'Golem' |
-  'Litch' |
-  'Demon' |
-  'Dragon';
+  'goblin' |
+  'skeleton' |
+  'orc' |
+  'vampire' |
+  'golem' |
+  'litch' |
+  'demon' |
+  'dragon';

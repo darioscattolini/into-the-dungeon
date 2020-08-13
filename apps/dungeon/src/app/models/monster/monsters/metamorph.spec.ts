@@ -34,8 +34,8 @@ describe('Metamorph', () => {
     expect(metamorph).toBeInstanceOf(Monster);
   });
 
-  test('it has type "Metamorph"', () => {
-    expect(metamorph.type).toBe('Metamorph');
+  test('it has type "metamorph"', () => {
+    expect(metamorph.type).toEqualCaseInsensitive('metamorph');
   });
 
   test('it has baseDamage of null at first', () => {

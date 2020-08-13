@@ -7,6 +7,6 @@ export class Dragon extends CommonMonster {
   public static readonly maxAmount = 1;
 
   constructor() {
-    super('Dragon', 9);
+    super('dragon', 9);
   }
 };

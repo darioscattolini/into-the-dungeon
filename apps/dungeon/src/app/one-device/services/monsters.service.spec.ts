@@ -204,9 +204,9 @@ describe('MonstersService', () => {
   describe('getViewDataFor', () => {
     const DataMap = MonsterViewMap;
     const monsterTypes: (CommonMonsterType | RareMonsterType)[][] = [
-      ['Goblin'], ['Skeleton'], ['Orc'], ['Vampire'], ['Golem'], ['Litch'], 
-      ['Demon'], ['Dragon'], ['Ally'], ['Fairy'], ['Mimic'], ['Jelly Cube'], 
-      ['Dracula'], ['Metamorph']
+      ['goblin'], ['skeleton'], ['orc'], ['vampire'], ['golem'], ['litch'], 
+      ['demon'], ['dragon'], ['ally'], ['fairy'], ['mimic'], ['jelly cube'], 
+      ['dracula'], ['metamorph']
     ];
 
     test.each(monsterTypes)(

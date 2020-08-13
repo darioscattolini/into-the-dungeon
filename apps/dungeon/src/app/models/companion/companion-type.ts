@@ -1,1 +1,1 @@
-export type CompanionType = 'Ally';
+export type CompanionType = 'ally';

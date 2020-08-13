@@ -8,18 +8,13 @@ import { DerivedMonsterStatic } from '../derived-monster-static';
 export class Dracula extends Monster {
   public static readonly maxAmount = 1;
   
-  protected _type: CommonMonsterType | RareMonsterType = 'Dracula';
+  public get type() { return this._type; }
+  protected _type: CommonMonsterType | RareMonsterType = 'dracula';
+
+  public get baseDamage() { return this._baseDamage; }
   protected _baseDamage = 8;
 
   private formChecked = false;
-
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
 
   public produceEffect(): DamageEffect {
     if (!this.formChecked) throw new Error('Dracula must check its form before attacking');
@@ -39,7 +34,7 @@ export class Dracula extends Monster {
           throw new Error('Players can have only 0 or 1 victories');
         }
         if (playersVictories === 0) {
-          this._type = 'Vampire';
+          this._type = 'vampire';
           this._baseDamage = 4;
         }
         return this;

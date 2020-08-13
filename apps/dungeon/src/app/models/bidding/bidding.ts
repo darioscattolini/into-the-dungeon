@@ -7,11 +7,20 @@ import {
 } from "../models";
 
 export class Bidding {
-  public get currentBiddingPlayer() { return this._currentBiddingPlayer; }
-  private _currentBiddingPlayer: Player;
+  public get biddingPlayers() { return this._biddingPlayers.slice(0); }
+  private _biddingPlayers: Player[];
+
+  public get currentPlayer() { return this._currentPlayer; }
+  private _currentPlayer: Player;
   
   public get hero() { return this._hero; }
   private _hero: Hero;
+
+  public get monstersPackSize() { return this.monstersPack.length; }
+  private monstersPack: Monster[];
+  
+  public get monstersInDungeonAmount() { return this.monstersInDungeon.length; }
+  private monstersInDungeon: Monster[] = [];
 
   public get goesOn() { return this._goesOn; }
   private _goesOn = true;
@@ -19,48 +28,65 @@ export class Bidding {
   public get activeTurn() { return this._activeTurn; }
   private _activeTurn = false;
 
-  private biddingPlayers: Player[];
-  private monstersPack: Monster[];
-  private monstersInDungeon: Monster[] = [];
-
   private currentAction: BiddingActionType = 'bid';
+
   private responsePending = false;
   
   constructor(
-    startingPlayer: Player,
     biddingPlayers: Player[],
-    hero: Hero,
-    monstersPack: Monster[]
+    startingPlayer: Player,
+    hero:           Hero,
+    monstersPack:   Monster[]
   ) {
-    this._currentBiddingPlayer = startingPlayer;
+    this._biddingPlayers = biddingPlayers;
+    this._currentPlayer = startingPlayer;
     this._hero = hero;
-    this.biddingPlayers = biddingPlayers;
     this.monstersPack = monstersPack;
   }
 
   public demandNextRequest(): BiddingActionRequest {  
-    if (this.responsePending) throw new Error('A user response to previous request is pending');
-    if (!this._activeTurn) throw new Error('A call to nextTurn is necessary before requesting action');
+    if (this.responsePending) {
+      throw new Error('A user response to a previous request is pending.');
+    }
+
+    if (!this._activeTurn) {
+      throw new Error('Call to nextTurn necessary before requesting action');
+    }
+
+    const request: Partial<BiddingActionRequest> = {
+      player: this._currentPlayer,
+    }
+
     switch (this.currentAction) {
       case 'bid':
-        this.responsePending = true;
-        return { type: 'bid', player: this._currentBiddingPlayer, content: null };
+        request.type = 'bid';
+        request.content = null;
+        break;
       case 'add monster':
-        this.responsePending = true;
-        return { type: 'add monster', player: this._currentBiddingPlayer, content: this.pickLastMonster() };
+        request.type = 'add monster';
+        request.content = this.pickLastMonster();
+        break;
       case 'remove equipment':
-        this.responsePending = true;
-        return { type: 'remove equipment', player: this._currentBiddingPlayer, content: this.pickHeroEquipment() };
+        request.type = 'remove equipment';
+        request.content = this.getHeroEquipment();
+        break;
       default:
         throw Error('Unexpected request type');
     }
+
+    this.responsePending = true;
+    return request as BiddingActionRequest;
   }
 
-  public onResponse(response: BiddingActionResponse): NotificationRequest<Monster> | undefined {
-    if (response.type !== this.currentAction) throw new Error(
-      `A response of ${this.currentAction} type was expected`
-    );
+  public onResponse(
+    response: BiddingActionResponse
+  ): NotificationRequest<Monster> | undefined {
+    if (response.type !== this.currentAction) {
+      throw new Error(`A response of ${this.currentAction} type was expected`);
+    }
+
     let outcome: NotificationRequest<Monster> | undefined;
+
     switch (response.type) {
       case 'bid':
         outcome = this.manageBidResponse(response.content);
@@ -72,66 +98,78 @@ export class Bidding {
         this.removeEquipment(response.content);
         break;
     }
+
     this.responsePending = false;
     return outcome;
   }
 
-  public getResult(): BiddingResult {
-    if (this._goesOn) throw new Error ('Bidding phase has not ended yet');
-    
-    const raider = this.biddingPlayers[0];
-    const hero = this._hero;
-    const enemies = this.monstersInDungeon;
-    
-    return { raider, hero, enemies };
-  }
-
   public endTurn(): NotificationRequest<null> {
-    if (this._activeTurn) throw new Error(`${this._currentBiddingPlayer.name} is still playing`);
+    if (this._activeTurn) {
+      throw new Error(`${this._currentPlayer.name} is still playing`);
+    }
 
-    const output: NotificationRequest<null> = {
-      player: this._currentBiddingPlayer,
+    const request: NotificationRequest<null> = {
+      player: this._currentPlayer,
       notification: {
         content: '',
         extra: null
       }
     };
 
-    if (this.monstersPack.length === 0) {
+    if (this.monstersPackSize === 0) {
       this._goesOn = false;
-      output.notification.content = 'Since there are no more monsters to add, you advance to raid phase.';
+      request.notification.content = 
+        'There are no more monsters to add. You advance to raid phase.';
+      return request;
     }
 
-    this._currentBiddingPlayer = this.getNextBiddingPlayer();
-    output.player = this._currentBiddingPlayer;
+    this._currentPlayer = this.getNextBiddingPlayer();
+    request.player = this._currentPlayer;
 
-    if (this.biddingPlayers.length === 1) {
-      if (this._currentBiddingPlayer !== this.biddingPlayers[0]) {
+    if (this._biddingPlayers.length === 1) {
+      if (this._currentPlayer !== this.getLastBiddingPlayer()) {
         throw new Error('Something went wrong: last player inconsistency');
       }
+
       this._goesOn = false;
-      output.notification.content = 'You are the last player standing in bidding phase.';
+      request.notification.content = 
+        'You are the last player standing in bidding phase.';
     } else {
       this._activeTurn = true;
       this.currentAction = 'bid';  
-      output.notification.content = 'It is your turn.';
+      request.notification.content = 'It is your turn.';
     }
-    return output;
+
+    return request;
   }
 
-  private manageBidResponse(response: boolean): NotificationRequest<Monster> | undefined {
-    let notification: NotificationRequest<Monster> | undefined;
+  public getResult(): BiddingResult {
+    if (this._goesOn) throw new Error ('Bidding phase has not ended yet');
+    
+    const result: BiddingResult = {
+      raider: this.getLastBiddingPlayer(),
+      hero: this._hero,
+      enemies: this.monstersInDungeon
+    }
+    
+    return result;
+  }
+
+  private manageBidResponse(
+    response: boolean
+  ): NotificationRequest<Monster> | undefined {
     if (response) {
       if (this._hero.equipmentSize === 0) {
-        notification = {
-          player: this._currentBiddingPlayer,
+        const forciblyAdded = this.addMonsterToDungeon();
+        this._activeTurn = false;
+        return {
+          player: this._currentPlayer,
           notification: {
-            content: 'Since hero has no equipment, you can only add this monster to dungeon',
-            extra: this.pickLastMonster()
+            content: `Hero has no equipment.
+              You have no choice but to include this monster in dungeon.`,
+            extra: forciblyAdded
           }
         };
-        this.addMonsterToDungeon();
-        this._activeTurn = false;
       } else {
         this.currentAction = 'add monster';
       }
@@ -139,12 +177,11 @@ export class Bidding {
       this.removeCurrentPlayer();
       this._activeTurn = false;
     }
-    return notification;
   }
 
   private manageMonsterAdditionResponse(response: boolean): void {
     if (this.monstersPack.length === 0) {
-      throw new Error('There are no monsters in pack, this method should not have been called.');
+      throw new Error('There are no monsters in pack, bidding should have ended.');
     }
 
     if (response) {
@@ -158,39 +195,50 @@ export class Bidding {
 
   private removeEquipment(equipment: Equipment): void {
     if (this._hero.equipmentSize === 0) {
-      throw new Error('Hero has no equipment, this method should not have been called.');
+      throw new Error('Hero has no equipment, method should not have been called.');
     }
 
     this._hero.discardEquipment(equipment);
     this._activeTurn = false;
   }
 
-  private addMonsterToDungeon() {
+  private addMonsterToDungeon(): Monster {
     const monster = this.monstersPack.pop() as Monster;
     this.monstersInDungeon.push(monster);
+    return monster;
   }
 
   private pickLastMonster(): Monster {
     return this.monstersPack[this.monstersPack.length - 1];
   }
 
-  private pickHeroEquipment(): Equipment[] {
+  private getHeroEquipment(): Equipment[] {
     return this._hero.equipment.slice();
   }
 
   private removeCurrentPlayer(): void {
-    if (this.biddingPlayers.length === 1) throw new Error('There is only one player left');
-    const playerIndex = this.biddingPlayers.indexOf(this._currentBiddingPlayer);
-    this.biddingPlayers.splice(playerIndex, 1);
+    if (this._biddingPlayers.length === 1) {
+      throw new Error('There is only one player left, bidding should have ended');
+    }
+    const playerIndex = this._biddingPlayers.indexOf(this._currentPlayer);
+    this._biddingPlayers.splice(playerIndex, 1);
   }
 
   private getNextBiddingPlayer(): Player {
-    let nextPlayer = this._currentBiddingPlayer.nextPlayer as Player;
+    let nextPlayer = this._currentPlayer.nextPlayer as Player;
 
-    while (!this.biddingPlayers.includes(nextPlayer)) {
+    while (!this._biddingPlayers.includes(nextPlayer)) {
       nextPlayer = nextPlayer.nextPlayer as Player;
     }
     
     return nextPlayer;
+  }
+
+  private getLastBiddingPlayer(): Player {
+    if (this._biddingPlayers.length > 1) {
+      throw new Error('There is still more than one player bidding.');
+    }
+
+    return this._biddingPlayers[0];
   }
 }

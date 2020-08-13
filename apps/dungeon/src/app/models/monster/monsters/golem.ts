@@ -7,6 +7,6 @@ export class Golem extends CommonMonster {
   public static readonly maxAmount = 2;
 
   constructor() {
-    super('Golem', 5);
+    super('golem', 5);
   }
 };

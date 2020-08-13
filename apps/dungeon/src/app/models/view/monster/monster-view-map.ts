@@ -20,18 +20,18 @@ type MonsterViewMap = {
 }
 
 export const MonsterViewMap: Readonly<MonsterViewMap> = Object.freeze({
-  Goblin: goblin,
-  Skeleton: skeleton,
-  Orc: orc,
-  Vampire: vampire,
-  Golem: golem,
-  Litch: litch,
-  Demon: demon,
-  Dragon: dragon,
-  Fairy: fairy,
-  Ally: ally,
-  Mimic: mimic,
-  'Jelly Cube': jellyCube,
-  Dracula: dracula,
-  Metamorph: metamorph
+  goblin: goblin,
+  skeleton: skeleton,
+  orc: orc,
+  vampire: vampire,
+  golem: golem,
+  litch: litch,
+  demon: demon,
+  dragon: dragon,
+  fairy: fairy,
+  ally: ally,
+  mimic: mimic,
+  'jelly cube': jellyCube,
+  dracula: dracula,
+  metamorph: metamorph
 });

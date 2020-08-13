@@ -24,8 +24,8 @@ describe('Fairy', () => {
     expect(fairy).toBeInstanceOf(Monster);
   });
   
-  test('it has type "Fairy"', () => {
-    expect(fairy.type).toBe('Fairy');
+  test('it has type "fairy"', () => {
+    expect(fairy.type).toEqualCaseInsensitive('fairy');
   });
 
   test('it has baseDamage of 0', () => {

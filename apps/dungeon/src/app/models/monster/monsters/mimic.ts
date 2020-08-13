@@ -7,16 +7,11 @@ import { DerivedMonsterStatic } from '../derived-monster-static';
 export class Mimic extends Monster {
   public static readonly maxAmount = 1;
   
-  protected readonly _type: RareMonsterType = 'Mimic';
+  public get type() { return this._type; }
+  protected readonly _type: RareMonsterType = 'mimic';
+
+  public get baseDamage() { return this._baseDamage; }
   protected _baseDamage: number | null = null;
-
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
 
   public produceEffect(): DamageEffect {
     if (this.baseDamage === null) {

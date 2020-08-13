@@ -8,17 +8,12 @@ import { LoseEquipmentEffect } from '../../models';
 export class JellyCube extends Monster {
   public static readonly maxAmount = 1;
   
-  protected readonly _type: RareMonsterType = 'Jelly Cube';
+  public get type() { return this._type; }
+  protected readonly _type: RareMonsterType = 'jelly cube';
+  
+  public get baseDamage() { return this._baseDamage; }
   protected readonly _baseDamage = null;
   
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
-
   public produceEffect(): LoseEquipmentEffect {
     return {
       type: 'equipment',

@@ -15,10 +15,9 @@ import { Princess } from './hero/heroes/princess';
 export { Hero, DerivedHeroStatic, HeroType, Bard, Mage, Ninja, Princess };
 
 // EQUIPMENT
-import { IEquipment } from './equipment/equipment.interface';
 import { Equipment } from './equipment/equipment';
 
-export { IEquipment, Equipment };
+export { Equipment };
 
 // MONSTER
 import { Monster } from './monster/monster';

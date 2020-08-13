@@ -8,22 +8,14 @@ import { DamageEffect } from '../../models';
 export class Fairy extends Monster {
   public static readonly maxAmount = 1;
 
-  protected readonly _type: RareMonsterType = 'Fairy';
+  public get type() { return this._type; }
+  protected readonly _type: RareMonsterType = 'fairy';
+
+  public get baseDamage() { return this._baseDamage; }
   protected readonly _baseDamage = 0;
   
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
-
-  get actualDamage() {
-    return this.baseDamage;
-  }
-
-  set actualDamage(newDamageValue: number) { }
+  public get actualDamage() { return this._baseDamage; }
+  public set actualDamage(newDamageValue: number) { }
 
   public produceEffect(): DamageEffect {
     return {

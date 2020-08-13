@@ -1,9 +1,18 @@
 export class Player {
   public nextPlayer: Player | undefined;
+  
+  public get name() { return this._name; }
   private _name: string;
+  
+  public get victories() { return this._victories; }
   private _victories: number;
+  
+  public get defeats() { return this._defeats; }
   private _defeats: number;
+
+  public get active(): boolean { return this._active; }
   private _active: boolean;
+
   private score: number;
 
   constructor(name: string) { 
@@ -40,22 +49,6 @@ export class Player {
     }
 
     return ranking;
-  }
-
-  public get name(): string {
-    return this._name;
-  }
-
-  public get victories(): number {
-    return this._victories;
-  }
-
-  public get defeats(): number {
-    return this._defeats;
-  }
-
-  public get active(): boolean {
-    return this._active;
   }
 
   public surviveDungeon(): void {

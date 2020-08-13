@@ -25,8 +25,8 @@ describe('Mimic', () => {
     expect(mimic).toBeInstanceOf(Monster);
   });
   
-  test('it has type "Mimic"', () => {
-    expect(mimic.type).toBe('Mimic');
+  test('it has type "mimic"', () => {
+    expect(mimic.type).toEqual('mimic');
   });
 
   test('it has baseDamage of null at first', () => {

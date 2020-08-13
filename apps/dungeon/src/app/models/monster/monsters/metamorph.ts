@@ -17,16 +17,11 @@ import { Dragon } from './dragon';
 export class Metamorph extends Monster {
   public static readonly maxAmount = 1;
   
-  protected _type: RareMonsterType = 'Metamorph';
+  public get type() { return this._type; }
+  protected readonly _type: RareMonsterType = 'metamorph';
+  
+  public get baseDamage() { return this._baseDamage; }
   protected _baseDamage: number | null = null;
-
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
 
   public produceEffect(): DamageEffect {
     if (!this._baseDamage) throw new Error('Metamorph must adopt a new form before attacking');

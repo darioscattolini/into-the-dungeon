@@ -24,8 +24,8 @@ describe('JellyCube', () => {
     expect(jellyCube).toBeInstanceOf(Monster);
   });
   
-  test('it has type "Jelly Cube"', () => {
-    expect(jellyCube.type).toBe('Jelly Cube');
+  test('it has type "jelly cube"', () => {
+    expect(jellyCube.type).toEqualCaseInsensitive('jelly cube');
   });
 
   test('it has baseDamage of null', () => {

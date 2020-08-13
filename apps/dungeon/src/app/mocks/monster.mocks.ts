@@ -1,16 +1,12 @@
 import { Monster, CommonMonsterType } from "../models/models";
 
 export class MockMonster extends Monster {
+  
+  public get type() { return this._type; }
   protected _type: CommonMonsterType = 'Orc';
+
+  public get baseDamage() { return this._baseDamage; }
   protected _baseDamage = 3;
-
-  public get type() {
-    return this._type;
-  }
-
-  public get baseDamage() {
-    return this._baseDamage;
-  }
   
   public startingAction() {
     return null;

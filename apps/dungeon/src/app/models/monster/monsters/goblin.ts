@@ -7,6 +7,6 @@ export class Goblin extends CommonMonster {
   public static readonly maxAmount = 2;
 
   constructor() {
-    super('Goblin', 1);
+    super('goblin', 1);
   }
 };

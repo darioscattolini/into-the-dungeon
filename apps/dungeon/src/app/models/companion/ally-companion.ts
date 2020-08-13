@@ -2,25 +2,21 @@ import { Subject, PartialObserver, Subscription } from 'rxjs';
 import { Monster } from '../models';
 import { CombatResult } from '../models';
 import { CompanionEffect } from '../models';
-import { ICompanion } from './companion.interface';
+import { Companion } from './companion';
 
   // still not sure if it should be equipment
-export class AllyCompanion implements ICompanion {
-  public readonly type = 'Ally';
+export class AllyCompanion implements Companion {
+  public readonly type = 'ally';
   
+  public get available(): boolean { return this._available; }
   private _available = true;
+
   private readonly targetPosition: number;
-  private readonly combatResultObserver: PartialObserver<CombatResult>;
-  private subscription: Subscription;
+  private readonly subscription:   Subscription;
 
   constructor(targetPosition: number, combatResult$: Subject<CombatResult>) {
     this.targetPosition = targetPosition;
-    this.combatResultObserver = this.getCombatResultObserver();
-    this.subscription = combatResult$.subscribe(this.combatResultObserver);
-  }
-
-  public get available(): boolean {
-    return this._available;
+    this.subscription = this.subscribeToCombatResult(combatResult$);
   }
 
   public appliesThisRound(monster: Monster): boolean {
@@ -38,8 +34,10 @@ export class AllyCompanion implements ICompanion {
     this._available = false;
   }
 
-  private getCombatResultObserver(): PartialObserver<CombatResult> {
-    return {
+  private subscribeToCombatResult(
+    combatResult$: Subject<CombatResult>
+  ): Subscription {
+    const observer: PartialObserver<CombatResult> = {
       next: (combatResult: CombatResult) => {
         if (combatResult.monster.positionInDungeon === this.targetPosition) {
           this.discard();
@@ -48,7 +46,11 @@ export class AllyCompanion implements ICompanion {
       error: (error: any) => {
         console.error('Combat result observer has thrown error: ' + error);
       }
-    }
+    };
+    
+    const subscription = combatResult$.subscribe(observer);
+
+    return subscription;
   }
 
   private unsuscribeToCombatResult() {

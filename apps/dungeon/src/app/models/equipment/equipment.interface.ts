@@ -2,7 +2,7 @@ import { Subject } from 'rxjs';
 import { Monster } from '../models';
 import { Hero, CombatResult } from '../models';
 
-export interface IEquipment {
+export interface Equipment {
   name: string;
   type: 'Weapon' | 'HitPoints' | 'DamageReducer' | 'Reviver';
   // hero: Hero;
@@ -16,7 +16,7 @@ export interface IEquipment {
   // unsuscribeToCombatResult?(): void; private, after discard
 }
 
-export interface IWeapon extends IEquipment {
+export interface Weapon extends Equipment {
   type: 'Weapon';
   appliesThisRound(opponent: Monster): boolean;
   apply(opponent: Monster): Function[];

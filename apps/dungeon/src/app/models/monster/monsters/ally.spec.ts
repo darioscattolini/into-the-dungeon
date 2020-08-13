@@ -24,8 +24,8 @@ describe('Ally', () => {
     expect(ally).toBeInstanceOf(Monster);
   });
   
-  test('it has type "Ally"', () => {
-    expect(ally.type).toBe('Ally');
+  test('it has type "ally"', () => {
+    expect(ally.type).toEqualCaseInsensitive('ally');
   });
 
   test('it has baseDamage of null', () => {
@@ -35,7 +35,7 @@ describe('Ally', () => {
   test('it produces a companion: ally effect', () => {
     expect(ally.produceEffect()).toEqual({
       type: 'companion',
-      companion: 'Ally'
+      companion: 'ally'
     });
   });
 

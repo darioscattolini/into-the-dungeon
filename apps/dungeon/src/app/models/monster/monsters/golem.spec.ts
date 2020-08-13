@@ -24,8 +24,8 @@ describe('Golem', () => {
     expect(golem).toBeInstanceOf(Monster);
   });
   
-  test('it has type "Golem"', () => {
-    expect(golem.type).toBe('Golem');
+  test('it has type "golem"', () => {
+    expect(golem.type).toEqualCaseInsensitive('golem');
   });
 
   test('it has baseDamage of 5', () => {

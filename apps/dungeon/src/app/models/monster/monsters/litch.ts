@@ -7,6 +7,6 @@ export class Litch extends CommonMonster {
   public static readonly maxAmount = 1;
 
   constructor() {
-    super('Litch', 6);
+    super('litch', 6);
   }
 };

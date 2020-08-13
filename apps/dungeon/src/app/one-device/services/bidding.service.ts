@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OneDeviceModule } from '../one-device.module';
 import { 
-  Player, MonsterView, IEquipment, NotificationRequest,
+  Player, MonsterView, Equipment, NotificationRequest,
   DecisionRequest, ChoiceRequest,
   Bidding, BiddingResult, 
   BiddingActionRequest, BidRequest, MonsterAdditionRequest, EquipmentRemovalRequest, 
@@ -38,7 +38,7 @@ export class BiddingService {
     const biddingPlayers = this.getActivePlayers();
     const hero = await this.heroesService.chooseHero(startingPlayer);
     const monstersPack = this.monstersService.getMonstersPack();
-    return new Bidding(startingPlayer, biddingPlayers, hero, monstersPack);
+    return new Bidding(biddingPlayers, startingPlayer, hero, monstersPack);
   }
 
   private getActivePlayers(): Player[] {
@@ -134,9 +134,9 @@ export class BiddingService {
 
   private async requestEquipmentRemoval(request: EquipmentRemovalRequest): Promise<EquipmentRemovalResponse> {
     const equipment = request.content;
-    const equipmentData: IEquipment[] = []//this.equipmentService.getViewDataFor(equipment);
+    const equipmentData: Equipment[] = []//this.equipmentService.getViewDataFor(equipment);
 
-    const choiceRequest: ChoiceRequest<IEquipment> = {
+    const choiceRequest: ChoiceRequest<Equipment> = {
       player: request.player,
       options: equipmentData
     }
