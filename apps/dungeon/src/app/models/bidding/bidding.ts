@@ -26,7 +26,7 @@ export class Bidding {
   private _goesOn = true;
 
   public get activeTurn() { return this._activeTurn; }
-  private _activeTurn = false;
+  private _activeTurn = true;
 
   private currentAction: BiddingActionType = 'bid';
 
@@ -81,8 +81,12 @@ export class Bidding {
   public onResponse(
     response: BiddingActionResponse
   ): NotificationRequest<Monster> | undefined {
+    if (!this.responsePending) {
+      throw new Error('A user action must be previously requested.');
+    }
+
     if (response.type !== this.currentAction) {
-      throw new Error(`A response of ${this.currentAction} type was expected`);
+      throw new Error(`A response of ${this.currentAction} type was expected.`);
     }
 
     let outcome: NotificationRequest<Monster> | undefined;
@@ -105,7 +109,7 @@ export class Bidding {
 
   public endTurn(): NotificationRequest<null> {
     if (this._activeTurn) {
-      throw new Error(`${this._currentPlayer.name} is still playing`);
+      throw new Error(`${this._currentPlayer.name} is still playing.`);
     }
 
     const request: NotificationRequest<null> = {
@@ -128,7 +132,7 @@ export class Bidding {
 
     if (this._biddingPlayers.length === 1) {
       if (this._currentPlayer !== this.getLastBiddingPlayer()) {
-        throw new Error('Something went wrong: last player inconsistency');
+        throw new Error('Something went wrong: last player inconsistency.');
       }
 
       this._goesOn = false;
@@ -144,7 +148,7 @@ export class Bidding {
   }
 
   public getResult(): BiddingResult {
-    if (this._goesOn) throw new Error ('Bidding phase has not ended yet');
+    if (this._goesOn) throw new Error ('Bidding phase has not ended yet.');
     
     const result: BiddingResult = {
       raider: this.getLastBiddingPlayer(),
@@ -218,7 +222,7 @@ export class Bidding {
 
   private removeCurrentPlayer(): void {
     if (this._biddingPlayers.length === 1) {
-      throw new Error('There is only one player left, bidding should have ended');
+      throw new Error('There is only one player left, bidding should have ended.');
     }
     const playerIndex = this._biddingPlayers.indexOf(this._currentPlayer);
     this._biddingPlayers.splice(playerIndex, 1);

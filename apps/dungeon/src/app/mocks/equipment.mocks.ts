@@ -1,6 +1,6 @@
-import { IEquipment } from "../models/models";
+import { Equipment } from "../models/models";
 
-export const stubEquipment: IEquipment = {
+export const stubEquipment: Equipment = {
   name: 'generic',
   type: 'HitPoints',
   available: true,
