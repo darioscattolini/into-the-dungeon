@@ -29,8 +29,8 @@ export class Bidding {
   private _activeTurn = true;
 
   private currentAction: BiddingActionType = 'bid';
-
   private responsePending = false;
+  private pickedMonster: Monster | undefined;
   
   constructor(
     biddingPlayers: Player[],
@@ -192,7 +192,6 @@ export class Bidding {
       this.addMonsterToDungeon();
       this._activeTurn = false;
     } else {
-      this.monstersPack.pop();
       this.currentAction = 'remove equipment';
     }
   }
@@ -207,13 +206,22 @@ export class Bidding {
   }
 
   private addMonsterToDungeon(): Monster {
-    const monster = this.monstersPack.pop() as Monster;
-    this.monstersInDungeon.push(monster);
-    return monster;
+    if (!this.pickedMonster) {
+      throw new Error ('There is no picked monster to add to dungeon.')
+    }
+
+    this.monstersInDungeon.push(this.pickedMonster);
+    const added = this.pickedMonster;
+    this.pickedMonster = undefined;
+    return added;
   }
 
   private pickLastMonster(): Monster {
-    return this.monstersPack[this.monstersPack.length - 1];
+    if (this.monstersPack.length === 0) {
+      throw new Error('There are no monsters in pack, bidding should have ended.')
+    }
+    this.pickedMonster = this.monstersPack.pop() as Monster;
+    return this.pickedMonster;
   }
 
   private getHeroEquipment(): Equipment[] {
