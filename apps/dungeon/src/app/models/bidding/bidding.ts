@@ -38,10 +38,10 @@ export class Bidding {
     hero:           Hero,
     monstersPack:   Monster[]
   ) {
-    this._biddingPlayers = biddingPlayers;
+    this._biddingPlayers = biddingPlayers.slice(0);
     this._currentPlayer = startingPlayer;
     this._hero = hero;
-    this.monstersPack = monstersPack;
+    this.monstersPack = monstersPack.slice(0);
   }
 
   public demandNextRequest(): BiddingActionRequest {  
@@ -50,7 +50,7 @@ export class Bidding {
     }
 
     if (!this._activeTurn) {
-      throw new Error('Call to nextTurn necessary before requesting action');
+      throw new Error('Call to endTurn necessary before requesting action.');
     }
 
     const request: Partial<BiddingActionRequest> = {
@@ -86,7 +86,7 @@ export class Bidding {
     }
 
     if (response.type !== this.currentAction) {
-      throw new Error(`A response of ${this.currentAction} type was expected.`);
+      throw new Error(`A response of "${this.currentAction}" type was expected.`);
     }
 
     let outcome: NotificationRequest<Monster> | undefined;

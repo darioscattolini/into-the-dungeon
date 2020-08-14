@@ -1,9 +1,9 @@
 import { Hero } from './hero';
-import { stubEquipment } from '../../mocks/equipment.mocks';
+import { equipmentStub } from '../../mocks/equipment.mocks';
 
 class ConcreteHero extends Hero { 
   protected _equipment = [
-    stubEquipment
+    equipmentStub
   ];
 }
 
